@@ -1,0 +1,23 @@
+<ion-view title="Event Info" id="page11">
+  <ion-nav-buttons side="left" class="has-header">
+    <button class="button icon ion-android-arrow-back"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right" class="has-header">
+    <button class="button icon ion-close"></button>
+  </ion-nav-buttons>
+
+  <ion-content  ng-controller="eventInfoCtrl" padding="true" class="has-header">
+    <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
+      <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
+    </div>
+    <button class="button button-calm  button-block icon ion-camera" ng-click="takePhoto()">Selfie</button>
+    <button class="button button-calm  button-block icon ion-camera" ng-click="choosePhoto()">
+      Choose Photo
+    </button>
+    <!-- <a ui-sref="menu.camera" id="eventInfo-button47" class="button button-calm  button-block icon ion-camera"> Selfie</a> -->
+    <a ui-sref="gallery" id="eventInfo-button49" class="button button-calm  button-block icon ion-ios-photos"> Gallery</a>
+    <center>
+      <img ng-show="imgURI !== undefined" ng-src="{{imgURI}}" style="text-align: center">
+    </center>
+  </ion-content>
+</ion-view>

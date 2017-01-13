@@ -1,0 +1,5 @@
+{
+  "name": "Megaselfie",
+  "app_id": "",
+  "gulpStartupTasks": ["sass", "watch"]
+}
