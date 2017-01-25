@@ -5,8 +5,19 @@
   <ion-nav-buttons side="right" class="has-header">
     <button class="button icon ion-close"></button>
   </ion-nav-buttons>
-  <ion-content padding="true" class="has-header">
-    <div id="countdown-container8" class="creator-container"></div>
-    <button id="countdown-button46" style="font-weight:600;" class="button button-positive  button-block icon-right ion-play">Start Countdown</button>
+
+  <ion-content id="contentCamera" padding="true" class="has-header" ng-controller="countdownCtrl">
+    <div style="width: 400px; height:400px">
+    <img ng-show="imgURI != undefined" ng-src="{{imgURI}}" width="300" height="300" style="vertical-align: middle;"/>
+    </div>
+    <div align="center" style="font-size: 70px;"> {{counter}}</div>
+
+    <ion-footer-bar class="bar-calm">
+      <div class="buttons">
+        <button id="countdown-button46"
+                class="button"
+                ng-click="playCountdown()">Start Countdown</button>
+      </div>
+    </ion-footer-bar>
   </ion-content>
 </ion-view>
