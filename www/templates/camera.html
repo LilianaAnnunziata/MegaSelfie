@@ -1,9 +1,15 @@
-<ion-view title="Camera" id="page7">
-  <ion-nav-buttons side="left" class="has-header">
-    <button class="button icon ion-android-arrow-back"></button>
-  </ion-nav-buttons>
-  <ion-nav-buttons side="right" class="has-header">
-    <button class="button icon ion-close"></button>
-  </ion-nav-buttons>
-  <ion-content padding="true" class="has-header"></ion-content>
-</ion-view>
+<!DOCTYPE HTML>
+<html>
+<body>
+eccomi
+  <ng-camera
+    type="photo"
+    enabled="true"
+    width="640"
+    height="480"
+    countdown="3"
+    ng-model="media"
+    capture="callback(media)"
+    capture-message="Go!"></ng-camera>
+</body>
+</html>

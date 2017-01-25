@@ -4,13 +4,14 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ionic', 'app.controllers','camera', 'app.routes', 'app.directives','app.services'])
+//var fb = new Firebase("https://megaselfie-f2e6f.firebaseio.com");
+
+angular.module('app', ['ionic', 'app.controllers','camera', 'app.routes', 'app.directives','app.services','omr.directives'])
 
 //configurazione per def costanti, impostazioni su servizi
 .config(function($ionicConfigProvider, $sceDelegateProvider){
 
   $sceDelegateProvider.resourceUrlWhitelist([ 'self','*://www.youtube.com/**', '*://player.vimeo.com/video/**']);
-
 })
 
 //inizializzazione dopo che tutti i moduli sono stati caricati

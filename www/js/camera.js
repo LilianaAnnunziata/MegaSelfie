@@ -1,8 +1,23 @@
 angular.module('camera', ['ionic', 'ngCordova'])
 
 .controller("cameraCtrl", function ($scope, $cordovaCamera) {
-
-                $scope.takePhoto = function () {
+  canvasMain = document.getElementById("camera");;
+  CanvasCamera.initialize(canvasMain);
+  // define options
+  var opt = {
+    quality: 75,
+    destinationType: CanvasCamera.DestinationType.DATA_URL,
+    encodingType: CanvasCamera.EncodingType.JPEG,
+    saveToPhotoAlbum:true,
+    correctOrientation:true,
+    width:640,
+    height:480
+  };
+  CanvasCamera.start(opt);
+  $scope.takePhoto = function () {
+    CanvasCamera.takePhoto();
+  }
+                /*$scope.takePhoto = function () {
                   var options = {
                     quality: 75,
                     destinationType: Camera.DestinationType.DATA_URL,
@@ -13,15 +28,15 @@ angular.module('camera', ['ionic', 'ngCordova'])
                     // targetHeight: 300,
                     popoverOptions: CameraPopoverOptions,
                     saveToPhotoAlbum: true,
-                    Direction: FRONT
                 };
 
                     $cordovaCamera.getPicture(options).then(function (imageData) {
-                        $scope.imgURI = "data:image/jpeg;base64," + imageData;
+                        //$scope.imgURI = "data:image/jpeg;base64," + imageData;
                     }, function (err) {
                         // An error occured. Show a message to the user
                     });
                 }
+
 
                 $scope.choosePhoto = function () {
                   var options = {
@@ -34,7 +49,6 @@ angular.module('camera', ['ionic', 'ngCordova'])
                     //targetHeight: 300,
                     popoverOptions: CameraPopoverOptions,
                     saveToPhotoAlbum: true,
-                    Direction: FRONT
                   };
 
                     $cordovaCamera.getPicture(options).then(function (imageData) {
@@ -42,7 +56,7 @@ angular.module('camera', ['ionic', 'ngCordova'])
                     }, function (err) {
                         // An error occured. Show a message to the user
                     });
-                }
+                }*/
 
 
             });

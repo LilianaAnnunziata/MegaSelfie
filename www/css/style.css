@@ -1,1 +1,9 @@
 /* Empty. Add your own CSS if you like */
+.submitted .ng-invalid{
+  border: 3px solid;
+  border-color: red;
+}
+
+html{
+  background-color: transparent;
+}

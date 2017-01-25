@@ -7,7 +7,7 @@
 
 
     <script src="lib/ionic/js/ionic.bundle.js"></script>
-
+    <script src="lib/angular-camera/dist/angular-camera.min.js"></script>
     <!-- aggiunge ng-cordova-->
     <script src="js/ng-cordova.min.js"></script>
     <!-- cordova script (this will be a 404 during development) -->
@@ -18,7 +18,7 @@
     -->
 
     <link href="css/ionic.app.css" rel="stylesheet">
-
+    <link href="css/style.css" rel="stylesheet" type="text/css">
 
     <style type="text/css">
       .platform-ios .manual-ios-statusbar-padding{
@@ -57,14 +57,13 @@
   	<script src="js/directives.js"></script>
     <script src="js/services.js"></script>
 
-	<!-- Only required for Tab projects w/ pages in multiple tabs
-    <script src="lib/ionicuirouter/ionicUIRouter.js"></script>
-    -->
-
+    <script src="js/firebase.js"></script>
+    <script src="js/angularfire.min.js"></script>
+    <!-- Only required for Tab projects w/ pages in multiple tabs
+      <script src="lib/ionicuirouter/ionicUIRouter.js"></script>
+      -->
   </head>
   <body ng-app="app" animation="slide-left-right-ios7">
-  <div>
-  <div>
     <ion-nav-bar class="bar-positive">
       <ion-nav-back-button></ion-nav-back-button>
     </ion-nav-bar>

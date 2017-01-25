@@ -26,6 +26,11 @@ project root. Any scripts you add to these directories will be executed before
 and after the commands corresponding to the directory name. Useful for
 integrating your own build systems or integrating with version control systems.
 
+Modificare come il CLI lavora. Ogni azione del CLI, dalla creazione del progetto
+all'esecizione sulla piattaforma  per inviare il tuo codice al device, può essere modificato
+così da accadere prima o dopo una particolare azione.
+es: add uno specifico style sheet per una determinata piattaforma, prima che 
+il progetto è eseguito.
 __Remember__: Make your scripts executable.
 
 ## Hook Directories

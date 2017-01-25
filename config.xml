@@ -26,6 +26,8 @@
   <plugin name="cordova-plugin-splashscreen" spec="~4.0.1"/>
   <plugin name="cordova-plugin-statusbar" spec="~2.2.1"/>
   <plugin name="ionic-plugin-keyboard" spec="~2.2.1"/>
+  <plugin name="cordova-plugin-camera"/>
+  <plugin name="cordova-plugin-camera-preview"/>
   <platform name="android">
     <icon src="resources/android/icon/drawable-ldpi-icon.png" density="ldpi"/>
     <icon src="resources/android/icon/drawable-mdpi-icon.png" density="mdpi"/>
@@ -48,4 +50,6 @@
   </platform>
   <allow-navigation href="http://192.168.1.102:8100"/>
   <allow-navigation href="http://172.19.8.153:8100"/>
+  <allow-navigation href="http://172.19.28.127:8100"/>
+  <allow-navigation href="http://172.19.0.96:8100"/>
 </widget>

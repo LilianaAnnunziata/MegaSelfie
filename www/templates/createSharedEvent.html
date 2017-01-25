@@ -2,18 +2,23 @@
   <ion-nav-buttons side="right" class="has-header">
     <button class="button icon ion-close"></button>
   </ion-nav-buttons>
+
   <ion-content padding="true" class="has-header" ng-controller="createSharedEventCtrl">
     <!-- Immagine dell'evento -->
-    <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
-      <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
+    <div id="imgContainer" ng-click="choosePhoto()" style="margin: 0px; background-color: rgb(232, 235, 239); line-height: 250px; text-align: center;">
+      <i ng-show="imgURI == undefined" class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
+      <img src="{{imgURI}}" style="vertical-align: middle;"/>
     </div>
 
     <div class="spacer" style="width: 300px; height: 36px;"></div>
 
-    <form id="createSharedEvent-form3" class="list">
-      <label class="item item-input form-transparent" id="createSharedEvent-input7" name="EventNameShared">
+    <form id="createSharedEvent-form3" name="createSharedEventForm"
+          class="list" ng-class="{'submitted':submitted}"
+          ng-submit="submitData(event)" novalidate>
+
+      <label class="item item-input form-transparent" id="createSharedEvent-input7" name="eventNameShared">
         <span class="input-label">Event Name</span>
-        <input type="text" ng-model="event.nameSharedEvent" placeholder="Name" >
+        <input type="text" name="nameSharedEvent" ng-model="event.nameSharedEvent" required placeholder="Name">
       </label>
 
       <label class="item item-input form-transparent" id="createSharedEvent-textarea2" name="description">
@@ -23,27 +28,36 @@
 
       <label class="item item-input" id="createSharedEvent-input11" name="startDate">
         <span class="input-label">Start Date</span>
-        <input ng-model="event.startDate" type="date" placeholder="">
+        <input ng-model="event.startDate" type="date" required placeholder="">
       </label>
+      <p ng-show="(event.startDate | date:'dd/MM/yyyy') < date">
+        Start Date > Now
+      </p>
 
       <label class="item item-input" id="createSharedEvent-input14" name="startTime">
         <span class="input-label">Start Time</span>
-        <input ng-model="event.startTime" type="time" placeholder="">
+        <input ng-model="event.startTime" type="time"  placeholder="">
       </label>
+
       <label class="item item-input" id="createSharedEvent-input13" name="endDate">
         <span class="input-label">End Date</span>
-        <input ng-model="event.endDate" type="date" placeholder="">
+        <input ng-model="event.endDate" type="date" required placeholder="">
       </label>
+      <p ng-show="event.startDate > event.endDate">
+        End Date > Start Date
+      </p>
+
       <label class="item item-input" id="createSharedEvent-input12" name="endTime">
         <span class="input-label">End Time</span>
         <input ng-model="event.endTime" type="time" placeholder="">
       </label>
+      <div ng-show="createSharedEventForm.startDate < createSharedEventForm.endDate">StartDate > endDate</div>
     <div id="createSharedEvent-container5">
         <div class="spacer" style="width: 300px; height: 33px;"></div>
         <a ui-sref="menu.store" id="createSharedEvent-button24" class="button button-calm  button-block icon ion-android-person-add"> #Partecipants</a>
       </div>
       <div class="spacer" style="width: 300px; height: 44px;"></div>
-      <button type="submit" ng-click="submitData(event)" ui-sref="menu.home" id="createSharedEvent-button10" class="button button-calm  button-block icon ion-android-add">Create</button>
+      <button type="submit" ng-click="submitted=true;"  id="createSharedEvent-button10" class="button button-calm  button-block icon ion-android-add">Create</button>
     </form>
 
   </ion-content>
