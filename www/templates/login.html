@@ -3,21 +3,14 @@
     <div>
       <img src="img/M52toW0QLmrr5sgni9Ks_logo.png" style="display: block; width: 50%; height: auto; margin-left: auto; margin-right: auto;">
     </div>
+
+
     <div class="spacer" style="width: 300px; height: 156px;"></div>
     <form id="login-form1" class="list">
-      <ion-list id="login-list2">
-        <label class="item item-input form-transparent" id="login-input1">
-          <span class="input-label">Username:</span>
-          <input type="text" placeholder="">
-        </label>
-        <label class="item item-input form-transparent" id="login-input2">
-          <span class="input-label">Password:</span>
-          <input type="password" placeholder="">
-        </label>
-      </ion-list>
+
       <div class="spacer" style="height: 40px;"></div>
-      <a ui-sref="menu.home" id="login-button1" class="button button-calm  button-block">Log in</a>
-      <a ui-sref="signup" id="login-button2" class="button button-calm  button-block button-clear">Or create an account</a>
+      <a  id="login-button1" class="button button-calm  button-block" ng-click="login()" >Log in</a >
+
     </form>
   </ion-content>
 </ion-view>

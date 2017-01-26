@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 //var fb = new Firebase("https://megaselfie-f2e6f.firebaseio.com");
 
-angular.module('app', ['ionic', 'app.controllers','camera', 'app.routes', 'app.directives','app.services','omr.directives'])
+angular.module('app', ['ionic', 'app.controllers','camera', 'app.routes', 'app.directives','app.services','omr.directives','ngStorage','ngCordova', 'ngCordovaOauth'])
 
 //configurazione per def costanti, impostazioni su servizi
 .config(function($ionicConfigProvider, $sceDelegateProvider){

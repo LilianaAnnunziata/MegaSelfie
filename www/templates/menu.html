@@ -1,4 +1,4 @@
-<ion-side-menus enable-menu-with-back-views="true">
+<ion-side-menus enable-menu-with-back-views="true" ng-init="init()">
   <ion-side-menu-content>
     <ion-nav-bar class="bar-positive">
       <ion-nav-back-button></ion-nav-back-button>
@@ -14,9 +14,20 @@
     </ion-header-bar>
     <ion-content padding="false" style="background: url(img/1caU6WQ6TyaCa1Ik10S3_bg-slide-01.jpg) no-repeat center;background-size:cover;" class="side-menu-left has-header ">
       <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
-        <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
+
       </div>
-      <div class="spacer" style="width: 248px; height: 96px;"></div>
+
+<div align="middle">
+  <img ng-src="{{profileData.picture.data.url}}" height="150" width="150">
+  <h3 style="font-size:200%">{{profileData.name}}</h3>
+
+</div>
+
+
+
+
+      <div class="spacer" style="width: 248px; height: 100px;"></div>
+
       <ion-list id="menu-list1">
         <ion-item class="item-icon-right  side-menu-item" id="menu-list-item1" ui-sref="menu.home" menu-close="">Home
           <i class="icon ion-home"></i>

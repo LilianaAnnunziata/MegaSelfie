@@ -1,4 +1,4 @@
-function setOptionsCamera(srcType,width,height) {
+function setOptionsCamera(srcType) {
 
   var options = {
     quality: 75,
@@ -6,8 +6,8 @@ function setOptionsCamera(srcType,width,height) {
     sourceType: srcType,//sorgente della foto
     allowEdit: false,//permette la modifica
     encodingType: Camera.EncodingType.JPEG, //formato di codifica della foto
-    targetWidth: width,//scalatura img
-    targetHeight: height,
+   // targetWidth: width,//scalatura img
+    //targetHeight: height,
     mediaType:Camera.PICTURE, //setta il tipo di media da selezionare
     saveToPhotoAlbum: true, //salva img nell'album
     cameraDiretion: Camera.FRONT
@@ -80,11 +80,12 @@ function ($scope, dateFilter, $http, $location, $cordovaCamera, $stateParams) {
     var imgRect = document.getElementById("imgContainer").getBoundingClientRect();
     console.log("rect= "+imgRect.width +" " +imgRect.height+" "+imgRect.bottom+" "+imgRect.left);
     var srcType = Camera.PictureSourceType.PHOTOLIBRARY;
-    var options = setOptionsCamera(srcType,imgRect.width,imgRect.height);
+    var options = setOptionsCamera(srcType);
 
     $cordovaCamera.getPicture(options).then(function (imageData) {
       console.log("createSharedEventCtrl choosePhoto OK "+imageData);
         $scope.imgURI ="data:image/jpeg;base64," + imageData;
+
     }, function (err) {
       console.log("error ChoosePhoto in createSharedEventCtrl");
     });
@@ -206,36 +207,17 @@ function ($scope, $stateParams) {
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $cordovaCamera) {
-console.log("help");
-  /*$scope.choosePhoto = function () {
-    var srcType = Camera.PictureSourceType.PHOTOLIBRARY;
+  $scope.takePhoto = function () {
+    var imgRect = document.getElementById("imgContainer").getBoundingClientRect();
+    console.log("rect= "+imgRect.width +" " +imgRect.height+" "+imgRect.bottom+" "+imgRect.left);
+    var srcType = Camera.PictureSourceType.CAMERA;
     var options = setOptionsCamera(srcType);
 
-    $cordovaCamera.getPicture(options).then(function (imageData) {
-      console.log("data:image/jpeg;base64," + imageData);
-      $scope.imgURI = "data:image/jpeg;base64," + imageData;
-    }, function (err) {
-      // An error occured. Show a message to the user
-    });
-  }
-}])*/
-  $scope.takePhoto = function () {
-    var options = {
-      quality: 75,
-      destinationType: Camera.DestinationType.DATA_URL,
-      sourceType: Camera.PictureSourceType.CAMERA,
-      allowEdit: true,
-      encodingType: Camera.EncodingType.JPEG,
-      targetWidth: 300,
-      targetHeight: 300,
-      popoverOptions: CameraPopoverOptions,
-      saveToPhotoAlbum: false
-    };
 
     $cordovaCamera.getPicture(options).then(function (imageData) {
       $scope.imgURI = "data:image/jpeg;base64," + imageData;
     }, function (err) {
-      // An error occured. Show a message to the user
+      console.log("error eventInfoCtrl")
     });
   };
   $scope.choosePhoto = function () {
@@ -244,7 +226,7 @@ console.log("help");
 
 
     $cordovaCamera.getPicture(options).then(function (imageData) {
-      $scope.imgURI = imageData;
+      $scope.imgURI = "data:image/jpeg;base64,"+imageData;
     }, function (err) {
       // An error occured. Show a message to the user
     });
@@ -264,4 +246,45 @@ function ($scope, $stateParams) {
     console.log("Errore: " + errorObject.code);
   });
 
+}])
+
+.controller("LoginController", ['$scope', '$state','$cordovaOauth', '$sessionStorage', '$location',
+  function($scope,$state, $cordovaOauth, $sessionStorage, $location) {
+
+  $scope.login = function() {
+    $cordovaOauth.facebook("727495594069595", ["email"]).then(function(result) {
+      $sessionStorage.accessToken = result.access_token;
+
+
+
+
+      $state.go("menu.home");
+      //$location.path("menu.home");
+      //  $location.path("/page1");
+      //scope.$apply;
+      // $window.location.href = "/templates/home";
+
+    }, function(error) {
+      alert("There was a problem signing in!  See the console for logs");
+      console.log(error);
+    });
+  };
+
+}])
+
+.controller("MenuController", ['$scope', '$http', '$sessionStorage', '$location',
+  function($scope, $http, $sessionStorage, $location) {
+
+  $scope.init = function() {
+    if($sessionStorage.hasOwnProperty("accessToken") === true) {
+      $http.get("https://graph.facebook.com/v2.2/me", { params: { access_token: $sessionStorage.accessToken, fields: "id,name,gender,location,website,picture.type(large),relationship_status", format: "json" }}).then(function(result) {
+        $scope.profileData = result.data;
+      }, function(error) {
+        alert("There was a problem getting your profile.  Check the logs for details.");
+        console.log(error);
+      });
+    } else {
+      alert("aasdasd");
+    }
+  };
 }]);

@@ -9,6 +9,7 @@ angular.module('app.routes', [])
   $stateProvider
 
 
+
       .state('menu.home', {
     url: '/page1',
     views: {
@@ -39,17 +40,9 @@ angular.module('app.routes', [])
     }
   })
 
-  .state('menu', {
-    url: '/side-menu21',
-    templateUrl: 'templates/menu.html',
-    controller: 'menuCtrl'
-  })
 
-  .state('login', {
-    url: '/page4',
-    templateUrl: 'templates/login.html',
-    controller: 'loginCtrl'
-  })
+
+
 
   .state('signup', {
     url: '/page5',
@@ -109,7 +102,27 @@ angular.module('app.routes', [])
     controller: 'galleryCtrl'
   })
 
-$urlRouterProvider.otherwise('/side-menu21/page1')
+    .state('login', {
+      url: '/login',
+      templateUrl: 'templates/login.html',
+      controller: 'LoginController'
+    })
+    /* .state('profile', {
+     url: '/profile',
+     templateUrl: 'templates/profile.html',
+     controller: 'ProfileController'
+     })*/
+
+    .state('menu', {
+      url: '/menu',
+      templateUrl: 'templates/menu.html',
+      controller: 'MenuController'
+    })
+
+
+
+
+  $urlRouterProvider.otherwise('/login');
 
 
 
