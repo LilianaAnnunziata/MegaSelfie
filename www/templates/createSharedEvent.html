@@ -5,9 +5,9 @@
 
   <ion-content padding="true" class="has-header" ng-controller="createSharedEventCtrl">
     <!-- Immagine dell'evento -->
-    <div id="imgContainer" ng-click="choosePhoto()" style="margin: 0px; background-color: rgb(232, 235, 239); line-height: 250px; text-align: center;">
+    <div id="createSharedEventContentId" ng-click="choosePhoto()" style="margin: 0px; background-color: rgb(232, 235, 239); line-height: 250px; text-align: center;">
       <i ng-show="imgURI == undefined" class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
-      <img src="{{imgURI}}" width="300" height="300" style="vertical-align: middle;"/>
+      <img ng-show="imgURI !== undefined" src="{{imgURI}}" width="300" height="300" style="vertical-align: middle;"/>
     </div>
 
     <div class="spacer" style="width: 300px; height: 36px;"></div>
@@ -31,7 +31,7 @@
         <input ng-model="event.startDate" type="date" required placeholder="">
       </label>
       <p ng-show="(event.startDate | date:'dd/MM/yyyy') < date">
-        Start Date > Now
+        Start Date Error
       </p>
 
       <label class="item item-input" id="createSharedEvent-input14" name="startTime">
@@ -44,7 +44,7 @@
         <input ng-model="event.endDate" type="date" required placeholder="">
       </label>
       <p ng-show="event.startDate > event.endDate">
-        End Date > Start Date
+        End Date < Start Date
       </p>
 
       <label class="item item-input" id="createSharedEvent-input12" name="endTime">

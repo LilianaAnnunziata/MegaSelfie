@@ -7,14 +7,12 @@
   </ion-nav-buttons>
 
   <ion-content  ng-controller="eventInfoCtrl" padding="true" class="has-header">
-    <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
-      <i ng-show="imgURI === undefined" class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
-      <img ng-src="{{imgURI}}" width="{{}}" height="300" style="text-align: center">
+    <div id="eventInfoId"style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
+      <img ng-show="imgURI !== undefined" src="{{imgURI}}" width="300" height="300"style="text-align: center">
     </div>
     <button class="button button-calm  button-block icon ion-camera" ng-click="takePhoto()">Selfie</button>
-    <button class="button button-calm  button-block icon ion-camera" ng-click="choosePhoto()">
-      Choose Photo
-    </button>
+    <button ng-show="takeImage" class="button button-calm  button-block icon ion-camera" ng-click="sharePhoto()">Share</button>
+
     <!-- <a ui-sref="menu.camera" id="eventInfo-button47" class="button button-calm  button-block icon ion-camera"> Selfie</a> -->
     <a ui-sref="gallery" id="eventInfo-button49" class="button button-calm  button-block icon ion-ios-photos"> Gallery</a>
   </ion-content>
