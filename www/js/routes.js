@@ -108,7 +108,7 @@ angular.module('app.routes', [])
     .state('login', {
       url: '/login',
       templateUrl: 'templates/login.html',
-      controller: 'LoginController'
+      controller: 'loginCtrl'
     })
 
    /* .state('menu', {

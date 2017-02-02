@@ -159,13 +159,31 @@ function ($scope, dateFilter, $http, $cordovaCamera,storage) {
     };
 }])
 
-.controller('loginCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+  .controller('loginCtrl', ['$scope', '$stateParams', '$firebaseObject', '$cordovaOauth', '$sessionStorage','$firebaseAuth', '$state', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
+    function ($scope, $stateParams, $firebaseObject, $cordovaOauth, $sessionStorage, $firebaseAuth, $state) {
 
 
-}])
+      $scope.logun = function() {
+        $cordovaOauth.facebook("727495594069595", ["email"]).then(function(result) {
+          var credentials = firebase.auth.FacebookAuthProvider.credential(result.access_token);
+          $sessionStorage.accessToken = result.access_token;
+          return firebase.auth().signInWithCredential(credentials);
+
+        }).then(function (firebaseUser) {
+          console.log("Signed in as:", firebaseUser.uid);
+          $state.go("menu.home");
+        })
+          .catch(function (error) {
+            console.error("Authentication failed:", error);
+          });
+      }
+
+
+    }
+
+  ])
 
 .controller('signupCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
@@ -295,26 +313,7 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller("LoginController", ['$scope', '$state','$cordovaOauth', '$sessionStorage', '$location',
-  function($scope,$state, $cordovaOauth, $sessionStorage, $location) {
 
-  $scope.login = function() {
-    $cordovaOauth.facebook("727495594069595", ["email"]).then(function(result) {
-      $sessionStorage.accessToken = result.access_token;
-
-      $state.go("menu.home");
-      //$location.path("menu.home");
-      //  $location.path("/page1");
-      //scope.$apply;
-      // $window.location.href = "/templates/home";
-
-    }, function(error) {
-      alert("There was a problem signing in!  See the console for logs");
-      console.log(error);
-    });
-  };
-
-}])
 
 .controller("MenuController", ['$scope', '$http', '$sessionStorage', '$location',
   function($scope, $http, $sessionStorage, $location) {
