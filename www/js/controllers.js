@@ -67,6 +67,7 @@ angular.module('app.controllers', ['ngCordova','omr.directives'])
 
     $scope.downloadBy = function () {
       storage.download('ecco2/prova1').then(function (imgSrc) {
+        alert(imgSrc)
         $scope.srcImg = imgSrc;
       });
 

@@ -22,6 +22,36 @@
    <button type="button" ng-click="submit()">Submit</button>
    <button type="button" ng-click="downloadBy()">download</button>
    <img width="100" height="100" ng-show="srcImg != undefined" src="{{srcImg}}"/>
+
+ <!--<ul>
+   <li ng-repeat="message in messages"> {{message.user}}: {{message.text}}</li>
+ </ul>
+ -->
+   <p>
+     Sort by:
+     <select ng-model="orderBy">
+       <option>from</option>
+       <option>content</option>
+       <option>timestamp</option>
+     </select>
+   </p>
+
+   <p>Search: <input ng-model="searchText"></p>
+
+   <ul class="chatbox">
+     <!-- arrays are fully sortable and filterable -->
+     <li ng-repeat="message in messages | orderBy:orderBy | filter:searchText">
+       {{ message.from }}: {{ message.content }}
+
+       <!-- delete a message using $remove -->
+       <a href="" ng-click="messages.$remove(message)">X</a>
+     </li>
+   </ul>
+
+   <form ng-submit="addMessage()">
+     <input type="text" ng-model="message">
+     <input type="submit">
+   </form>
  </ion-content>
 
 </ion-view>

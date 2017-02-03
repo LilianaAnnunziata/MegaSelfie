@@ -1,13 +1,23 @@
 //servizi built-in. NB istanziati una sola volta
 angular.module('app.services', [])
 
+  .factory("chatMessages", ["$firebaseArray",
+    function($firebaseArray) {
+      // create a reference to the database where we will store our data
+      var ref = firebase.database().ref();
+
+      return $firebaseArray(ref);
+    }
+  ])
+
 .service('storage', [
   function(){
 
     var storage = firebase.storage();
 
     this.download = function (path) {
-      return storage.ref(path).getDownloadURL(); /*.then(function (url) {
+      var refStorage=storage.ref(path);
+      return refStorage.getDownloadURL(); /*.then(function (url) {
         // This can be downloaded directly:
         var xhr = new XMLHttpRequest();
         xhr.responseType = 'blob';
