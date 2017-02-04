@@ -1,57 +1,14 @@
-<ion-view title="Home" hide-back-button="true" id="page1">
- <ion-content ng-controller="homeCtrl">
+<ion-view cache-view="false" title="Home" hide-back-button="true" id="page1">
+ <ion-content>
 
   <ion-list id="home-list4">
-    <ion-item class="item-thumbnail-left" id="home-list-item8" ui-sref="menu.eventInfo">
-      <img src="img/nTHXu7GgQXe7wCYeSmqu_icon.png">
-      <h2>Welcome Event</h2>
-      <p style="white-space:normal;">Start Event</p>
-    </ion-item>
-
     <ion-item ng-repeat="obj in eventList"class="item-thumbnail-left" id="home-list-item9" ui-sref="menu.eventInfo">
-      <img src="{{obj.img}}">
-      <h2>{{obj.nameEvent}}</h2>
+      <img src="{{obj.src}}">
+      <h2>{{obj.title}}</h2>
       <p style="white-space:normal;">{{obj.description}}</p>
 
     </ion-item>
   </ion-list>
-
-   <input type="text" ng-model="pippo.text">
-   <h1>ole: {{pippo.text}}</h1>
-<input type="file" id="file" value="upload">
-   <button type="button" ng-click="submit()">Submit</button>
-   <button type="button" ng-click="downloadBy()">download</button>
-   <img width="100" height="100" ng-show="srcImg != undefined" src="{{srcImg}}"/>
-
- <!--<ul>
-   <li ng-repeat="message in messages"> {{message.user}}: {{message.text}}</li>
- </ul>
- -->
-   <p>
-     Sort by:
-     <select ng-model="orderBy">
-       <option>from</option>
-       <option>content</option>
-       <option>timestamp</option>
-     </select>
-   </p>
-
-   <p>Search: <input ng-model="searchText"></p>
-
-   <ul class="chatbox">
-     <!-- arrays are fully sortable and filterable -->
-     <li ng-repeat="message in messages | orderBy:orderBy | filter:searchText">
-       {{ message.from }}: {{ message.content }}
-
-       <!-- delete a message using $remove -->
-       <a href="" ng-click="messages.$remove(message)">X</a>
-     </li>
-   </ul>
-
-   <form ng-submit="addMessage()">
-     <input type="text" ng-model="message">
-     <input type="submit">
-   </form>
  </ion-content>
 
 </ion-view>

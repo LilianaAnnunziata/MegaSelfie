@@ -88,6 +88,8 @@
         messagingSenderId: "298075163763"
       };
       firebase.initializeApp(config);
+      window.database = firebase.database();
+      window.storage = firebase.storage();
     </script>
     <!-- Only required for Tab projects w/ pages in multiple tabs
     <script src="lib/ionicuirouter/ionicUIRouter.js"></script>

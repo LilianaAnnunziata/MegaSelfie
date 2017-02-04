@@ -117,7 +117,7 @@ angular.module('app.routes', [])
       controller: 'MenuController'
     })*/
 
- // $urlRouterProvider.otherwise('/login');
-  $urlRouterProvider.otherwise('/side-menu21/page1')
+ $urlRouterProvider.otherwise('/login');
+ //$urlRouterProvider.otherwise('/side-menu21/page1')
 
 });

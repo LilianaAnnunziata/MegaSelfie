@@ -9,15 +9,36 @@ angular.module('app.services', [])
       return $firebaseArray(ref);
     }
   ])
+  .factory("store", ["$firebaseStorage",
+    function($firebaseStorage) {
+      // create a reference to the database where we will store our data
+      var ref = firebase.storage().ref();
 
-.service('storage', [
+      return $firebaseStorage(ref);
+    }
+  ])
+
+  .service('database', ["$firebaseObject",
+    function($firebaseObject){
+
+      var database = firebase.database();
+
+      this.getRefDatabase = function (path) {
+        refDB = database.ref(path);
+        console.log("eccomiii");
+        return $firebaseObject(refDB);
+      }
+    }
+  ])
+
+  .service('storage', [
   function(){
 
     var storage = firebase.storage();
 
     this.download = function (path) {
       var refStorage=storage.ref(path);
-      return refStorage.getDownloadURL(); /*.then(function (url) {
+      return refStorage.getDownloadURL() + ".json"; /*.then(function (url) {
         // This can be downloaded directly:
         var xhr = new XMLHttpRequest();
         xhr.responseType = 'blob';
