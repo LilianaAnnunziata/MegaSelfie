@@ -82,4 +82,40 @@ angular.module('app.services', [])
       });
 
     }
-}]);
+
+
+}])
+
+.service('shareData', function() {
+  return {
+    setData : setData,
+    getData : getData,
+    shared_data : {}
+  }
+
+  function setData(data) {
+    this.shared_data = data
+  }
+
+  function getData() {
+    return this.shared_data
+  }
+})
+
+
+  .factory('myService', function() {
+    var savedData = {}
+    function set(data) {
+      savedData = data;
+    }
+    function get() {
+      return savedData;
+    }
+
+    return {
+      set: set,
+      get: get
+    }
+
+  });
+

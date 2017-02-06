@@ -1,9 +1,17 @@
 //Funzioni con un particolare scopo
-angular.module('app.controllers', ['ngCordova', 'omr.directives'])
+angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-gallery'])
 
-  .controller('homeCtrl', ['$scope','$localStorage','$firebaseStorage',
-    function ($scope,$localStorage,$firebaseStorage) {
+  .controller('homeCtrl', ['$scope','$localStorage','$firebaseStorage','shareData','myService', '$state',
+    function ($scope,$localStorage,$firebaseStorage, shareData, myService, $state) {
+$scope.goTo=function(info){
 
+ var object=JSON.parse(info)
+  myService.set(object.eventID)
+ //console.log(object.eventID)
+
+
+  shareData.setData(object.eventID);
+}
       /*Riferimento al database*/
       //var refDB = window.database.ref().child("data");
       // var syncObj = $firebaseObject(refDB);
@@ -23,7 +31,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives'])
        */
 
       var query = window.database.ref('users/' + $localStorage.uid + '/events');
-      //var query = window.database.ref('users/v5kIIJjwTMWJ8WfAKzD5dmfMC2v1/events');
+      //var query = window.database.ref('users/K5fyK0CzdsOxDsSp5xDI3lM5YCB2/events');
       $scope.eventList= [];
       query.once("value")
         .then(function(snapshot) {
@@ -31,22 +39,36 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives'])
           snapshot.forEach(function(childSnapshot) {
             // recupero nome dell'evento
             var eventKey = childSnapshot.key;
+
+
+            //passo il nome dell'evento al service
+          //  console.log(eventKey)
+        //    shareData.setData(eventKey);
+
+
+
+
             //creazione obj da inserire nella lista
             var obj = {};
             //recupero ruolo
             obj.role = childSnapshot.val().role;
             //accedo al nodo events, nel database
             var eventRef = window.database.ref('events/'+ eventKey);
+
             //accedo a campi dell'evento
             eventRef.once("value").then(function(snapshot) {
               var eventObj = snapshot.val();
               obj.description = eventObj.description;
               obj.title = eventObj.title;
+obj.eventID=eventKey;
+
+
               var eventStorageRef = window.storage.ref(eventKey+"/icon.png");
               var storageFire =  $firebaseStorage(eventStorageRef);
               storageFire.$getDownloadURL().then(function (imgSrc){
                obj.src = imgSrc;
                $scope.eventList.push(obj);
+
               });
             });
           });
@@ -332,4 +354,120 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives'])
           alert("aasdasd");
         }
       };
-    }]);
+    }])
+
+.controller('galleriaCtrl', ['$scope', '$stateParams','storage','$firebaseObject', '$firebaseStorage', 'shareData','$ionicHistory',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+// You can include any angular dependencies as parameters for this function
+// TIP: Access Route Parameters for your page via $stateParams.parameterName
+
+  function ($scope, $stateParams, storage, $firebaseObject, $firebaseStorage, shareData, $ionicHistory) {
+
+
+    $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
+      viewData.enableBack = true;
+    });
+
+    var lynk;
+    var count;
+    $scope.prova = function () {
+//ottenere numero foto ed eventi
+      /*
+      $scope.myGoBack = function() {
+        $ionicHistory.goBack();
+      };
+      */
+      $scope.items = [];
+
+      $scope.data = shareData.getData();
+    //  console.log("qua va" + $scope.data)
+      //percorso per le foto degli eventi
+      var query = firebase.database().ref("events/" + $scope.data + '/pictures');
+      query.once("value")
+        .then(function (snapshot) {
+          snapshot.forEach(function (childSnapshot) {
+
+            // childData will be the actual contents of the child
+            var childData = childSnapshot.val();
+//console.log("nome immagini"+childData);
+            var ref = firebase.storage().ref($scope.data + '/' + childData);
+            var storageFire = $firebaseStorage(ref);
+
+            storageFire.$getDownloadURL().then(function (imgSrc) {
+              // storage.download('ecco2/prova1').then(function (imgSrc) {
+              // $scope.srcImg = imgSrc;
+
+          //    console.log("data" + $scope.data)
+              lynk = imgSrc.toString();
+              //  console.log("pulled")
+              $scope.items.push({src: lynk});
+
+              /*  $scope.items = [
+               {
+               src:'http://www.wired.com/images_blogs/rawfile/2013/11/offset_WaterHouseMarineImages_62652-2-660x440.jpg',
+               sub: 'This is a <b>subtitle</b>'
+               },
+               {
+               src: ''+lynk,
+               sub: ''  Not showed
+               },
+               {
+               src:'https://firebasestorage.googleapis.com/v0/b/megaselfie-f2e6f.appspot.com/o/event1%2F2.jpg?alt=media&token=ab03d1bd-9602-4166-9f80-e55fc5a7b132',
+               thumb:'https://firebasestorage.googleapis.com/v0/b/megaselfie-f2e6f.appspot.com/o/event1%2F2.jpg?alt=media&token=ab03d1bd-9602-4166-9f80-e55fc5a7b132'
+               }
+
+               ];*/
+            });
+          });
+        });
+
+    }
+
+
+
+
+
+
+    //istanziare la gallery
+
+/*
+    $scope.prova = function () {
+      $scope.items = [];
+
+      //recupero il nome dell'evento
+      $scope.data = shareData.getData();
+
+      var ref = firebase.storage().ref($scope.data+'/1.jpg');
+
+      var storageFire =  $firebaseStorage(ref);
+      storageFire.$getDownloadURL().then(function (imgSrc){
+        // storage.download('ecco2/prova1').then(function (imgSrc) {
+        // $scope.srcImg = imgSrc;
+
+        console.log("data"+$scope.data)
+        lynk=imgSrc.toString();
+        //  console.log("pulled")
+        $scope.items.push({ src: lynk});
+
+        /*  $scope.items = [
+         {
+         src:'http://www.wired.com/images_blogs/rawfile/2013/11/offset_WaterHouseMarineImages_62652-2-660x440.jpg',
+         sub: 'This is a <b>subtitle</b>'
+         },
+         {
+         src: ''+lynk,
+         sub: ''  Not showed
+         },
+         {
+         src:'https://firebasestorage.googleapis.com/v0/b/megaselfie-f2e6f.appspot.com/o/event1%2F2.jpg?alt=media&token=ab03d1bd-9602-4166-9f80-e55fc5a7b132',
+         thumb:'https://firebasestorage.googleapis.com/v0/b/megaselfie-f2e6f.appspot.com/o/event1%2F2.jpg?alt=media&token=ab03d1bd-9602-4166-9f80-e55fc5a7b132'
+         }
+
+         ];
+      });
+
+    }
+*/
+    $scope.prova();
+
+
+  }]);

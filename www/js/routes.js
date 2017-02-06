@@ -102,7 +102,7 @@ angular.module('app.routes', [])
   .state('gallery', {
     url: '/page10',
     templateUrl: 'templates/gallery.html',
-    controller: 'galleryCtrl'
+    controller: 'galleriaCtrl'
   })
 
     .state('login', {

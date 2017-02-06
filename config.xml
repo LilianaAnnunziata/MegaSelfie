@@ -23,6 +23,8 @@
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>
   <allow-navigation href="*"/>
+  <allow-navigation href="http://192.168.0.4:8100"/>
+  <allow-navigation href="http://172.19.42.200:8100"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
   <access origin="*"/>

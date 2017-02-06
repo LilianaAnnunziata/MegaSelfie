@@ -1,67 +1,30 @@
 <ion-view title="Gallery" id="page10">
-  <ion-nav-buttons side="left" scroll="false" class="has-header">
-    <button class="button icon ion-android-arrow-back"></button>
-  </ion-nav-buttons>
+
+    <ion-nav-back-button class="button-clear">
+      <i class="ion-arrow-left-c"></i> Back
+    </ion-nav-back-button>
+
+
+
+
+
+
   <ion-nav-buttons side="right" scroll="false" class="has-header">
     <button class="button icon ion-close"></button>
   </ion-nav-buttons>
   <ion-content padding="true" scroll="false" class="has-header">
-    <ion-slides disable-side-menu-drag="" options="{'loop': true}" slider="slider2" delegate-handle="slider2" id="gallery-slider2" style="width:100%;height:100%;">
-      <ion-slide-page id="gallery-slide27" class="padding">
-        <div style="display:table;width:100%;height:100%;">
-          <div style="display:table-row;">
-            <div style="display:table-cell;vertical-align:middle;">
-              <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
-                <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
-              </div>
-              <ion-list id="gallery-list7">
-                <ion-item class="item-icon-left" id="gallery-list-item13">
-                  <i class="icon ion-android-person"></i>
-                </ion-item>
-                <ion-item class="item-icon-left" id="gallery-list-item12">
-                  <i class="icon ion-android-locate"></i>no Position</ion-item>
-              </ion-list>
-            </div>
-          </div>
-        </div>
-      </ion-slide-page>
-      <ion-slide-page id="gallery-slide210" class="padding">
-        <div style="display:table;width:100%;height:100%;">
-          <div style="display:table-row;">
-            <div style="display:table-cell;vertical-align:middle;">
-              <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
-                <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
-              </div>
-              <ion-list id="gallery-list8">
-                <ion-item class="item-icon-left" id="gallery-list-item15">
-                  <i class="icon ion-android-person"></i>
-                </ion-item>
-                <ion-item class="item-icon-left" id="gallery-list-item16">
-                  <i class="icon ion-android-locate"></i>Rome</ion-item>
-              </ion-list>
-            </div>
-          </div>
-        </div>
-      </ion-slide-page>
-      <ion-slide-page id="gallery-slide211" class="padding">
-        <div style="display:table;width:100%;height:100%;">
-          <div style="display:table-row;">
-            <div style="display:table-cell;vertical-align:middle;">
-              <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
-                <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
-              </div>
-              <ion-list id="gallery-list9">
-                <ion-item class="item-icon-left" id="gallery-list-item17">
-                  <i class="icon ion-android-person"></i>
-                </ion-item>
-                <ion-item class="item-icon-left" id="gallery-list-item18">
-                  <i class="icon ion-android-locate"></i>
-                </ion-item>
-              </ion-list>
-            </div>
-          </div>
-        </div>
-      </ion-slide-page>
-    </ion-slides>
-  </ion-content>
+
+
+
+
+    <div id="showSelector"  ng-init="prima()">
+      <div class="spacer" style="width: 300px; height: 60px;"></div>
+    </div>
+
+    <ion-gallery ion-gallery-items="items" ion-gallery-row="5"></ion-gallery>
+
+</ion-view>
+
+</ion-slides>
+</ion-content>
 </ion-view>
