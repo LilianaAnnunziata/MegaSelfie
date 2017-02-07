@@ -47,11 +47,7 @@ angular.module('app.routes', [])
 
 
 
-  .state('signup', {
-    url: '/page5',
-    templateUrl: 'templates/signup.html',
-    controller: 'signupCtrl'
-  })
+
 
   .state('menu.store', {
     url: '/page6',

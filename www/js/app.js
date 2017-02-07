@@ -15,9 +15,10 @@ angular.module('app', ['ionic', 'app.controllers','camera', 'app.routes', 'app.d
 
 //configurazione per def costanti, impostazioni su servizi
 .config(function($ionicConfigProvider, $sceDelegateProvider){
-
+  $ionicConfigProvider.views.maxCache(0);
   $sceDelegateProvider.resourceUrlWhitelist([ 'self','*://www.youtube.com/**', '*://player.vimeo.com/video/**']);
 })
+
 
 //inizializzazione dopo che tutti i moduli sono stati caricati
 .run(function($ionicPlatform) {
