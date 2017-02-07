@@ -3,15 +3,12 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
 
   .controller('homeCtrl', ['$scope','$localStorage','$firebaseStorage','shareData','myService', '$state',
     function ($scope,$localStorage,$firebaseStorage, shareData, myService, $state) {
-$scope.goTo=function(info){
 
- var object=JSON.parse(info)
-  myService.set(object.eventID)
- //console.log(object.eventID)
-
-
-  shareData.setData(object.eventID);
-}
+    $scope.goTo=function(info){
+      var object=JSON.parse(info);
+      myService.set(object.eventID);
+      shareData.setData(object.eventID);
+    }
       /*Riferimento al database*/
       //var refDB = window.database.ref().child("data");
       // var syncObj = $firebaseObject(refDB);
@@ -39,16 +36,7 @@ $scope.goTo=function(info){
           snapshot.forEach(function(childSnapshot) {
             // recupero nome dell'evento
             var eventKey = childSnapshot.key;
-
-
-            //passo il nome dell'evento al service
-          //  console.log(eventKey)
-        //    shareData.setData(eventKey);
-
-
-
-
-            //creazione obj da inserire nella lista
+           //creazione obj da inserire nella lista
             var obj = {};
             //recupero ruolo
             obj.role = childSnapshot.val().role;
@@ -60,25 +48,17 @@ $scope.goTo=function(info){
               var eventObj = snapshot.val();
               obj.description = eventObj.description;
               obj.title = eventObj.title;
-obj.eventID=eventKey;
-
+              obj.eventID=eventKey;
 
               var eventStorageRef = window.storage.ref(eventKey+"/icon.png");
               var storageFire =  $firebaseStorage(eventStorageRef);
               storageFire.$getDownloadURL().then(function (imgSrc){
                obj.src = imgSrc;
                $scope.eventList.push(obj);
-
               });
             });
           });
         });
-
-
-      /*$scope.eventList = [
-        {nameEvent: "event1", description: "B", img: "img/nTHXu7GgQXe7wCYeSmqu_icon.png"},
-        {nameEvent: "event2", description: "B", img: "img/nTHXu7GgQXe7wCYeSmqu_icon.png"}
-      ];*/
     }])
 
 
@@ -173,7 +153,6 @@ obj.eventID=eventKey;
     '$cordovaOauth', '$sessionStorage', '$firebaseAuth', '$state', '$localStorage',
     function ($scope, $stateParams, $firebaseObject, $cordovaOauth, $sessionStorage,
               $firebaseAuth, $state, $localStorage) {
-
       if ($localStorage.uid)
         $state.go("menu.home");
       else {
@@ -183,21 +162,29 @@ obj.eventID=eventKey;
             $sessionStorage.accessToken = result.access_token;
             return firebase.auth().signInWithCredential(credentials);
           }).then(function (firebaseUser) {
-              //console.log("Signed in as:", firebaseUser.uid);
+            //memorizza firebaseUser.uid
               $localStorage.uid = firebaseUser.uid;
-              var refDB = window.database.ref().child("users/" + firebaseUser.uid).set({
-                events: {
-                  event1: {
-                    role: "user"
+              var refDB = window.database.ref().child("users/" + firebaseUser.uid);
+              refDB.once('value', function (snapshot) {
+
+                //Se utente non esiste
+                  if (snapshot.val() === null) {
+                    window.database.ref().child("users/" + firebaseUser.uid).set({
+                      events: {
+                        event1: {
+                          role: "user"
+                        }
+                      }
+                    });
+                    $state.go("menu.home");
+                  }else { //se utente esiste già nel database
+                    $state.go("menu.home");
                   }
-                }
-              });
-              $state.go("menu.home");
-            })
-            .catch(function (error) {
+                })
+          }).catch(function (error) {
               alert("Authentication failed");
               console.error("Authentication failed:", error);
-            });
+          });
         }
       }
     }
