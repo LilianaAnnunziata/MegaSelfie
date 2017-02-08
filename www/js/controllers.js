@@ -9,23 +9,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
       myService.set(object.eventID);
       shareData.setData(object.eventID);
     }
-      /*Riferimento al database*/
-      //var refDB = window.database.ref().child("data");
-      // var syncObj = $firebaseObject(refDB);
-      // syncObj.$bindTo($scope,"pippo");
 
-      /*$scope.init = function () {
-       var ref = firebase.storage().ref('event1/1.jpg');
-       var storageFire =  $firebaseStorage(ref);
-       storageFire.$getDownloadURL().then(function (imgSrc){
-       // storage.download('ecco2/prova1').then(function (imgSrc) {
-       alert(imgSrc)
-       $scope.srcImg = imgSrc;
-       //  $window.location.reload();
-       });
-       }
-       $scope.init();
-       */
 
       var query = window.database.ref('users/' + $localStorage.uid + '/events');
       //var query = window.database.ref('users/K5fyK0CzdsOxDsSp5xDI3lM5YCB2/events');
@@ -126,14 +110,14 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
       };
     }])
 
-  .controller('menuCtrl', ['$scope', '$http', '$sessionStorage', '$location',
-    function ($scope, $http, $sessionStorage, $location) {
+  .controller('menuCtrl', ['$scope', '$http', '$sessionStorage', '$location','$localStorage',
+    function ($scope, $http, $sessionStorage, $location, $localStorage) {
 
       $scope.init = function () {
-        if ($sessionStorage.hasOwnProperty("accessToken") === true) {
+        if ($localStorage.hasOwnProperty("accessToken") === true) {
           $http.get("https://graph.facebook.com/v2.2/me", {
             params: {
-              access_token: $sessionStorage.accessToken,
+              access_token: $localStorage.accessToken,
               fields: "id,name,gender,location,website,picture.type(large),relationship_status",
               format: "json"
             }
@@ -159,7 +143,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
         $scope.login = function () {
           $cordovaOauth.facebook("727495594069595", ["email"]).then(function (result) {
             var credentials = firebase.auth.FacebookAuthProvider.credential(result.access_token);
-            $sessionStorage.accessToken = result.access_token;
+            $localStorage.accessToken = result.access_token;
             return firebase.auth().signInWithCredential(credentials);
           }).then(function (firebaseUser) {
             //memorizza firebaseUser.uid
@@ -190,13 +174,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
     }
   ])
 
-  .controller('signupCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-    // You can include any angular dependencies as parameters for this function
-    // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $stateParams) {
 
-
-    }])
 
   .controller('storeCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
@@ -285,10 +263,37 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
     }])
 
 
-  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'storage', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'storage','shareData','$firebaseStorage', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $cordovaCamera, storage) {
+    function ($scope, $cordovaCamera, storage,shareData,$firebaseStorage) {
+      $scope.data = shareData.getData();
+     // var query = firebase.database().ref("events/" + $scope.data);
+      var eventRef = window.database.ref('events/'+ $scope.data);
+      $scope.eventInf= [];
+      eventRef.once("value")
+        .then(function (snapshot) {
+          snapshot.forEach(function (childSnapshot) {
+            var obj = {};
+            // childData will be the actual contents of the child
+            var childData = childSnapshot.key;
+
+            obj.title= snapshot.child("/title").val();
+            obj.Start = snapshot.child("/start").val();
+            obj.End=snapshot.child("/end").val();
+            obj.TimeStart = snapshot.child("/TimeStart").val();
+            obj.TimeEnd= snapshot.child("/TimeEnd").val();
+            obj.description= snapshot.child("/description").val();
+
+
+
+
+            $scope.eventInf.push(obj);
+            console.log($scope.eventInf)
+          });
+        });
+
+
 
       $scope.takeImage = false;
       $scope.takePhoto = function () {
@@ -338,6 +343,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 
     function ($scope, $stateParams, storage, $firebaseObject, $firebaseStorage, shareData,$window) {
+      //funzione per il tasto di back
       $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
         viewData.enableBack = true;
       });
@@ -352,7 +358,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
          };
          */
         $scope.items = [];
-
+//ottenere nome dell'evento selezionato passato attraverso il service
         $scope.data = shareData.getData();
 
 
@@ -366,15 +372,13 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
 
               // childData will be the actual contents of the child
               var childData = childSnapshot.val();
-//console.log("nome immagini"+childData);
+
 
 
               var ref = firebase.storage().ref($scope.data + '/' + childData);
               var storageFire = $firebaseStorage(ref);
 
               storageFire.$getDownloadURL().then(function (imgSrc) {
-                // storage.download('ecco2/prova1').then(function (imgSrc) {
-                // $scope.srcImg = imgSrc;
 
                 //    console.log("data" + $scope.data)
                 lynk = imgSrc.toString();

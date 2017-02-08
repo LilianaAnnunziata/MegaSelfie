@@ -10,8 +10,24 @@
 
 
 
+
+
+  <div class="spacer" style="width: 300px; height: 60px;"></div>
+
+
   <ion-content  ng-controller="eventInfoCtrl" padding="true" class="has-header">
     <div id="eventInfoId"style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
+
+
+      <h3>Event name: {{eventInf[0].title}}</h3>
+      <h3>Start date: {{ eventInf[0].Start}}</h3>
+      <h3>Start time: {{eventInf[0].TimeStart}}</h3>
+
+      <h3>End date: {{eventInf[0].End}}</h3>
+      <h3>End time: {{eventInf[0].TimeEnd}}</h3>
+
+      <h3>Description: {{eventInf[0].description}}</h3>
+
       <img ng-show="imgURI !== undefined" src="{{imgURI}}" width="300" height="300"style="text-align: center">
     </div>
     <button class="button button-calm  button-block icon ion-camera" ng-click="takePhoto()">Selfie</button>
