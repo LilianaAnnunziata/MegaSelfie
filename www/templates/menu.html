@@ -12,14 +12,17 @@
     <ion-header-bar class="bar-dark">
       <div class="title">Menu</div>
     </ion-header-bar>
-    <ion-content padding="false" style="background: url(img/sfondoMenu.jpg) no-repeat center;background-size:cover;" class="side-menu-left has-header ">
+    <ion-content padding="false" style="background: url(img/sfondoMenu.jpg)
+    no-repeat center;background-size:cover;" class="side-menu-left has-header ">
       <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
 
       </div>
 
 <div align="middle">
-  <img ng-src="{{profileData.picture.data.url}}" height="150" width="150">
-  <h3 style="font-size:200%">{{profileData.name}}</h3>
+  <!--Immagine del profilo-->
+  <img ng-src="{{profileData.picture.data.url}}"
+       style="border-radius: 50%;" height="150" width="150">
+  <h1 style="font-size:200%; color:white; text-shadow: 2px 2px 4px black;">{{profileData.name}}</h1>
 
 </div>
 

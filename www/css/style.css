@@ -7,3 +7,64 @@
 html{
   background-color: transparent;
 }
+
+.textH1{
+  color:white;
+  text-shadow: 2px 2px 4px black;
+}
+
+.textH2{
+  color:whitesmoke;
+  text-shadow: 2px 2px 4px black;
+}
+.textH3{
+  color:whitesmoke;
+  text-shadow: 2px 5px 5px black;
+}
+
+.animationchangeColor{
+  -webkit-animation-name: example; /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
+  -webkit-animation-iteration-count: infinite; /* Safari 4.0 - 8.0 */
+  animation-name: changeColor;
+  animation-duration: 6s;
+  animation-iteration-count: infinite;
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes changeColor {
+  0%   {color:red; left:0px; top:0px;}
+  25%  {color:yellow; left:200px; top:0px;}
+  50%  {color:red; left:200px; top:200px;}
+  75%  {color:yellow; left:0px; top:200px;}
+  100% {color:red; left:0px; top:0px;}
+}
+
+/* Standard syntax */
+@keyframes changeColor {
+  0% {
+    color: red;
+    left: 0px;
+    top: 0px;
+  }
+  25% {
+    color: yellow;
+    left: 200px;
+    top: 0px;
+  }
+  50% {
+    color: red;
+    left: 200px;
+    top: 200px;
+  }
+  75% {
+    color: yellow;
+    left: 0px;
+    top: 200px;
+  }
+  100% {
+    color: red;
+    left: 0px;
+    top: 0px;
+  }
+}

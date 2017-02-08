@@ -1,43 +1,45 @@
 //Funzioni con un particolare scopo
 angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-gallery'])
 
-  .controller('homeCtrl', ['$scope','$localStorage','$firebaseStorage','shareData','myService', '$state',
-    function ($scope,$localStorage,$firebaseStorage, shareData, myService, $state) {
+  .controller('homeCtrl', ['$scope','$localStorage','$firebaseStorage','shareData',
+    function ($scope,$localStorage,$firebaseStorage, shareData) {
 
     $scope.goTo=function(info){
       var object=JSON.parse(info);
-      myService.set(object.eventID);
-      shareData.setData(object.eventID);
+      shareData.setData(object);
     }
 
 
-      var query = window.database.ref('users/' + $localStorage.uid + '/events');
+      var query = window.database.ref('users/' + $localStorage.uid);
       //var query = window.database.ref('users/K5fyK0CzdsOxDsSp5xDI3lM5YCB2/events');
       $scope.eventList= [];
-      query.once("value")
-        .then(function(snapshot) {
+      query.on("value", function(snapshot) {
           //iterazione su tutti gli eventi dell'utente
           snapshot.forEach(function(childSnapshot) {
             // recupero nome dell'evento
             var eventKey = childSnapshot.key;
            //creazione obj da inserire nella lista
             var obj = {};
-            //recupero ruolo
+            //recupero ruolo da users
             obj.role = childSnapshot.val().role;
             //accedo al nodo events, nel database
             var eventRef = window.database.ref('events/'+ eventKey);
-
             //accedo a campi dell'evento
-            eventRef.once("value").then(function(snapshot) {
-              var eventObj = snapshot.val();
-              obj.description = eventObj.description;
-              obj.title = eventObj.title;
-              obj.eventID=eventKey;
 
+            eventRef.on("value", function(snapshot) {
+              var eventObj = snapshot.val();
+              console.log(eventKey)
+              obj.eventID=eventKey;
+              obj.title = eventObj.title;
+              obj.description = eventObj.description;
+              obj.start = eventObj.start;
+              obj.timeStart = eventObj.TimeStart;
+              obj.end = eventObj.end;
+              obj.timeEnd = eventObj.TimeEnd;
               var eventStorageRef = window.storage.ref(eventKey+"/icon.png");
               var storageFire =  $firebaseStorage(eventStorageRef);
               storageFire.$getDownloadURL().then(function (imgSrc){
-               obj.src = imgSrc;
+                obj.src = imgSrc;
                $scope.eventList.push(obj);
               });
             });
@@ -54,10 +56,11 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
 
     }])
 
-  .controller('createSharedEventCtrl', ['$scope', 'dateFilter', '$http', '$cordovaCamera', 'storage', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+  .controller('createSharedEventCtrl', ['$scope', 'dateFilter', '$http', '$cordovaCamera',
+    'storage','$localStorage','$firebaseArray',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, dateFilter, $http, $cordovaCamera, storage) {
+    function ($scope, dateFilter, $http, $cordovaCamera, storage,$localStorage,$firebaseArray) {
 
       $scope.date = dateFilter(new Date(), "dd/MM/yyyy");
       console.log($scope.date);
@@ -78,15 +81,19 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
             endTime = "00:00";
 
           var objToSend = {
-            eventName: event.nameSharedEvent,
+            title: event.nameSharedEvent,
             description: description,
-            startDate: dateFilter(event.startDate, "dd/MM/yyyy"),
-            startTime: startTime,
-            endDate: dateFilter(event.endDate, "dd/MM/yyyy"),
-            endTime: endTime
+            start: dateFilter(event.startDate, "dd/MM/yyyy"),
+            TimeStart: startTime,
+            end: dateFilter(event.endDate, "dd/MM/yyyy"),
+            TimeEnd: endTime
           }
           console.log(objToSend.toString());
           alert($scope.imgURI);
+         /* var refDBUsers = window.database.ref().child("users/"+$localStorage.uid)
+          var users = $firebaseArray(refDBUsers);;
+
+          users.$add(objToSend)*/
           storage.upload('ecco2/', "prova3", $scope.imgURI);
           //$location.path("menu.home");
         }
@@ -110,8 +117,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
       };
     }])
 
-  .controller('menuCtrl', ['$scope', '$http', '$sessionStorage', '$location','$localStorage',
-    function ($scope, $http, $sessionStorage, $location, $localStorage) {
+  .controller('menuCtrl', ['$scope', '$http', '$location','$localStorage',
+    function ($scope, $http, $location, $localStorage) {
 
       $scope.init = function () {
         if ($localStorage.hasOwnProperty("accessToken") === true) {
@@ -134,8 +141,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
     }])
 
   .controller('loginCtrl', ['$scope', '$stateParams', '$firebaseObject',
-    '$cordovaOauth', '$sessionStorage', '$firebaseAuth', '$state', '$localStorage',
-    function ($scope, $stateParams, $firebaseObject, $cordovaOauth, $sessionStorage,
+    '$cordovaOauth', '$firebaseAuth', '$state', '$localStorage',
+    function ($scope, $stateParams, $firebaseObject, $cordovaOauth,
               $firebaseAuth, $state, $localStorage) {
       if ($localStorage.uid)
         $state.go("menu.home");
@@ -148,17 +155,19 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
           }).then(function (firebaseUser) {
             //memorizza firebaseUser.uid
               $localStorage.uid = firebaseUser.uid;
-              var refDB = window.database.ref().child("users/" + firebaseUser.uid);
-              refDB.once('value', function (snapshot) {
+              var refDB = window.database.ref()
+              var refDBUsers = refDB.child("users/" + firebaseUser.uid);
+              refDBUsers.once('value', function (snapshot) {
 
                 //Se utente non esiste
                   if (snapshot.val() === null) {
-                    window.database.ref().child("users/" + firebaseUser.uid).set({
-                      events: {
-                        event1: {
-                          role: "user"
-                        }
+                    refDBUsers.set({
+                      event1: {
+                        role: "user"
                       }
+                    });
+                    refDB.child("events/event1/users/").set({
+                      user: firebaseUser.uid
                     });
                     $state.go("menu.home");
                   }else { //se utente esiste già nel database
@@ -267,33 +276,9 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
     function ($scope, $cordovaCamera, storage,shareData,$firebaseStorage) {
-      $scope.data = shareData.getData();
-     // var query = firebase.database().ref("events/" + $scope.data);
-      var eventRef = window.database.ref('events/'+ $scope.data);
-      $scope.eventInf= [];
-      eventRef.once("value")
-        .then(function (snapshot) {
-          snapshot.forEach(function (childSnapshot) {
-            var obj = {};
-            // childData will be the actual contents of the child
-            var childData = childSnapshot.key;
+      $scope.obj = shareData.getData();
 
-            obj.title= snapshot.child("/title").val();
-            obj.Start = snapshot.child("/start").val();
-            obj.End=snapshot.child("/end").val();
-            obj.TimeStart = snapshot.child("/TimeStart").val();
-            obj.TimeEnd= snapshot.child("/TimeEnd").val();
-            obj.description= snapshot.child("/description").val();
-
-
-
-
-            $scope.eventInf.push(obj);
-            console.log($scope.eventInf)
-          });
-        });
-
-
+    //  var eventRef = window.database.ref('events/'+ obj.eventID);
 
       $scope.takeImage = false;
       $scope.takePhoto = function () {
@@ -311,32 +296,6 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
       }
     }])
 
-
-
-
-
-  .controller("MenuController", ['$scope', '$http', '$sessionStorage', '$location',
-    function ($scope, $http, $sessionStorage, $location) {
-
-      $scope.init = function () {
-        if ($sessionStorage.hasOwnProperty("accessToken") === true) {
-          $http.get("https://graph.facebook.com/v2.2/me", {
-            params: {
-              access_token: $sessionStorage.accessToken,
-              fields: "id,name,gender,location,website,picture.type(large),relationship_status",
-              format: "json"
-            }
-          }).then(function (result) {
-            $scope.profileData = result.data;
-          }, function (error) {
-            alert("There was a problem getting your profile.  Check the logs for details.");
-            console.log(error);
-          });
-        } else {
-          alert("aasdasd");
-        }
-      };
-    }])
 
   .controller('galleriaCtrl', ['$scope', '$stateParams','storage','$firebaseObject', '$firebaseStorage', 'shareData','$window',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
@@ -365,7 +324,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
 
         //  console.log("qua va" + $scope.data)
         //percorso per le foto degli eventi
-        var query = firebase.database().ref("events/" + $scope.data + '/pictures');
+        var query = firebase.database().ref("events/" + $scope.data.eventID + '/pictures');
         query.once("value")
           .then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
@@ -375,7 +334,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
 
 
 
-              var ref = firebase.storage().ref($scope.data + '/' + childData);
+              var ref = firebase.storage().ref($scope.data.eventID + '/' + childData);
               var storageFire = $firebaseStorage(ref);
 
               storageFire.$getDownloadURL().then(function (imgSrc) {

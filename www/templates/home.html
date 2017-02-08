@@ -2,13 +2,15 @@
  <ion-content>
 
   <ion-list id="home-list4">
-    <ion-item ng-repeat="obj in eventList"class="item-thumbnail-left" id="home-list-item9" ui-sref="menu.eventInfo" ng-click="goTo('{{obj}}')">
-      <img src="{{obj.src}}">
-      <h2 >{{obj.title}}</h2>
-      <p style="white-space:normal;">{{obj.description}}</p>
+    <ion-item ng-repeat="event in eventList"class="item-thumbnail-left" id="home-list-item9"
+              ui-sref="menu.eventInfo" ng-click="goTo('{{event}}')">
+      <img src="{{event.src}}">
+      <h2 >{{event.title}}</h2>
+      <p style="white-space:normal;">{{event.description}}</p>
 
     </ion-item>
   </ion-list>
+
  </ion-content>
 
 </ion-view>

@@ -107,13 +107,8 @@ angular.module('app.routes', [])
       controller: 'loginCtrl'
     })
 
-   /* .state('menu', {
-      url: '/menu',
-      templateUrl: 'templates/menu.html',
-      controller: 'MenuController'
-    })*/
 
- $urlRouterProvider.otherwise('/login');
- //$urlRouterProvider.otherwise('/side-menu21/page1')
+// $urlRouterProvider.otherwise('/login');
+ $urlRouterProvider.otherwise('/side-menu21/page11')
 
 });
