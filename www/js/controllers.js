@@ -36,7 +36,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
               obj.timeStart = eventObj.TimeStart;
               obj.end = eventObj.end;
               obj.timeEnd = eventObj.TimeEnd;
-              var eventStorageRef = window.storage.ref(eventKey+"/icon.png");
+              var eventStorageRef = window.storage.ref(eventKey + "/" + "icon.png");
               var storageFire =  $firebaseStorage(eventStorageRef);
               storageFire.$getDownloadURL().then(function (imgSrc){
                 obj.src = imgSrc;
@@ -73,6 +73,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
           var startTime = dateFilter(event.startTime, "HH:mm");
           var endTime = dateFilter(event.endTime, "HH:mm");
           var description = event.description;
+          console.log(description);
           if (description == undefined)
             description = "";
           if (startTime == null)
@@ -86,15 +87,32 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
             start: dateFilter(event.startDate, "dd/MM/yyyy"),
             TimeStart: startTime,
             end: dateFilter(event.endDate, "dd/MM/yyyy"),
-            TimeEnd: endTime
+            TimeEnd: endTime,
+            users : {
+              admin : $localStorage.uid
+            }
           }
-          console.log(objToSend.toString());
-          alert($scope.imgURI);
+          var userRole = {role: 'admin'}
+          console.log(objToSend);
+          //alert($scope.imgURI);
+
          /* var refDBUsers = window.database.ref().child("users/"+$localStorage.uid)
           var users = $firebaseArray(refDBUsers);;
 
           users.$add(objToSend)*/
-          storage.upload('ecco2/', "prova3", $scope.imgURI);
+
+         //restituisce la nuova chiave dell'evento
+          var newEventKey = window.database.ref().child('events').push().key;
+
+          // scrive un nuovo evento sia in events, sia in users
+          var updates = {};
+          updates['/events/' + newEventKey] = objToSend;
+          updates['/users/' + $localStorage.uid + '/' + newEventKey ] = userRole;
+
+          console.log(updates)
+          window.database.ref().update(updates);
+
+          storage.upload(newEventKey+'/', "icon.png", $scope.imgURI);
           //$location.path("menu.home");
         }
         else {
@@ -155,7 +173,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
           }).then(function (firebaseUser) {
             //memorizza firebaseUser.uid
               $localStorage.uid = firebaseUser.uid;
-              var refDB = window.database.ref()
+              var refDB = window.database.ref();
               var refDBUsers = refDB.child("users/" + firebaseUser.uid);
               refDBUsers.once('value', function (snapshot) {
 

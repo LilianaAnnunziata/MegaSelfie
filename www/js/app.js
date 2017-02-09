@@ -33,6 +33,7 @@ angular.module('app', ['ionic', 'app.controllers','camera', 'app.routes', 'app.d
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
   });
 })
 

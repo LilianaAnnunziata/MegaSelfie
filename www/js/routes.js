@@ -108,7 +108,7 @@ angular.module('app.routes', [])
     })
 
 
-// $urlRouterProvider.otherwise('/login');
- $urlRouterProvider.otherwise('/side-menu21/page11')
+    //$urlRouterProvider.otherwise('/side-menu21/page1')
+    $urlRouterProvider.otherwise('/login');
 
 });
