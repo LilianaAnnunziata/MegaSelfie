@@ -36,7 +36,7 @@ function setOptionsCamera(srcType, width, height) {
 }
 function dataURItoBlob(dataURI, imgType) {
   var isSemicolonExist = (dataURI.indexOf(',') >= 0) ? true : false;
-  alert(isSemicolonExist);
+ // alert(isSemicolonExist);
   var binary=[];
   if(isSemicolonExist)
     binary = atob(dataURI.split(',')[1]);

@@ -9,7 +9,6 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
       shareData.setData(object);
     }
 
-
       var query = window.database.ref('users/' + $localStorage.uid);
       //var query = window.database.ref('users/K5fyK0CzdsOxDsSp5xDI3lM5YCB2/events');
       $scope.eventList= [];
@@ -57,10 +56,10 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
     }])
 
   .controller('createSharedEventCtrl', ['$scope', 'dateFilter', '$http', '$cordovaCamera',
-    'storage','$localStorage','$firebaseArray',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+    'storage','$localStorage','$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, dateFilter, $http, $cordovaCamera, storage,$localStorage,$firebaseArray) {
+    function ($scope, dateFilter, $http, $cordovaCamera, storage,$localStorage,$state) {
 
       $scope.date = dateFilter(new Date(), "dd/MM/yyyy");
       console.log($scope.date);
@@ -90,7 +89,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
             TimeEnd: endTime,
             users : {
               admin : $localStorage.uid
-            }
+            },
           }
           var userRole = {role: 'admin'}
           console.log(objToSend);
@@ -113,7 +112,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
           window.database.ref().update(updates);
 
           storage.upload(newEventKey+'/', "icon.png", $scope.imgURI);
-          //$location.path("menu.home");
+
+          $state.go("menu.home");
         }
         else {
           alert("not valid input");
@@ -290,12 +290,13 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
     }])
 
 
-  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'storage','shareData','$firebaseStorage', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'storage','shareData','$localStorage', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $cordovaCamera, storage,shareData,$firebaseStorage) {
+    function ($scope, $cordovaCamera, storage,shareData,$localStorage) {
       $scope.obj = shareData.getData();
 
+      console.log(shareData.getData())
     //  var eventRef = window.database.ref('events/'+ obj.eventID);
 
       $scope.takeImage = false;
@@ -310,7 +311,16 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
       };
 
       $scope.sharePhoto = function () {
-        storage.upload('ecco2/', "share2", $scope.imgURI);
+
+        var pictures = window.database.ref().child('events/' + $scope.obj.eventID + "/" + "pictures/");
+        //scrive un nuovo evento sia in events, sia in users
+        var updates = {};
+        updates['events/' + $scope.obj.eventID + "/" + "pictures/" +  $localStorage.uid] =  $localStorage.uid;
+        //updates['/users/' + $localStorage.uid + '/' + newEventKey ] = userRole;
+
+        console.log(updates)
+        window.database.ref().update(updates);
+        storage.upload($scope.obj.eventID + "/", $localStorage.uid, $scope.imgURI);
       }
     }])
 
