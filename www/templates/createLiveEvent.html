@@ -6,20 +6,21 @@
     <form id="createLiveEvent-form4" class="list">
       <label class="item item-input" id="createLiveEvent-input9" name="eventNameLive">
         <span class="input-label">Event Name:</span>
-        <input type="text" placeholder="">
+        <input type="text" placeholder="" ng-model="liveEvent.name">
       </label>
       <ion-item class="range range-positive" id="createLiveEvent-range1">Range:
-        <input type="range" value="50" min="0" max="100" step="1" name="range">
+        <input type="range" value="50" min="0" max="100" step="1" ng-model="liveEvent.range">
       </ion-item>
     </form>
     <div id="createLiveEvent-container7" class="creator-container">
-      <iframe src="https://www.google.it/maps/"></iframe>
     </div>
     <div class="spacer" style="width: 300px; height: 97px;"></div>
     <ion-footer-bar>
     <div id="createLiveEvent-button-bar2" class="button-bar">
       <a ui-sref="menu.home" id="createLiveEvent-button21" class="button button-calm  button-block icon-left ion-android-add">Save</a>
-      <a ui-sref="menu.countdown" id="createLiveEvent-button22" class="button button-calm  button-block icon-right ion-ios-play">Start</a>
+      <button id="createLiveEvent-button22"
+              ng-click="startLiveEvent(liveEvent)"
+              class="button button-calm  button-block icon-right ion-ios-play">Start</button>
     </div>
     </ion-footer-bar>
   </ion-content>

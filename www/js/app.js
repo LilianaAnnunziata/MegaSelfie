@@ -34,6 +34,8 @@ angular.module('app', ['ionic', 'app.controllers','camera', 'app.routes', 'app.d
       StatusBar.styleDefault();
     }
 
+
+
   });
 })
 
