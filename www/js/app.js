@@ -91,4 +91,20 @@ angular.module('app', ['ionic', 'app.controllers','camera', 'app.routes', 'app.d
       });
     }
   };
+})
+.directive('logOut', function($localStorage,$state) {
+  return {
+    link: function($scope, element ) {
+      element.on('click', function() {
+        firebase.auth().signOut().then(function() {
+
+          $localStorage.$reset()
+          $state.go("login");
+
+        }, function(error) {
+          console.log(error)
+        });
+      });
+    }
+  }
 });
