@@ -1,8 +1,11 @@
 //Funzioni con un particolare scopo
 angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-gallery'])
 
-  .controller('homeCtrl', ['$scope', '$localStorage', '$firebaseStorage', 'shareData', '$http', 'GeoAlert',
-    function ($scope, $localStorage, $firebaseStorage, shareData, $http, GeoAlert) {
+  .controller('homeCtrl', ['$scope', '$localStorage', '$firebaseStorage', 'shareData', '$http', 'GeoAlert','databaseMegaselfie',
+    function ($scope, $localStorage, $firebaseStorage, shareData, $http, GeoAlert,databaseMegaselfie) {
+
+
+    var liveEvent;
 
       $scope.goTo = function (info) {
         var object = JSON.parse(info);
@@ -11,16 +14,19 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
 
       function onConfirm(idx) {
-        console.log('button ' + idx + ' pressed');
+        //console.log('button ' + idx + ' pressed');
         if(idx == 2){
+          console.log(liveEvent.eventID+ " "+idx);
 
-        }else {
+          databaseMegaselfie.enrollEvent(liveEvent.eventID)
+
         }
       }
 
       $scope.coordinate = function () {
         GeoAlert.begin(function (eventObj) {
           console.log('TARGET');
+          liveEvent = eventObj;
           navigator.notification.confirm(
             'Do you want to partecipate to the Event?'+eventObj.title+"\n",
             onConfirm,
@@ -51,7 +57,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
           eventRef.on("value", function (snapshot) {
             var eventObj = snapshot.val();
-            console.log(eventKey)
+            //console.log(eventKey)
             obj.eventID = eventKey;
             obj.title = eventObj.title;
             obj.description = eventObj.description;
@@ -71,18 +77,17 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
     }])
 
 
-  .controller('createLiveEventCtrl', ['$scope', '$stateParams', 'dateFilter', '$localStorage', '$state', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-    // You can include any angular dependencies as parameters for this function
-    // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $stateParams, dateFilter, $localStorage, $state) {
+  .controller('createLiveEventCtrl', ['$scope', '$stateParams', 'dateFilter', '$localStorage', '$state', 'databaseMegaselfie','$q',
+    function ($scope, $stateParams, dateFilter, $localStorage, $state,databaseMegaselfie,$q) {
 
       $scope.startLiveEvent = function (liveEvent) {
-        // console.log(liveEvent);
+        console.log(liveEvent.name + " " + liveEvent.range);
 
         navigator.geolocation.getCurrentPosition(function (position) {
           var lat = position.coords.latitude,
             lng = position.coords.longitude,
             today = new Date();
+          console.log(" " + lat + " "+lng);
 
           if (liveEvent.name === undefined)
             liveEvent.name = '';
@@ -100,30 +105,29 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           };
           console.log(objToSend + " " + liveEvent.range);
 
-          var userRole = {role: 'admin'};
+          var coordinate = {latitude: lat, longitude: lng, range: liveEvent.range}
 
-          //restituisce la nuova chiave dell'evento
-          var newEventKey = window.database.ref().child('events').push().key;
+          var newEventKey =  databaseMegaselfie.createEventMegaselfie(objToSend,coordinate)
 
-          // scrive un nuovo evento sia in events, sia in users
-          var updates = {};
-          updates['/coordinates/' + newEventKey] = {latitude: lat, longitude: lng, range: liveEvent.range};
-          updates['/events/' + newEventKey] = objToSend;
-          updates['/users/' + $localStorage.uid + '/' + newEventKey] = userRole;
-          console.log(updates)
-          window.database.ref().update(updates);
+            console.log("then"+newEventKey)
 
-          $state.go("menu.countdown");
+            $state.go("menu.countdown");
+          /*$q.when(databaseMegaselfie.createEventMegaselfie(objToSend,coordinate))
+            .then(function (newEventKey) {
+              console.log("then"+newEventKey.key)
+
+               $state.go("menu.countdown");
+            })*/
+
         });
       }
     }
   ])
 
   .controller('createSharedEventCtrl', ['$scope', 'dateFilter', '$http', '$cordovaCamera',
-    'storage', '$localStorage', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-    // You can include any angular dependencies as parameters for this function
-    // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, dateFilter, $http, $cordovaCamera, storage, $localStorage, $state) {
+    'storage', '$localStorage', '$state',
+    'databaseMegaselfie','$q',
+    function ($scope, dateFilter, $http, $cordovaCamera, storage, $localStorage, $state,databaseMegaselfie,$q) {
 
       $scope.date = dateFilter(new Date(), "dd/MM/yyyy");
 
@@ -154,29 +158,19 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
               admin: $localStorage.uid
             },
           }
-          var userRole = {role: 'admin'}
           console.log(objToSend);
-          //alert($scope.imgURI);
 
-          /* var refDBUsers = window.database.ref().child("users/"+$localStorage.uid)
-           var users = $firebaseArray(refDBUsers);;
+         /*$q.when(databaseMegaselfie.createEventMegaselfie(objToSend))
+            .then(function (newEventKey) {
+              console.log("then"+newEventKey.key)
 
-           users.$add(objToSend)*/
+             // storage.upload(newEventKey + '/', "icon.png", $scope.imgURI);
 
-          //restituisce la nuova chiave dell'evento
-          var newEventKey = window.database.ref().child('events').push().key;
-
-          // scrive un nuovo evento sia in events, sia in users
-          var updates = {};
-          updates['/events/' + newEventKey] = objToSend;
-          updates['/users/' + $localStorage.uid + '/' + newEventKey] = userRole;
-
-          console.log(updates)
-          window.database.ref().update(updates);
-
-          storage.upload(newEventKey + '/', "icon.png", $scope.imgURI);
-
-          $state.go("menu.home");
+              $state.go("menu.home");
+          })*/
+         var newEventKey = databaseMegaselfie.createEventMegaselfie(objToSend)
+         storage.upload(newEventKey + '/', "icon.png", $scope.imgURI);
+         $state.go("menu.home");
         }
         else {
           alert("not valid input");
@@ -285,10 +279,10 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
     }])
 
-  .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', '$http',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+  .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', '$http','$localStorage','storage',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $timeout, $cordovaFile, $stateParams, $http) {
+    function ($scope, $timeout, $cordovaFile, $stateParams, $http,$localStorage,storage) {
       $scope.counter = 10;
 
       var rect = document.getElementById("contentCamera").getBoundingClientRect();
@@ -308,47 +302,19 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           countdown = $timeout($scope.onTimeout, 1000);
           if ($scope.counter == 0) {
             console.log("Ecco");
+            //   cordova.plugins.camerapreview.stopCamera();
+            cordova.plugins.camerapreview.takePicture({maxWidth:300, maxHeight:300})
+            cordova.plugins.camerapreview.setOnPictureTakenHandler(function(picture) {
+              document.getElementById('originalPicture').src = picture[0];
+              cordova.plugins.camerapreview.stopCamera();
+console.log(picture[0])
+              console.log(picture[1])
 
-            var options = {
-              name: "Megaselfie", //image suffix
-              dirName: "Megaselfie", //foldername
-              orientation: "landscape", //or portrait
-              type: "front" //or front
-            };
+              storage.upload("event2/", $localStorage.uid, picture[0]);
 
-             cordova.plugins.camerapreview.stopCamera();
-            window.plugins.CameraPictureBackground.takePicture(success, error, options);
+              //$scope.imgURI = picture[0];
 
-           /* cordova.plugins.CameraServer.startServer({
-              'www_root': '/',
-              'port': 8080,
-              'localhost_only': false,
-              'json_info': []
-            }, function (url) {
-              // if server is up, it will return the url of http://<server ip>:port/
-              // the ip is the active network connection
-              // if no wifi or no cell, "127.0.0.1" will be returned.
-              console.log('CameraServer Started @ ' + url);
-            }, function (error) {
-              console.log('CameraServer Start failed: ' + error);
             });
-            cordova.InAppBrowser.open('http://localhost:8080', '_blank', 'location=no');
-*/
-
-            function success(imgData) {
-
-              $scope.$apply(function () {
-
-                $scope.imgURI = imgData;
-              });
-              console.log("  " + $scope.imgURI);
-
-            }
-
-            function error(imgurl) {
-              console.log("Error Not save");
-            }
-
             $timeout.cancel(countdown);
             $scope.counter = "OK!";
           }
@@ -372,10 +338,10 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
     }])
 
 
-  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'storage', 'shareData', '$localStorage', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'storage', 'shareData', '$localStorage','databaseMegaselfie', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $cordovaCamera, storage, shareData, $localStorage) {
+    function ($scope, $cordovaCamera, storage, shareData, $localStorage,databaseMegaselfie) {
       $scope.obj = shareData.getData();
 
       console.log(shareData.getData())
@@ -394,7 +360,9 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
       $scope.sharePhoto = function () {
 
-        var pictures = window.database.ref().child('events/' + $scope.obj.eventID + "/" + "pictures/");
+        databaseMegaselfie.joinEvent($scope.obj.eventID)
+
+        //var pictures = window.database.ref().child('events/' + $scope.obj.eventID + "/" + "pictures/");
         //scrive un nuovo evento sia in events, sia in users
         var updates = {};
         updates['events/' + $scope.obj.eventID + "/" + "pictures/" + $localStorage.uid] = $localStorage.uid;
