@@ -55,12 +55,12 @@ angular.module('app.services', [])
 
       /*Partecipa all'evento=> aggiungo in events/idEvento/pictures*/
       this.joinEvent = function (eventID) {
+
         //inserisce la foto in pictures
         var updates = {};
         updates['/events/' + eventID + "/" + "pictures/" + $localStorage.uid] = $localStorage.uid;
         //updates['/users/' + $localStorage.uid + '/' + newEventKey ] = userRole;
 
-        console.log(updates)
         database.update(updates);
       }
 

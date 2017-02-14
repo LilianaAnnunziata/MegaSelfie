@@ -106,16 +106,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
           var newEventKey =  databaseMegaselfie.createEventMegaselfie(objToSend,coordinate)
 
-            console.log("then"+newEventKey)
-
-            $state.go("menu.countdown");
-          /*$q.when(databaseMegaselfie.createEventMegaselfie(objToSend,coordinate))
-            .then(function (newEventKey) {
-              console.log("then"+newEventKey.key)
-
-               $state.go("menu.countdown");
-            })*/
-
+          $state.go("menu.countdown");
         });
       }
     }
@@ -307,7 +298,9 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 console.log(picture[0])
               console.log(picture[1])
 
-              storage.upload("event2/", $localStorage.uid, picture[0]);
+
+             // databaseMegaselfie.joinEvent($scope.obj.eventID)
+            //  storage.upload($scope.obj.eventID + "/", $localStorage.uid, $scope.imgURI);
 
               //$scope.imgURI = picture[0];
 
@@ -335,47 +328,30 @@ console.log(picture[0])
     }])
 
 
-  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'storage', 'shareData', '$localStorage','databaseMegaselfie', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-    // You can include any angular dependencies as parameters for this function
-    // TIP: Access Route Parameters for your page via $stateParams.parameterName
+  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'storage', 'shareData', '$localStorage','databaseMegaselfie',
     function ($scope, $cordovaCamera, storage, shareData, $localStorage,databaseMegaselfie) {
-      $scope.obj = shareData.getData();
 
+      $scope.obj = shareData.getData();
       console.log(shareData.getData())
-      //  var eventRef = window.database.ref('events/'+ obj.eventID);
 
       $scope.takeImage = false;
       $scope.takePhoto = function () {
         $cordovaCamera.getPicture(setOptionsCamera(Camera.PictureSourceType.CAMERA)).then(function (imageData) {
           $scope.imgURI = "data:image/jpeg;base64," + imageData;
           $scope.takeImage = true;
-          console.log($scope.takeImage);
         }, function (err) {
           console.log("error eventInfoCtrl " + err)
         });
       };
 
       $scope.sharePhoto = function () {
-
         databaseMegaselfie.joinEvent($scope.obj.eventID)
-
-        //var pictures = window.database.ref().child('events/' + $scope.obj.eventID + "/" + "pictures/");
-        //scrive un nuovo evento sia in events, sia in users
-        var updates = {};
-        updates['events/' + $scope.obj.eventID + "/" + "pictures/" + $localStorage.uid] = $localStorage.uid;
-        //updates['/users/' + $localStorage.uid + '/' + newEventKey ] = userRole;
-
-        console.log(updates)
-        window.database.ref().update(updates);
         storage.upload($scope.obj.eventID + "/", $localStorage.uid, $scope.imgURI);
       }
     }])
 
 
-  .controller('galleriaCtrl', ['$scope', '$stateParams', 'storage', '$firebaseObject', '$firebaseStorage', 'shareData', '$window',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-
+  .controller('galleriaCtrl', ['$scope', '$stateParams', 'storage', '$firebaseObject', '$firebaseStorage', 'shareData', '$window',
     function ($scope, $stateParams, storage, $firebaseObject, $firebaseStorage, shareData, $window) {
       //funzione per il tasto di back
       $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
