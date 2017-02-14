@@ -182,7 +182,7 @@ angular.module('app.services', [])
 
 
   .factory('GeoAlert', ["$localStorage",
-    function () {
+    function ($localStorage) {
       var interval;
       //var duration = 6000;
       //  var processing = false;
@@ -213,23 +213,28 @@ angular.module('app.services', [])
         //  processing = true;
         navigator.geolocation.getCurrentPosition(function (position) {
           // processing = false;
-          //itera su tutti g
+          //itera su tutti gli eventi nella lista
           eventList.forEach(function (event) {
             var dist = getDistanceFromLatLonInKm(event.lat, event.long, position.coords.latitude, position.coords.longitude);
             if (dist <= event.minDistance) {
               var eventRef = window.database.ref().child('events/' + event.eventKey);
-              eventRef.once("value", function (snapshot) {
-                var eventObj = snapshot.val();
+              //itera su tutti gli eventi
+              eventRef.once("value", function (eventSnapshot) {
+                var eventObj = eventSnapshot.val();
+                eventObj.eventID = event.eventKey;
                 var eventUserRef = window.database.ref().child('events/' + event.eventKey + '/users');
-                eventUserRef.on("value", function (eventUser) {
-                  eventUser.forEach(function (eventLiveUser) {
-                    if (eventLiveUser != $localStorage.uid)
+                console.log("geol "+event.eventKey);
+                eventUserRef.once("value", function (eventUser) {
+                    if (eventUser.val().user === undefined || eventUser.val().user != $localStorage.uid){
+                      console.log("eccomi")
                       callback(eventObj);
-                  })
+                    }
                 });
               })
             }
           });
+        },function (err) {
+          console.log(err)
         })
       }
 

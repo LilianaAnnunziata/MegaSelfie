@@ -1,8 +1,8 @@
 //Funzioni con un particolare scopo
 angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-gallery'])
 
-  .controller('homeCtrl', ['$scope', '$localStorage', '$firebaseStorage', 'shareData', '$http', 'GeoAlert','databaseMegaselfie',
-    function ($scope, $localStorage, $firebaseStorage, shareData, $http, GeoAlert,databaseMegaselfie) {
+  .controller('homeCtrl', ['$scope', '$localStorage', '$firebaseStorage', 'shareData', 'GeoAlert','databaseMegaselfie','$state',
+    function ($scope, $localStorage, $firebaseStorage, shareData, GeoAlert, databaseMegaselfie, $state) {
 
 
     var liveEvent;
@@ -13,23 +13,20 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
       }
 
 
-      function onConfirm(idx) {
-        //console.log('button ' + idx + ' pressed');
+      function onConfirm(idx,eventObj) {
         if(idx == 2){
-          console.log(liveEvent.eventID+ " "+idx);
-
-          databaseMegaselfie.enrollEvent(liveEvent.eventID)
-
+          databaseMegaselfie.enrollEvent(eventObj.eventID);
+          $state.go("menu.countdown");
         }
       }
 
       $scope.coordinate = function () {
         GeoAlert.begin(function (eventObj) {
-          console.log('TARGET');
-          liveEvent = eventObj;
           navigator.notification.confirm(
             'Do you want to partecipate to the Event?'+eventObj.title+"\n",
-            onConfirm,
+            function(buttonIndex){
+              onConfirm(buttonIndex, eventObj);
+            },
             'Target!',
             ['No', 'Yes']
           );
