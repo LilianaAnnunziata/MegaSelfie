@@ -13,24 +13,9 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
       }
 
 
-      function onConfirm(idx,eventObj) {
-        if(idx == 2){
-          databaseMegaselfie.enrollEvent(eventObj.eventID);
-          $state.go("menu.countdown");
-        }
-      }
 
       $scope.coordinate = function () {
-        GeoAlert.begin(function (eventObj) {
-          navigator.notification.confirm(
-            'Do you want to partecipate to the Event?'+eventObj.title+"\n",
-            function(buttonIndex){
-              onConfirm(buttonIndex, eventObj);
-            },
-            'Target!',
-            ['No', 'Yes']
-          );
-        });
+        GeoAlert.begin();
       }
       $scope.stop = function () {
         GeoAlert.end();
@@ -288,9 +273,10 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
           $timeout.cancel(mytimeout);
           cordova.plugins.camerapreview.takePicture({maxWidth:300, maxHeight:300})
           cordova.plugins.camerapreview.setOnPictureTakenHandler(function(picture) {
+
             document.getElementById('originalPicture').src = picture[0];
             cordova.plugins.camerapreview.stopCamera();
-//console.log(picture[0])
+            console.log(picture[0])
             console.log(picture[1])
 
 
