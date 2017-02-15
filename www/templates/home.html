@@ -1,7 +1,7 @@
 <ion-view cache-view="false" title="Home" hide-back-button="true" id="page1">
  <ion-content>
 
-  <ion-list id="home-list4">
+ <ion-list id="home-list4">
     <ion-item ng-repeat="event in eventList"class="item-thumbnail-left" id="home-list-item9"
               ui-sref="menu.eventInfo" ng-click="goTo('{{event}}')">
       <img src="{{event.src}}">
@@ -11,6 +11,9 @@
     </ion-item>
   </ion-list>
 
- </ion-content>
+   <button ng-click="coordinate()">Coordinate</button>
+   <button ng-click="all()">all</button>
 
+   <button ng-click="stop()">stop</button>
 </ion-view>
+</ion-content>

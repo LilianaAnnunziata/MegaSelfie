@@ -1,13 +1,19 @@
 <ion-view title="Event Info" id="page11">
 
-  <ion-nav-back-button class="button-clear">
+ <ion-nav-back-button class="button-clear">
     <i class="ion-arrow-left-c"></i> Back
   </ion-nav-back-button>
 
   <ion-nav-buttons side="right" class="has-header">
-    <button class="button icon ion-close"></button>
+    <button ng-show="obj.role === 'admin'" class="button icon ion-edit" ng-click="edit()"></button>
   </ion-nav-buttons>
 
+ <!-- <div class="bar bar-header">
+    <button class="button icon ion-navicon"></button>
+    <h1 class="title">Header Buttons</h1>
+    <button class="button" ng-click="edit()">Edit</button>
+  </div>
+  -->
 
 
 
@@ -20,7 +26,8 @@
       <h1 class="textH1 animated bounceInDown">{{obj.title}}</h1>
       <h2  class="textH2">{{obj.description}}</h2>
 
-      <img ng-show="obj.src !== undefined" src="{{obj.src}}" width="100" height="100"style="text-align: center; text-shadow: 2px 2px 4px #000000;">
+      <img ng-show="obj.src !== undefined" src="{{obj.src}}" width="200" height="200"style="border: 1px solid white;
+    padding: 15px; border-radius: 30%; text-align: center; text-shadow: 2px 2px 4px #000000;">
 
       <div class = "row">
         <div class = "col text-center">

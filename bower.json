@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "ng-cordova-oauth": "^0.3.0",
-    "ion-gallery": "^0.1.14"
+    "ion-gallery": "^0.1.14",
+    "moment": "^2.17.1"
   }
 }

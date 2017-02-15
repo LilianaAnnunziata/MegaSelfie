@@ -1,68 +1,123 @@
 //Funzioni con un particolare scopo
-angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-gallery'])
+angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-gallery'])
 
-  .controller('homeCtrl', ['$scope','$localStorage','$firebaseStorage','shareData',
-    function ($scope,$localStorage,$firebaseStorage, shareData) {
+  .controller('homeCtrl', ['$scope', '$localStorage', '$firebaseStorage', 'shareData', 'GeoAlert','databaseMegaselfie','$state',
+    function ($scope, $localStorage, $firebaseStorage, shareData, GeoAlert, databaseMegaselfie, $state) {
 
-    $scope.goTo=function(info){
-      var object=JSON.parse(info);
-      shareData.setData(object);
-    }
+
+    var liveEvent;
+
+      $scope.goTo = function (info) {
+        var object = JSON.parse(info);
+        shareData.setData(object);
+      }
+
+
+      function onConfirm(idx,eventObj) {
+        if(idx == 2){
+          databaseMegaselfie.enrollEvent(eventObj.eventID);
+          $state.go("menu.countdown");
+        }
+      }
+
+      $scope.coordinate = function () {
+        GeoAlert.begin(function (eventObj) {
+          navigator.notification.confirm(
+            'Do you want to partecipate to the Event?'+eventObj.title+"\n",
+            function(buttonIndex){
+              onConfirm(buttonIndex, eventObj);
+            },
+            'Target!',
+            ['No', 'Yes']
+          );
+        });
+      }
+      $scope.stop = function () {
+        GeoAlert.end();
+      }
 
       var query = window.database.ref('users/' + $localStorage.uid);
       //var query = window.database.ref('users/K5fyK0CzdsOxDsSp5xDI3lM5YCB2/events');
-      $scope.eventList= [];
-      query.on("value", function(snapshot) {
-          //iterazione su tutti gli eventi dell'utente
-          snapshot.forEach(function(childSnapshot) {
-            // recupero nome dell'evento
-            var eventKey = childSnapshot.key;
-           //creazione obj da inserire nella lista
-            var obj = {};
-            //recupero ruolo da users
-            obj.role = childSnapshot.val().role;
-            //accedo al nodo events, nel database
-            var eventRef = window.database.ref('events/'+ eventKey);
-            //accedo a campi dell'evento
+      $scope.eventList = [];
+      query.on("value", function (snapshot) {
+        //iterazione su tutti gli eventi dell'utente
+        snapshot.forEach(function (childSnapshot) {
+          // recupero nome dell'evento
+          var eventKey = childSnapshot.key;
+          //creazione obj da inserire nella lista
+          var obj = {};
+          //recupero ruolo da users
+          obj.role = childSnapshot.val().role;
+          //accedo al nodo events, nel database
+          var eventRef = window.database.ref('events/' + eventKey);
+          //accedo a campi dell'evento
 
-            eventRef.on("value", function(snapshot) {
-              var eventObj = snapshot.val();
-              console.log(eventKey)
-              obj.eventID=eventKey;
-              obj.title = eventObj.title;
-              obj.description = eventObj.description;
-              obj.start = eventObj.start;
-              obj.timeStart = eventObj.TimeStart;
-              obj.end = eventObj.end;
-              obj.timeEnd = eventObj.TimeEnd;
-              var eventStorageRef = window.storage.ref(eventKey + "/" + "icon.png");
-              var storageFire =  $firebaseStorage(eventStorageRef);
-              storageFire.$getDownloadURL().then(function (imgSrc){
-                obj.src = imgSrc;
-               $scope.eventList.push(obj);
-              });
+          eventRef.on("value", function (snapshot) {
+            var eventObj = snapshot.val();
+            //console.log(eventKey)
+            obj.eventID = eventKey;
+            obj.title = eventObj.title;
+            obj.description = eventObj.description;
+            obj.start = eventObj.start;
+            obj.timeStart = eventObj.TimeStart;
+            obj.end = eventObj.end;
+            obj.timeEnd = eventObj.TimeEnd;
+            var eventStorageRef = window.storage.ref(eventKey + "/" + "icon.png");
+            var storageFire = $firebaseStorage(eventStorageRef);
+            storageFire.$getDownloadURL().then(function (imgSrc) {
+              obj.src = imgSrc;
+              $scope.eventList.push(obj);
             });
           });
         });
+      });
     }])
 
 
-  .controller('createLiveEventCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-    // You can include any angular dependencies as parameters for this function
-    // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $stateParams) {
+  .controller('createLiveEventCtrl', ['$scope', '$stateParams', 'dateFilter', '$localStorage', '$state', 'databaseMegaselfie','$q',
+    function ($scope, $stateParams, dateFilter, $localStorage, $state,databaseMegaselfie,$q) {
 
+      $scope.startLiveEvent = function (liveEvent) {
+        console.log(liveEvent.name + " " + liveEvent.range);
 
-    }])
+        navigator.geolocation.getCurrentPosition(function (position) {
+          var lat = position.coords.latitude,
+            lng = position.coords.longitude,
+            today = new Date();
+          console.log(" " + lat + " "+lng);
+
+          if (liveEvent.name === undefined)
+            liveEvent.name = '';
+          console.log("range" + liveEvent.range)
+          if (liveEvent.range === undefined)
+            liveEvent.range = 0;
+
+          var objToSend = {
+            title: liveEvent.name,
+            start: dateFilter(today, "dd/MM/yyyy"),
+            TimeStart: dateFilter(today, "HH:mm"),
+            users: {
+              admin: $localStorage.uid
+            }
+          };
+          console.log(objToSend + " " + liveEvent.range);
+
+          var coordinate = {latitude: lat, longitude: lng, range: liveEvent.range}
+
+          var newEventKey =  databaseMegaselfie.createEventMegaselfie(objToSend,coordinate)
+
+          $state.go("menu.countdown");
+        });
+      }
+    }
+  ])
 
   .controller('createSharedEventCtrl', ['$scope', 'dateFilter', '$http', '$cordovaCamera',
-    'storage','$localStorage','$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-    // You can include any angular dependencies as parameters for this function
-    // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, dateFilter, $http, $cordovaCamera, storage,$localStorage,$state) {
+    'storage', '$localStorage', '$state',
+    'databaseMegaselfie','$q',
+    function ($scope, dateFilter, $http, $cordovaCamera, storage, $localStorage, $state,databaseMegaselfie,$q) {
 
       $scope.date = dateFilter(new Date(), "dd/MM/yyyy");
-      console.log($scope.date);
 
       var event = $scope.event;
 
@@ -87,33 +142,23 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
             TimeStart: startTime,
             end: dateFilter(event.endDate, "dd/MM/yyyy"),
             TimeEnd: endTime,
-            users : {
-              admin : $localStorage.uid
+            users: {
+              admin: $localStorage.uid
             },
           }
-          var userRole = {role: 'admin'}
           console.log(objToSend);
-          //alert($scope.imgURI);
 
-         /* var refDBUsers = window.database.ref().child("users/"+$localStorage.uid)
-          var users = $firebaseArray(refDBUsers);;
+         /*$q.when(databaseMegaselfie.createEventMegaselfie(objToSend))
+            .then(function (newEventKey) {
+              console.log("then"+newEventKey.key)
 
-          users.$add(objToSend)*/
+             // storage.upload(newEventKey + '/', "icon.png", $scope.imgURI);
 
-         //restituisce la nuova chiave dell'evento
-          var newEventKey = window.database.ref().child('events').push().key;
-
-          // scrive un nuovo evento sia in events, sia in users
-          var updates = {};
-          updates['/events/' + newEventKey] = objToSend;
-          updates['/users/' + $localStorage.uid + '/' + newEventKey ] = userRole;
-
-          console.log(updates)
-          window.database.ref().update(updates);
-
-          storage.upload(newEventKey+'/', "icon.png", $scope.imgURI);
-
-          $state.go("menu.home");
+              $state.go("menu.home");
+          })*/
+         var newEventKey = databaseMegaselfie.createEventMegaselfie(objToSend)
+         storage.upload(newEventKey + '/', "icon.png", $scope.imgURI);
+         $state.go("menu.home");
         }
         else {
           alert("not valid input");
@@ -135,7 +180,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
       };
     }])
 
-  .controller('menuCtrl', ['$scope', '$http', '$location','$localStorage',
+  .controller('menuCtrl', ['$scope', '$http', '$location', '$localStorage',
     function ($scope, $http, $location, $localStorage) {
 
       $scope.init = function () {
@@ -172,35 +217,38 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
             return firebase.auth().signInWithCredential(credentials);
           }).then(function (firebaseUser) {
             //memorizza firebaseUser.uid
-              $localStorage.uid = firebaseUser.uid;
-              var refDB = window.database.ref();
-              var refDBUsers = refDB.child("users/" + firebaseUser.uid);
-              refDBUsers.once('value', function (snapshot) {
+            $localStorage.uid = firebaseUser.uid;
+            var refDB = window.database.ref();
+            var refDBUsers = refDB.child("users/" + firebaseUser.uid);
+            refDBUsers.once('value', function (snapshot) {
 
-                //Se utente non esiste
-                  if (snapshot.val() === null) {
-                    refDBUsers.set({
-                      event1: {
-                        role: "user"
-                      }
-                    });
-                    refDB.child("events/event1/users/").set({
-                      user: firebaseUser.uid
-                    });
-                    $state.go("menu.home");
-                  }else { //se utente esiste già nel database
-                    $state.go("menu.home");
+              //Se utente non esiste
+              if (snapshot.val() === null) {
+                refDBUsers.set({
+                  event1: {
+                    role: "user"
                   }
-                })
+                });
+
+                refDB.child("events/event1/users/")
+                var updates = {'events/event1/users/user': $localStorage.uid};
+                console.log(updates);
+                refDB.update(updates);
+
+                $state.go("menu.home");
+
+              } else { //se utente esiste già nel database
+                $state.go("menu.home");
+              }
+            })
           }).catch(function (error) {
-              alert("Authentication failed");
-              console.error("Authentication failed:", error);
+            alert("Authentication failed");
+            console.error("Authentication failed:", error);
           });
         }
       }
     }
   ])
-
 
 
   .controller('storeCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
@@ -219,10 +267,10 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
 
     }])
 
-  .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+  .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', '$http','$localStorage','storage',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $timeout, $cordovaFile, $stateParams) {
+    function ($scope, $timeout, $cordovaFile, $stateParams, $http,$localStorage,storage) {
       $scope.counter = 10;
 
       var rect = document.getElementById("contentCamera").getBoundingClientRect();
@@ -242,31 +290,21 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
           countdown = $timeout($scope.onTimeout, 1000);
           if ($scope.counter == 0) {
             console.log("Ecco");
+            //   cordova.plugins.camerapreview.stopCamera();
+            cordova.plugins.camerapreview.takePicture({maxWidth:300, maxHeight:300})
+            cordova.plugins.camerapreview.setOnPictureTakenHandler(function(picture) {
+              document.getElementById('originalPicture').src = picture[0];
+              cordova.plugins.camerapreview.stopCamera();
+console.log(picture[0])
+              console.log(picture[1])
 
-            var options = {
-              name: "Megaselfie", //image suffix
-              dirName: "Megaselfie", //foldername
-              orientation: "landscape", //or portrait
-              type: "front" //or front
-            };
 
-            cordova.plugins.camerapreview.stopCamera();
-            window.plugins.CameraPictureBackground.takePicture(success, error, options);
+             // databaseMegaselfie.joinEvent($scope.obj.eventID)
+            //  storage.upload($scope.obj.eventID + "/", $localStorage.uid, $scope.imgURI);
 
-            function success(imgData) {
+              //$scope.imgURI = picture[0];
 
-              $scope.$apply(function () {
-
-                $scope.imgURI = imgData;
-              });
-              console.log("  " + $scope.imgURI);
-
-            }
-
-            function error(imgurl) {
-              console.log("Error Not save");
-            }
-
+            });
             $timeout.cancel(countdown);
             $scope.counter = "OK!";
           }
@@ -290,46 +328,31 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
     }])
 
 
-  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'storage','shareData','$localStorage', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-    // You can include any angular dependencies as parameters for this function
-    // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $cordovaCamera, storage,shareData,$localStorage) {
-      $scope.obj = shareData.getData();
+  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'storage', 'shareData', '$localStorage','databaseMegaselfie',
+    function ($scope, $cordovaCamera, storage, shareData, $localStorage,databaseMegaselfie) {
 
+      $scope.obj = shareData.getData();
       console.log(shareData.getData())
-    //  var eventRef = window.database.ref('events/'+ obj.eventID);
 
       $scope.takeImage = false;
       $scope.takePhoto = function () {
         $cordovaCamera.getPicture(setOptionsCamera(Camera.PictureSourceType.CAMERA)).then(function (imageData) {
           $scope.imgURI = "data:image/jpeg;base64," + imageData;
           $scope.takeImage = true;
-          console.log($scope.takeImage);
         }, function (err) {
           console.log("error eventInfoCtrl " + err)
         });
       };
 
       $scope.sharePhoto = function () {
-
-        var pictures = window.database.ref().child('events/' + $scope.obj.eventID + "/" + "pictures/");
-        //scrive un nuovo evento sia in events, sia in users
-        var updates = {};
-        updates['events/' + $scope.obj.eventID + "/" + "pictures/" +  $localStorage.uid] =  $localStorage.uid;
-        //updates['/users/' + $localStorage.uid + '/' + newEventKey ] = userRole;
-
-        console.log(updates)
-        window.database.ref().update(updates);
+        databaseMegaselfie.joinEvent($scope.obj.eventID)
         storage.upload($scope.obj.eventID + "/", $localStorage.uid, $scope.imgURI);
       }
     }])
 
 
-  .controller('galleriaCtrl', ['$scope', '$stateParams','storage','$firebaseObject', '$firebaseStorage', 'shareData','$window',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-
-    function ($scope, $stateParams, storage, $firebaseObject, $firebaseStorage, shareData,$window) {
+  .controller('galleriaCtrl', ['$scope', '$stateParams', 'storage', '$firebaseObject', '$firebaseStorage', 'shareData', '$window',
+    function ($scope, $stateParams, storage, $firebaseObject, $firebaseStorage, shareData, $window) {
       //funzione per il tasto di back
       $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
         viewData.enableBack = true;
@@ -349,7 +372,6 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
         $scope.data = shareData.getData();
 
 
-
         //  console.log("qua va" + $scope.data)
         //percorso per le foto degli eventi
         var query = firebase.database().ref("events/" + $scope.data.eventID + '/pictures');
@@ -359,7 +381,6 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
 
               // childData will be the actual contents of the child
               var childData = childSnapshot.val();
-
 
 
               var ref = firebase.storage().ref($scope.data.eventID + '/' + childData);
