@@ -1,5 +1,5 @@
 //Funzioni con un particolare scopo
-angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-gallery'])
+angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-gallery','angular-svg-round-progressbar'])
 
   .controller('homeCtrl', ['$scope', '$localStorage', '$firebaseStorage', 'shareData', 'GeoAlert','databaseMegaselfie','$state',
     function ($scope, $localStorage, $firebaseStorage, shareData, GeoAlert, databaseMegaselfie, $state) {
@@ -79,7 +79,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
       $scope.startLiveEvent = function (liveEvent) {
         console.log(liveEvent.name + " " + liveEvent.range);
-
+/*
         navigator.geolocation.getCurrentPosition(function (position) {
           var lat = position.coords.latitude,
             lng = position.coords.longitude,
@@ -106,8 +106,10 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
           var newEventKey =  databaseMegaselfie.createEventMegaselfie(objToSend,coordinate)
 
-          $state.go("menu.countdown");
-        });
+
+        });*/
+        $state.go("countdown");
+
       }
     }
   ])
@@ -267,57 +269,137 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
     }])
 
-  .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', '$http','$localStorage','storage',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+  .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', '$http','$localStorage','storage','$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
-    function ($scope, $timeout, $cordovaFile, $stateParams, $http,$localStorage,storage) {
-      $scope.counter = 10;
+    function ($scope, $timeout, $cordovaFile, $stateParams, $http,$localStorage,storage, $state) {
 
-      var rect = document.getElementById("contentCamera").getBoundingClientRect();
-      console.log("rect= " + rect.height + " " + rect.width + " " + rect.bottom + " " + rect.left);
 
-      var tapEnabled = true; //enable tap take picture
-      var dragEnabled = true; //enable preview box drag across the screen
-      var toBack = true; //send preview box to the back of the webview
-      var rect = {x: 30, y: 80, width: 300, height: 300};
-      //cordova.plugins.camerapreview.startCamera(rect, "front", tapEnabled, dragEnabled, toBack)
+     // var rect = document.getElementById("contentCamera").getBoundingClientRect();
+     // console.log("rect= " + rect.height + " " + rect.width + " " + rect.bottom + " " + rect.left);
+
+      var rect = {x: 30, y: 80, width: 200, height: 200};
+     // cordova.plugins.camerapreview.startCamera(rect, "front", tapEnabled, dragEnabled, toBack)
 
       cordova.plugins.camerapreview.startCamera(rect, 'front', true, true, false);
-
-      $scope.playCountdown = function () {
-        $scope.onTimeout = function () {
-          $scope.counter--;
-          countdown = $timeout($scope.onTimeout, 1000);
-          if ($scope.counter == 0) {
-            console.log("Ecco");
-            //   cordova.plugins.camerapreview.stopCamera();
-            cordova.plugins.camerapreview.takePicture({maxWidth:300, maxHeight:300})
-            cordova.plugins.camerapreview.setOnPictureTakenHandler(function(picture) {
-              document.getElementById('originalPicture').src = picture[0];
-              cordova.plugins.camerapreview.stopCamera();
-console.log(picture[0])
-              console.log(picture[1])
+      $scope.onTimeout = function () {
+        if ($scope.timer === 0) {
+          $scope.$broadcast('timer-stopped', 0);
+          $timeout.cancel(mytimeout);
+          cordova.plugins.camerapreview.takePicture({maxWidth:300, maxHeight:300})
+          cordova.plugins.camerapreview.setOnPictureTakenHandler(function(picture) {
+            document.getElementById('originalPicture').src = picture[0];
+            cordova.plugins.camerapreview.stopCamera();
+//console.log(picture[0])
+            console.log(picture[1])
 
 
-             // databaseMegaselfie.joinEvent($scope.obj.eventID)
+            // databaseMegaselfie.joinEvent($scope.obj.eventID)
             //  storage.upload($scope.obj.eventID + "/", $localStorage.uid, $scope.imgURI);
 
-              //$scope.imgURI = picture[0];
+            //$scope.imgURI = picture[0];
 
-            });
-            $timeout.cancel(countdown);
-            $scope.counter = "OK!";
-          }
+          });
+
+
+
+
+          return;
+
+
+
         }
-        var countdown = $timeout($scope.onTimeout, 1000);
+        $scope.timer--;
+        mytimeout = $timeout($scope.onTimeout, 1000);
+      };
+      // functions to control the timer
+      // starts the timer
+      $scope.startTimer = function () {
+        mytimeout = $timeout($scope.onTimeout, 1000);
+        $scope.started = true;
+      };
+
+      // stops and resets the current timer
+      $scope.stopTimer = function (closingModal) {
+        if (closingModal != true) {
+          $scope.$broadcast('timer-stopped', $scope.timer);
+        }
+        $scope.timer = $scope.timeForTimer;
+        $scope.started = false;
+        $scope.paused = false;
+        $timeout.cancel(mytimeout);
+      };
+      // pauses the timer
+      $scope.pauseTimer = function () {
+        $scope.$broadcast('timer-stopped', $scope.timer);
+        $scope.started = false;
+        $scope.paused = true;
+        $timeout.cancel(mytimeout);
+      };
+
+      // triggered, when the timer stops, you can do something here, maybe show a visual indicator or vibrate the device
+      $scope.$on('timer-stopped', function (event, remaining) {
+        if (remaining === 0) {
+          $scope.done = true;
+         ;
+
+          //  cordova.plugins.camerapreview.stopCamera();
+          //  window.plugins.CameraPictureBackground.takePicture(success, error, options);
+
+        }
+      });
+      // UI
+      // When you press a timer button this function is called
+      $scope.selectTimer = function (val) {
+        $scope.timeForTimer = val;
+        $scope.timer = val
+        $scope.started = false;
+        $scope.paused = false;
+        $scope.done = false;
+      };
+
+      // This function helps to display the time in a correct way in the center of the timer
+      $scope.humanizeDurationTimer = function (input, units) {
+        // units is a string with possible values of y, M, w, d, h, m, s, ms
+        if (input == 0) {
+          return 0;
+        } else {
+          var duration = moment().startOf('day').add(input, units);
+          var format = "";
+          if (duration.hour() > 0) {
+            format += "H[h] ";
+          }
+          if (duration.minute() > 0) {
+            format += "m[m] ";
+          }
+          if (duration.second() > 0) {
+            format += "s[s] ";
+          }
+          return duration.format(format);
+        }
+      };
+
+
+//camera
+
+
+
+      $scope.uscita=function(){
+        cordova.plugins.camerapreview.stopCamera()
+        $state.go('menu.createLiveEvent');
       }
-      $scope.prova = function () {
-        console.log(cordova.file.applicationDirectory);
-        console.log(cordova.file.dataDirectory);
-        console.log(cordova.file.externalApplicationStorageDirectory);
-        console.log(cordova.file.externalRootDirectory);
+
+
+
+            //   cordova.plugins.camerapreview.stopCamera
+
+
+
+
+
       }
-    }])
+
+    ])
 
   .controller('eventEditCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function

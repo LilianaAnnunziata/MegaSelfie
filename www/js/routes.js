@@ -69,14 +69,14 @@ angular.module('app.routes', [])
     }
   })
 
-  .state('menu.countdown', {
+  .state('countdown', {
     url: '/page8',
-    views: {
-      'side-menu21': {
+
+
         templateUrl: 'templates/countdown.html',
         controller: 'countdownCtrl'
-      }
-    }
+
+
   })
 
   .state('eventEdit', {
