@@ -294,21 +294,23 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
     }])
 
-  .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', '$http', '$localStorage', '$state', 'shareData', 'databaseMegaselfie',
-    function ($scope, $timeout, $cordovaFile, $stateParams, $http, $localStorage, $state, shareData, databaseMegaselfie) {
+  .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', '$http','$localStorage','$state','shareData','databaseMegaselfie',
+      function ($scope, $timeout, $cordovaFile, $stateParams, $http,$localStorage, $state,shareData,databaseMegaselfie ) {
 
-      // var rect = document.getElementById("contentCamera").getBoundingClientRect();
-      // console.log("rect= " + rect.height + " " + rect.width + " " + rect.bottom + " " + rect.left);
-      var rect = {x: 30, y: 80, width: 200, height: 200};
-      // cordova.plugins.camerapreview.startCamera(rect, "front", tapEnabled, dragEnabled, toBack)
+     // var rect = document.getElementById("contentCamera").getBoundingClientRect();
+     // console.log("rect= " + rect.height + " " + rect.width + " " + rect.bottom + " " + rect.left);
+      var rect = {x: 30, y: 80, width: window.screen.width, height: window.screen.height};
+     // cordova.plugins.camerapreview.startCamera(rect, "front", tapEnabled, dragEnabled, toBack)
 
-      cordova.plugins.camerapreview.startCamera(rect, 'front', true, true, false);
+      cordova.plugins.camerapreview.startCamera(rect, 'front', true, true, true);
       $scope.onTimeout = function () {
         if ($scope.timer === 0) {
           $scope.$broadcast('timer-stopped', 0);
           $timeout.cancel(mytimeout);
-          cordova.plugins.camerapreview.takePicture({maxWidth: 300, maxHeight: 300})
-          cordova.plugins.camerapreview.setOnPictureTakenHandler(function (picture) {
+
+
+          cordova.plugins.camerapreview.takePicture({maxWidth:window.screen.width, maxHeight:window.screen.height})
+          cordova.plugins.camerapreview.setOnPictureTakenHandler(function(picture) {
 
             document.getElementById('originalPicture').src = picture[0];
             cordova.plugins.camerapreview.stopCamera();
@@ -377,8 +379,6 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
       $scope.$on('timer-stopped', function (event, remaining) {
         if (remaining === 0) {
           $scope.done = true;
-          ;
-
           //  cordova.plugins.camerapreview.stopCamera();
           //  window.plugins.CameraPictureBackground.takePicture(success, error, options);
 
