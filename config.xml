@@ -12,6 +12,7 @@
   <plugin name="ionic-plugin-keyboard"/>
   <plugin name="cordova-plugin-camera"/>
   <plugin name="cordova-plugin-camera-preview"/>
+  <plugin name="cordova-plugin-navigationbar" />
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="10000"/>
   <preference name="AutoHideSplashScreen" value="true"/>
