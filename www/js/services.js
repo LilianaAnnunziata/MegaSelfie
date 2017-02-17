@@ -18,8 +18,8 @@ angular.module('app.services', [])
     }
   ])
 
-  .service('databaseMegaselfie', ["$firebaseObject", "$localStorage", '$q',
-    function ($firebaseObject, $localStorage, $q) {
+  .service('databaseMegaselfie', ["$firebaseObject", "$localStorage", 'storage',
+    function ($firebaseObject, $localStorage, storage) {
 
       var database = window.database.ref();
 
@@ -29,9 +29,8 @@ angular.module('app.services', [])
         return $firebaseObject(refDB);
       }
 
-      this.createEventMegaselfie = function (objToSend, coordinates) {
+      this.createEventMegaselfie = function (objToSend, coordinates,img) {
 
-        //var deferral = $q.defer();
         //restituisce la nuova chiave dell'evento
         var newEventKey = database.child('events').push().key;
 
@@ -39,7 +38,7 @@ angular.module('app.services', [])
         var updates = {};
 
         //Se è un evento Live
-        if (coordinates !== undefined)
+        if (coordinates)
           updates['/coordinates/' + newEventKey] = coordinates;
 
         updates['/events/' + newEventKey] = objToSend;
@@ -48,13 +47,14 @@ angular.module('app.services', [])
         console.log("databaseMegaselfie:CreateEvent " + newEventKey)
         database.update(updates);
 
-        //deferral.resolve({key : newEventKey});
-        //return deferral.promise;
+        if(img)
+          storage.upload(newEventKey + '/', "icon.png",img);
+
         return newEventKey;
       }
 
       /*Partecipa all'evento=> aggiungo in events/idEvento/pictures*/
-      this.joinEvent = function (eventID) {
+      this.joinEvent = function (eventID,img) {
 
         //inserisce la foto in pictures
         var updates = {};
@@ -62,6 +62,8 @@ angular.module('app.services', [])
         //updates['/users/' + $localStorage.uid + '/' + newEventKey ] = userRole;
 
         database.update(updates);
+        //Caricamento immagine
+        storage.upload(eventID + "/", $localStorage.uid, img);
       }
 
       /*iscrizione all'evento=> aggiunta in events/idEvento/users*/
@@ -103,8 +105,11 @@ angular.module('app.services', [])
       this.upload = function (path, filename, imgURI) {
         var refStore = storage.ref(path + filename);
 
-        var uploadTask = refStore.put(dataURItoBlob(imgURI, 'image/jpeg'));
 
+        var uploadTask = refStore.put(dataURItoBlob(imgURI, 'image/jpeg'));
+      // var uploadTask = refStore.put(imgURI);
+
+        console.log("EKDKFF")
         uploadTask.on('state_changed', function (snapshot) {
           console.log("uploadTask");
 
