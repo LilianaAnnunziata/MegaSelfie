@@ -9,37 +9,26 @@
     <ion-nav-view name="side-menu21"></ion-nav-view>
   </ion-side-menu-content>
   <ion-side-menu side="left" id="side-menu21">
-    <ion-content padding="false" style="background: url(img/sfondoMenu.jpg)
-    no-repeat center;background-size:cover;" class="side-menu-left has-header ">
-      <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
+    <ion-content padding="false" scroll="false" style="background: url(img/sfondoMenu.jpg) no-repeat center; background-size: cover;" class="side-menu-left">
 
+      <div align="middle" style="margin-bottom: 15%; margin-top: 20%">
+        <img ng-src="{{profileData.picture.data.url}}"
+             style="border-radius: 50%;" height="150" width="150">
+        <h1 style="font-size: 200%; color: white; text-shadow: 0px 5px 5px #0d3e50">{{profileData.name}}</h1>
       </div>
 
-<div align="middle">
-  <!--Immagine del profilo-->
-  <img ng-src="{{profileData.picture.data.url}}"
-       style="border-radius: 50%;" height="150" width="150">
-  <h1 style="font-size:200%; color:white; text-shadow: 2px 2px 4px black;">{{profileData.name}}</h1>
-
-</div>
-      <div class="spacer" style="width: 248px; height: 100px;"></div>
-
-      <ion-list id="menu-list1">
-        <ion-item class="item-icon-right  side-menu-item" id="menu-list-item1" ui-sref="menu.home" menu-close="">Home
-          <i class="icon ion-home"></i>
-        </ion-item>
-        <ion-item class="item-icon-right  side-menu-item" id="menu-list-item2" ui-sref="menu.createLiveEvent" menu-close="">Live Event
-          <i class="icon ion-android-add"></i>
-        </ion-item>
-        <ion-item class="item-icon-right  side-menu-item" id="menu-list-item3" ui-sref="menu.createSharedEvent" menu-close="">Shared Event
-          <i class="icon ion-android-add"></i>
-        </ion-item>
-
-        <ion-item class="item-icon-right  side-menu-item" id="menu-list-item4" menu-close log-out menu-close="">
-          <i class="icon ion-log-out"></i>
-          Logout
-        </ion-item>
-      </ion-list>
+      <ion-item class="item-icon-right menuItem side-menu-item" id="homeButton" ui-sref="menu.home" menu-close="">
+        Home <i class="icon ion-home"></i>
+      </ion-item>
+      <ion-item class="item-icon-right menuItem side-menu-item" id="liveEventButton" ui-sref="menu.createLiveEvent" menu-close="">
+        New Live Event <i class="icon ion-android-add"></i>
+      </ion-item>
+      <ion-item class="item-icon-right menuItem side-menu-item" id="sharedEventButton" ui-sref="menu.createSharedEvent" menu-close="">
+        New Shared Event <i class="icon ion-android-add"></i>
+      </ion-item>
+      <ion-item class="item-icon-right menuItem side-menu-item" id="logoutButton" ui-sref="menu.home" log-out menu-close="">
+        Log Out <i class="icon ion-log-out"></i>
+      </ion-item>
     </ion-content>
   </ion-side-menu>
 </ion-side-menus>
