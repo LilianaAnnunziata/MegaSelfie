@@ -25,6 +25,21 @@ sfondo{
   height: 130px;
 }
 
+.listItem{
+  background: transparent;
+  border: none;
+}
+
+.list{
+  background: transparent;
+  margin-top: 8px;
+}
+
+.item-complex .item-content, .item-radio .item-content{
+  background-color: rgba(255,255,255,0.4);
+  margin: 4px;
+}
+
 .labels{
   color: darkblue;
 }
