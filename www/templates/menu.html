@@ -9,9 +9,6 @@
     <ion-nav-view name="side-menu21"></ion-nav-view>
   </ion-side-menu-content>
   <ion-side-menu side="left" id="side-menu21">
-    <ion-header-bar class="bar-dark">
-      <div class="title">Menu</div>
-    </ion-header-bar>
     <ion-content padding="false" style="background: url(img/sfondoMenu.jpg)
     no-repeat center;background-size:cover;" class="side-menu-left has-header ">
       <div style="margin: 0px; line-height: 250px; background-color: rgb(232, 235, 239); text-align: center;">
@@ -25,7 +22,6 @@
   <h1 style="font-size:200%; color:white; text-shadow: 2px 2px 4px black;">{{profileData.name}}</h1>
 
 </div>
-
       <div class="spacer" style="width: 248px; height: 100px;"></div>
 
       <ion-list id="menu-list1">
@@ -39,7 +35,7 @@
           <i class="icon ion-android-add"></i>
         </ion-item>
 
-        <ion-item menu-close log-out>
+        <ion-item class="item-icon-right  side-menu-item" id="menu-list-item4" menu-close log-out menu-close="">
           <i class="icon ion-log-out"></i>
           Logout
         </ion-item>

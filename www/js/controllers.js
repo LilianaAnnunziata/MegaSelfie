@@ -74,12 +74,62 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
     }])
 
 
-  .controller('createLiveEventCtrl', ['$scope', '$stateParams', 'dateFilter', '$localStorage', '$state', 'databaseMegaselfie','$q',
-    function ($scope, $stateParams, dateFilter, $localStorage, $state,databaseMegaselfie,$q) {
+  .controller('createLiveEventCtrl', ['$scope', '$stateParams', 'dateFilter', '$localStorage', '$state', 'databaseMegaselfie', '$cordovaGeolocation',
+    function ($scope, $stateParams, dateFilter, $localStorage, $state,databaseMegaselfie, $cordovaGeolocation) {
+
+      var options = {timeout: 10000, enableHighAccuracy: true};
+      $scope.liveEvent = {};
+      $scope.liveEvent.range = 100;
+      $scope.isDisabled = true;
+
+      $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+
+        var latLng = $scope.latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+        var mapOptions = {
+          center: latLng,
+          zoom: 17,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        $scope.circle = new google.maps.Circle({
+          strokeColor: '#FF0000',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#FF0000',
+          fillOpacity: 0.35,
+          map: $scope.map,
+          center: $scope.latLng,
+          radius: 100
+        });
+
+      }, function(error){
+        navigator.notification.alert('Please activate the GPS sensor');
+
+      });
+
+      $scope.slideChange = function (liveEvent) {
+        var range = parseInt(liveEvent.range);
+        if($scope.circle)
+          $scope.circle.setMap(null);
+        $scope.circle = new google.maps.Circle({
+          strokeColor: '#FF0000',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#FF0000',
+          fillOpacity: 0.35,
+          map: $scope.map,
+          center: $scope.latLng,
+          radius: range
+        });
+      };
 
       $scope.startLiveEvent = function (liveEvent) {
-        console.log(liveEvent.name + " " + liveEvent.range);
-/*
+
+        if (liveEvent.name === undefined)
+          navigator.notification.alert('Please enter a name for the event');
+
         navigator.geolocation.getCurrentPosition(function (position) {
           var lat = position.coords.latitude,
             lng = position.coords.longitude,
@@ -107,8 +157,13 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
           var newEventKey =  databaseMegaselfie.createEventMegaselfie(objToSend,coordinate)
 
 
-        });*/
+        });
         $state.go("countdown");
+
+      }
+
+      $scope.activateEventButton= function () {
+        $scope.isDisabled = false;
 
       }
     }
