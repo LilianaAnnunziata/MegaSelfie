@@ -26,13 +26,10 @@
         <div class = "col text-center"><h3 class="textH3">End date</h3><h4>{{obj.end}}</h4></div>
         <div class = "col text-center"><h3 class="textH3">End time</h3><h4>{{obj.timeEnd}}</h4></div>
       </div>
-
-      <img ng-show="imgURI !== undefined" src="{{imgURI}}" width="500" height="500"style="text-align: center">
     </div>
-    <button class="button button-calm  button-block icon ion-camera" ng-click="takePhoto()">Selfie</button>
-    <button ng-show="takeImage" class="button button-calm  button-block icon ion-camera" ng-click="sharePhoto()">Share</button>
-
-    <!-- <a ui-sref="menu.camera" id="eventInfo-button47" class="button button-calm  button-block icon ion-camera"> Selfie</a> -->
-    <a ui-sref="gallery" id="eventInfo-button49" class="button button-calm  button-block icon ion-ios-photos"> Gallery</a>
+    <button class="button button-calm  button-block icon ion-camera" ng-click="takePhoto()"> Take Selfie</button>
+    <a ui-sref="gallery" id="eventInfo-button49" class="button button-calm  button-block icon ion-images"> Show Gallery</a>
+    <button ng-show="takeImage" class="button button-calm  button-block icon ion-share" ng-click="sharePhoto()"> Share Selfie</button>
+    <img ng-show="imgURI !== undefined" src="{{imgURI}}" width=100% style="text-align: center">
   </ion-content>
 </ion-view>

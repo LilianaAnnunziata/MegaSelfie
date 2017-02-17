@@ -24,8 +24,11 @@ angular.module('app', ['ionic', 'app.controllers','camera', 'app.routes', 'app.d
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
 
+    //nascondo lo splashscreen
+    navigator.splashscreen.hide();
+
     //imposto l'autohide della barra dei pulsanti su android
-    window.navigationbar.setUp(true);
+    //window.navigationbar.setUp(true);
     cordova.plugins.diagnostic.requestCameraAuthorization(function(status){
       console.log("Authorization request for camera use was " + (status == cordova.plugins.diagnostic.permissionStatus.GRANTED ? "granted" : "denied"));
     }, function(error){

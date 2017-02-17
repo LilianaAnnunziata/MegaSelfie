@@ -1,19 +1,15 @@
 <ion-view cache-view="false" title="Home" hide-back-button="true" id="page1">
- <ion-content>
+  <ion-content style="background-image: -webkit-linear-gradient(bottom left, #fff  4%, #dfdee4 38%, #87dfff 76%)">
+    <ion-list id="home-list4" class="list">
+      <ion-item ng-repeat="event in eventList" class="item-thumbnail-left listItem" id="home-list-item9" ui-sref="menu.eventInfo" ng-click="goTo('{{event}}')">
+        <img src="{{event.src}}">
+        <h2>{{event.title}}</h2>
+        <div style="color:#565656; font-size:0.8em; white-space:normal;">{{event.description}}
+          <div>start: {{event.start}} {{event.timeStart}}</div>
+          <div>end: {{event.end}} {{event.timeEnd}}</div>
+        </div>
 
- <ion-list id="home-list4">
-    <ion-item ng-repeat="event in eventList"class="item-thumbnail-left" id="home-list-item9"
-              ui-sref="menu.eventInfo" ng-click="goTo('{{event}}')">
-      <img src="{{event.src}}">
-      <h2 >{{event.title}}</h2>
-      <p style="white-space:normal;">{{event.description}}</p>
-
-    </ion-item>
-  </ion-list>
-
-   <button ng-click="coordinate()">Coordinate</button>
-   <button ng-click="all()">all</button>
-
-   <button ng-click="stop()">stop</button>
+      </ion-item>
+    </ion-list>
 </ion-view>
 </ion-content>
