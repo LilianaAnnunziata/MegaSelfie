@@ -181,9 +181,9 @@ angular.module('app.services', [])
   ])
 
 
-  .factory('GeoAlert', ["$localStorage",
-    function ($localStorage) {
-      var interval;
+  .factory('GeoAlert', ["$localStorage","$state","databaseMegaselfie",'$ionicPopup',
+    function ($localStorage,$state,databaseMegaselfie,$ionicPopup) {
+      var interval, alert=false;
       //var duration = 6000;
       //  var processing = false;
       var callback;
@@ -208,6 +208,21 @@ angular.module('app.services', [])
         return deg * (Math.PI / 180)
       }
 
+      function onConfirm(idx,eventObj) {
+        console.log(idx)
+        if(idx){
+          databaseMegaselfie.enrollEvent(eventObj.eventID);
+          console.log("ok")
+          alert=true;
+          $state.go("countdown");
+
+          return;
+        }else {
+          alert = false;
+          console.log("no")
+        }
+      }
+
       function hb() {
         // if(processing) return;
         //  processing = true;
@@ -225,9 +240,28 @@ angular.module('app.services', [])
                 var eventUserRef = window.database.ref().child('events/' + event.eventKey + '/users');
                 console.log("geol "+event.eventKey);
                 eventUserRef.once("value", function (eventUser) {
-                    if (eventUser.val().user === undefined || eventUser.val().user != $localStorage.uid){
-                      console.log("eccomi")
-                      callback(eventObj);
+                  console.log(eventUser.val())
+                    if (!alert && (!eventUser.val() || !eventUser.val().user || eventUser.val().user != $localStorage.uid)){
+                      console.log("eccomi");
+
+                      var confirmPopup = $ionicPopup.confirm({
+                        title: 'Do you want to partecipate to the Event?'+eventObj.title+"\n",
+                        template: 'Are you sure you want to eat this ice cream?'
+                      });
+
+                      confirmPopup.then(function(buttonIndex) {
+                          onConfirm(buttonIndex, eventObj);
+                      });
+                      /*
+                      navigator.notification.confirm(
+                        'Do you want to partecipate to the Event?'+eventObj.title+"\n",
+                        function(buttonIndex){
+                          onConfirm(buttonIndex, eventObj);
+                        },
+                        'Target!',
+                        ['No', 'Yes']
+                      );*/
+                     // callback(eventObj);
                     }
                 });
               })
@@ -239,10 +273,11 @@ angular.module('app.services', [])
       }
 
       return {
-        begin: function (cb) {
-          callback = cb;
+        begin: function () {
+          //callback = cb;
           // interval = window.setInterval(hb, duration);
 
+          alert=false;
           window.database.ref('coordinates/').once("value",
             function (snapshot) {
               snapshot.forEach(function (childSnapshot) {
