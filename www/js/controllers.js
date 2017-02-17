@@ -1,23 +1,16 @@
 //Funzioni con un particolare scopo
-angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-gallery','angular-svg-round-progressbar'])
+angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-gallery', 'angular-svg-round-progressbar'])
 
-  .controller('homeCtrl', ['$scope', '$localStorage', '$firebaseStorage', 'shareData', 'GeoAlert','databaseMegaselfie','$state',
+  .controller('homeCtrl', ['$scope', '$localStorage', '$firebaseStorage', 'shareData', 'GeoAlert', 'databaseMegaselfie', '$state',
     function ($scope, $localStorage, $firebaseStorage, shareData, GeoAlert, databaseMegaselfie, $state) {
 
+      GeoAlert.begin();
 
-    var liveEvent;
+      var liveEvent;
 
       $scope.goTo = function (info) {
         var object = JSON.parse(info);
         shareData.setData(object);
-      }
-
-
-      $scope.coordinate = function () {
-        GeoAlert.begin();
-      }
-      $scope.stop = function () {
-        GeoAlert.end();
       }
 
       var query = window.database.ref('users/' + $localStorage.uid);
@@ -59,15 +52,15 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
     }])
 
 
-  .controller('createLiveEventCtrl', ['$scope', '$stateParams', 'dateFilter', '$localStorage', '$state', 'databaseMegaselfie', '$cordovaGeolocation','shareData',
-    function ($scope, $stateParams, dateFilter, $localStorage, $state,databaseMegaselfie, $cordovaGeolocation,shareData) {
+  .controller('createLiveEventCtrl', ['$scope', '$stateParams', 'dateFilter', '$localStorage', '$state', 'databaseMegaselfie', '$cordovaGeolocation', 'shareData',
+    function ($scope, $stateParams, dateFilter, $localStorage, $state, databaseMegaselfie, $cordovaGeolocation, shareData) {
 
       var options = {timeout: 10000, enableHighAccuracy: true};
       $scope.liveEvent = {};
       $scope.liveEvent.range = 100;
       $scope.isDisabled = true;
 
-      $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+      $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
         var latLng = $scope.latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
@@ -89,14 +82,14 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
           radius: 100
         });
 
-      }, function(error){
+      }, function (error) {
         navigator.notification.alert('Please activate the GPS sensor');
 
       });
 
       $scope.slideChange = function (liveEvent) {
         var range = parseInt(liveEvent.range);
-        if($scope.circle)
+        if ($scope.circle)
           $scope.circle.setMap(null);
         $scope.circle = new google.maps.Circle({
           strokeColor: '#FF0000',
@@ -128,37 +121,37 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
           var coordinate = {latitude: lat, longitude: lng, range: liveEvent.range}
           var img;
           /*html2canvas(document.getElementById("map"), {
-            onrendered: function (canvas) {
+           onrendered: function (canvas) {
 
-             img = canvas.toDataURL()
-              // Convert and download as image
+           img = canvas.toDataURL()
+           // Convert and download as image
 
-              console.log(img)
-              $scope.img = img;
-            }
-          });*/
+           console.log(img)
+           $scope.img = img;
+           }
+           });*/
 
-          var newEventKey = databaseMegaselfie.createEventMegaselfie(objToSend,coordinate,img)
+          var newEventKey = databaseMegaselfie.createEventMegaselfie(objToSend, coordinate, img)
 
           objToSend.eventID = newEventKey;
           objToSend.range = liveEvent.range;
-          console.log(objToSend );
+          console.log(objToSend);
 
           shareData.setData(objToSend);
-       });
+        });
         $state.go("countdown");
       }
 
-      $scope.activateEventButton= function () {
+      $scope.activateEventButton = function () {
         $scope.isDisabled = false;
 
       }
     }
   ])
 
-  .controller('createSharedEventCtrl', ['$scope', 'dateFilter', '$http', '$cordovaCamera','$localStorage', '$state',
-    'databaseMegaselfie','$q',
-    function ($scope, dateFilter, $http, $cordovaCamera, $localStorage, $state,databaseMegaselfie,$q) {
+  .controller('createSharedEventCtrl', ['$scope', 'dateFilter', '$http', '$cordovaCamera', '$localStorage', '$state',
+    'databaseMegaselfie', '$q',
+    function ($scope, dateFilter, $http, $cordovaCamera, $localStorage, $state, databaseMegaselfie, $q) {
 
       $scope.date = dateFilter(new Date(), "dd/MM/yyyy");
 
@@ -191,8 +184,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
           }
           console.log(objToSend);
 
-         databaseMegaselfie.createEventMegaselfie(objToSend,null,$scope.imgURI)
-         $state.go("menu.home");
+          databaseMegaselfie.createEventMegaselfie(objToSend, null, $scope.imgURI)
+          $state.go("menu.home");
         }
         else {
           alert("not valid input");
@@ -301,21 +294,21 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
 
     }])
 
-  .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', '$http','$localStorage','$state','shareData','databaseMegaselfie',
-      function ($scope, $timeout, $cordovaFile, $stateParams, $http,$localStorage, $state,shareData,databaseMegaselfie ) {
+  .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', '$http', '$localStorage', '$state', 'shareData', 'databaseMegaselfie',
+    function ($scope, $timeout, $cordovaFile, $stateParams, $http, $localStorage, $state, shareData, databaseMegaselfie) {
 
-     // var rect = document.getElementById("contentCamera").getBoundingClientRect();
-     // console.log("rect= " + rect.height + " " + rect.width + " " + rect.bottom + " " + rect.left);
+      // var rect = document.getElementById("contentCamera").getBoundingClientRect();
+      // console.log("rect= " + rect.height + " " + rect.width + " " + rect.bottom + " " + rect.left);
       var rect = {x: 30, y: 80, width: 200, height: 200};
-     // cordova.plugins.camerapreview.startCamera(rect, "front", tapEnabled, dragEnabled, toBack)
+      // cordova.plugins.camerapreview.startCamera(rect, "front", tapEnabled, dragEnabled, toBack)
 
       cordova.plugins.camerapreview.startCamera(rect, 'front', true, true, false);
       $scope.onTimeout = function () {
         if ($scope.timer === 0) {
           $scope.$broadcast('timer-stopped', 0);
           $timeout.cancel(mytimeout);
-          cordova.plugins.camerapreview.takePicture({maxWidth:300, maxHeight:300})
-          cordova.plugins.camerapreview.setOnPictureTakenHandler(function(picture) {
+          cordova.plugins.camerapreview.takePicture({maxWidth: 300, maxHeight: 300})
+          cordova.plugins.camerapreview.setOnPictureTakenHandler(function (picture) {
 
             document.getElementById('originalPicture').src = picture[0];
             cordova.plugins.camerapreview.stopCamera();
@@ -329,17 +322,21 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
                   reader.onloadend = function (evt) {
                     var obj = evt.target.result; // this is your Base64 string
                     console.log(shareData.getData().eventID)
-                    databaseMegaselfie.joinEvent(shareData.getData().eventID,obj);
-                   // storage.upload(shareData.getData().eventID + "/", $localStorage.uid, obj);
+                    databaseMegaselfie.joinEvent(shareData.getData().eventID, obj);
+                    // storage.upload(shareData.getData().eventID + "/", $localStorage.uid, obj);
                   };
                   reader.readAsDataURL(file);
                 };
-                var fail = function (evt) {   console.log("Error file")   };
+                var fail = function (evt) {
+                  console.log("Error file")
+                };
 
                 fileEntry.file(win, fail);
               },
               // error callback
-              function (error) { console.log("Errore" + error) }
+              function (error) {
+                console.log("Errore" + error)
+              }
             );
             // databaseMegaselfie.joinEvent($scope.obj.eventID)
             //  storage.upload($scope.obj.eventID + "/", $localStorage.uid, $scope.imgURI);
@@ -380,7 +377,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
       $scope.$on('timer-stopped', function (event, remaining) {
         if (remaining === 0) {
           $scope.done = true;
-         ;
+          ;
 
           //  cordova.plugins.camerapreview.stopCamera();
           //  window.plugins.CameraPictureBackground.takePicture(success, error, options);
@@ -422,23 +419,18 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
 //camera
 
 
-
-      $scope.uscita=function(){
+      $scope.uscita = function () {
         cordova.plugins.camerapreview.stopCamera()
         $state.go('menu.createLiveEvent');
       }
 
 
-
-            //   cordova.plugins.camerapreview.stopCamera
-
+      //   cordova.plugins.camerapreview.stopCamera
 
 
+    }
 
-
-      }
-
-    ])
+  ])
 
   .controller('eventEditCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
     // You can include any angular dependencies as parameters for this function
@@ -449,8 +441,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
     }])
 
 
-  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'shareData', '$localStorage','databaseMegaselfie',
-    function ($scope, $cordovaCamera, shareData, $localStorage,databaseMegaselfie) {
+  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'shareData', '$localStorage', 'databaseMegaselfie',
+    function ($scope, $cordovaCamera, shareData, $localStorage, databaseMegaselfie) {
 
       $scope.obj = shareData.getData();
       console.log(shareData.getData())
@@ -466,7 +458,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives','ionic', 'ion-g
       };
 
       $scope.sharePhoto = function () {
-        databaseMegaselfie.joinEvent($scope.obj.eventID,$scope.imgURI)
+        databaseMegaselfie.joinEvent($scope.obj.eventID, $scope.imgURI)
       }
     }])
 
