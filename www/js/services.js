@@ -29,7 +29,7 @@ angular.module('app.services', [])
         return $firebaseObject(refDB);
       }
 
-      this.createEventMegaselfie = function (objToSend, coordinates,img) {
+      this.createEventMegaselfie = function (objToSend, coordinates, img) {
 
         //restituisce la nuova chiave dell'evento
         var newEventKey = database.child('events').push().key;
@@ -47,14 +47,14 @@ angular.module('app.services', [])
         console.log("databaseMegaselfie:CreateEvent " + newEventKey)
         database.update(updates);
 
-        if(img)
-          storage.upload(newEventKey + '/', "icon.png",img);
+        if (img)
+          storage.upload(newEventKey + '/', "icon.png", img);
 
         return newEventKey;
       }
 
       /*Partecipa all'evento=> aggiungo in events/idEvento/pictures*/
-      this.joinEvent = function (eventID,img) {
+      this.joinEvent = function (eventID, img) {
 
         //inserisce la foto in pictures
         var updates = {};
@@ -107,7 +107,7 @@ angular.module('app.services', [])
 
 
         var uploadTask = refStore.put(dataURItoBlob(imgURI, 'image/jpeg'));
-      // var uploadTask = refStore.put(imgURI);
+        // var uploadTask = refStore.put(imgURI);
 
         console.log("EKDKFF")
         uploadTask.on('state_changed', function (snapshot) {
@@ -183,13 +183,14 @@ angular.module('app.services', [])
   ])
 
 
-  .factory('GeoAlert', ["$localStorage","$state","databaseMegaselfie",'$ionicPopup',
-    function ($localStorage,$state,databaseMegaselfie,$ionicPopup) {
-      var interval, alert=false;
+  .factory('GeoAlert', ["$localStorage", "$state", "databaseMegaselfie", '$ionicPopup', 'firebase',
+    function ($localStorage, $state, databaseMegaselfie, $ionicPopup, firebase) {
+      var interval, alert = false;
       //var duration = 6000;
       //  var processing = false;
       var callback;
       var eventList = [];
+      var ref=window.database.ref();
 
       // Credit: http://stackoverflow.com/a/27943/52160
       function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -210,16 +211,16 @@ angular.module('app.services', [])
         return deg * (Math.PI / 180)
       }
 
-      function onConfirm(idx,eventObj) {
+      function onConfirm(idx, eventObj) {
         console.log(idx)
-        if(idx){
-          databaseMegaselfie.enrollEvent(eventObj.eventID);
+        if (idx) {
+          //databaseMegaselfie.enrollEvent(eventObj.eventID);
           console.log("ok")
-          alert=true;
-          $state.go("countdown");
+          alert = true;
+          //$state.go("countdown");
 
           return;
-        }else {
+        } else {
           alert = false;
           console.log("no")
         }
@@ -228,50 +229,100 @@ angular.module('app.services', [])
       function hb() {
         // if(processing) return;
         //  processing = true;
-        navigator.geolocation.getCurrentPosition(function (position) {
-          // processing = false;
-          //itera su tutti gli eventi nella lista
-          eventList.forEach(function (event) {
-            var dist = getDistanceFromLatLonInKm(event.lat, event.long, position.coords.latitude, position.coords.longitude);
-            if (dist <= event.minDistance) {
-              var eventRef = window.database.ref().child('events/' + event.eventKey);
-              //itera su tutti gli eventi
-              eventRef.once("value", function (eventSnapshot) {
-                var eventObj = eventSnapshot.val();
-                eventObj.eventID = event.eventKey;
-                var eventUserRef = window.database.ref().child('events/' + event.eventKey + '/users');
-                console.log("geol "+event.eventKey);
-                eventUserRef.once("value", function (eventUser) {
-                  console.log(eventUser.val())
-                    if (!alert && (!eventUser.val() || !eventUser.val().user || eventUser.val().user != $localStorage.uid)){
-                      console.log("eccomi");
+          var eventDistMin = [];
 
-                      var confirmPopup = $ionicPopup.confirm({
-                        title: 'Do you want to partecipate to the Event?'+eventObj.title+"\n",
-                        template: 'Are you sure you want to eat this ice cream?'
-                      });
+          navigator.geolocation.getCurrentPosition(function (position) {
+            console.log("3")
+            // processing = false;
+            //itera su tutti gli eventi nella lista
+            eventList.forEach(function (event) {
+              console.log("4")
 
-                      confirmPopup.then(function(buttonIndex) {
-                          onConfirm(buttonIndex, eventObj);
-                      });
-                      /*
-                      navigator.notification.confirm(
-                        'Do you want to partecipate to the Event?'+eventObj.title+"\n",
-                        function(buttonIndex){
-                          onConfirm(buttonIndex, eventObj);
-                        },
-                        'Target!',
-                        ['No', 'Yes']
-                      );*/
-                     // callback(eventObj);
-                    }
+              var dist = getDistanceFromLatLonInKm(event.lat, event.long, position.coords.latitude, position.coords.longitude);
+
+              if (dist <= event.minDistance) {
+                //itera su tutti gli eventi
+                console.log("5")
+                var id = event.eventKey;
+                var promise = ref.child('events/' + id + "/" + "users").once('value').then(function (eventUser) {
+                  console.log("6")
+                  if (!eventUser.val() || !eventUser.val().user || eventUser.val().user != $localStorage.uid) {
+                    console.log(eventUser.val())
+
+                    var confirmPopup = $ionicPopup.confirm({
+                      title: 'Do you want to partecipate to the Event?' +"\n",
+                      template: 'Start Date and Time:'
+                    });
+
+                    confirmPopup.then(function (buttonIndex) {
+                      console.log("7")
+                      onConfirm(buttonIndex);
+                    });
+                    return eventUser.val();
+                  }
+                }, function (error) {
+                  console.error(error);
                 });
-              })
-            }
+                eventDistMin.push(promise);
+              }
+            })
           });
-        },function (err) {
-          console.log(err)
-        })
+        return firebase.Promise.all(eventDistMin);
+      }
+
+      function loadMeetings(city, state) {
+        //$('#meetingsTable').empty();
+        return ref.child('states').child(state).child(city).once('value').then(function (snapshot) {
+          var reads = [];
+          snapshot.forEach(function (childSnapshot) {
+            var id = childSnapshot.key();
+            var promise = ref.child('meetings').child(id).once('value').then(function (snap) {
+              return snap.val();
+            }, function (error) {
+              // The Promise was rejected.
+              console.error(error);
+            });
+            reads.push(promise);
+          });
+          return Promise.all(reads);
+        }, function (error) {
+          // The Promise was rejected.
+          console.error(error);
+        }).then(function (values) {
+          console.log('all done', values); // [snap, snap, snap]
+        });
+      }
+
+      function getEvent() {
+        var eventUserRef = window.database.ref().child('events/' + event.eventKey + '/users');
+        console.log("geol " + event.eventKey);
+        eventUserRef.once("value").then(function (eventUser) {
+          console.log("6")
+
+          console.log(eventUser.val())
+          if (!alert && (!eventUser.val() || !eventUser.val().user || eventUser.val().user != $localStorage.uid)) {
+            console.log("7eccomi");
+
+            /* var confirmPopup = $ionicPopup.confirm({
+             title: 'Do you want to partecipate to the Event?'+eventObj.title+"\n",
+             template: 'Are you sure you want to eat this ice cream?'
+             });
+
+             confirmPopup.then(function(buttonIndex) {
+             onConfirm(buttonIndex, eventObj);
+             });
+
+             navigator.notification.confirm(
+             'Do you want to partecipate to the Event?'+eventObj.title+"\n",
+             function(buttonIndex){
+             onConfirm(buttonIndex, eventObj);
+             },
+             'Target!',
+             ['No', 'Yes']
+             );*/
+            // callback(eventObj);
+          }
+        });
       }
 
       return {
@@ -279,7 +330,7 @@ angular.module('app.services', [])
           //callback = cb;
           // interval = window.setInterval(hb, duration);
 
-          alert=false;
+          alert = false;
           window.database.ref('coordinates/').once("value",
             function (snapshot) {
               snapshot.forEach(function (childSnapshot) {
@@ -288,12 +339,16 @@ angular.module('app.services', [])
                 obj.lat = childSnapshot.val().latitude;
                 obj.long = childSnapshot.val().longitude;
                 obj.minDistance = childSnapshot.val().range;
-
+                console.log("1")
                 eventList.push(obj);
 
               });
             }).then(function () {
-            hb();
+            console.log("2")
+
+            hb().then(function (prova) {
+              console.log("8")
+            });
           })
         },
         end: function () {
