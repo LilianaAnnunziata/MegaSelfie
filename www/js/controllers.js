@@ -329,20 +329,15 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
   .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', '$http', '$localStorage', '$state', 'shareData', 'databaseMegaselfie',
     function ($scope, $timeout, $cordovaFile, $stateParams, $http, $localStorage, $state, shareData, databaseMegaselfie) {
 
-      // var rect = document.getElementById("contentCamera").getBoundingClientRect();
-      // console.log("rect= " + rect.height + " " + rect.width + " " + rect.bottom + " " + rect.left);
-      var rect = {x: 0, y: 0, width: window.screen.width, height: window.screen.height - 44};
-      // cordova.plugins.camerapreview.startCamera(rect, "front", tapEnabled, dragEnabled, toBack)
-
+      var rect = {x: 0, y: 0, width: window.screen.width, height: window.screen.height};
       cordova.plugins.camerapreview.startCamera(rect, 'front', true, true, true);
       $scope.onTimeout = function () {
         if ($scope.timer === 0) {
           $scope.$broadcast('timer-stopped', 0);
           $timeout.cancel(mytimeout);
 
-
-          cordova.plugins.camerapreview.takePicture({maxWidth: window.screen.width, maxHeight: window.screen.height})
-          cordova.plugins.camerapreview.setOnPictureTakenHandler(function (picture) {
+          cordova.plugins.camerapreview.takePicture({maxWidth:window.screen.width, maxHeight:window.screen.height})
+          cordova.plugins.camerapreview.setOnPictureTakenHandler(function(picture) {
 
             document.getElementById('originalPicture').src = picture[0];
             cordova.plugins.camerapreview.stopCamera();
@@ -354,8 +349,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
                   var reader = new FileReader();
                   reader.onloadend = function (evt) {
                     var obj = evt.target.result; // this is your Base64 string
-                    databaseMegaselfie.joinEvent(shareData.getData().eventID, obj);
-                    // storage.upload(shareData.getData().eventID + "/", $localStorage.uid, obj);
+                    databaseMegaselfie.joinEvent(shareData.getData().eventID, obj, 'live');
                   };
                   reader.readAsDataURL(file);
                 };
@@ -369,40 +363,18 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
                 console.log("Errore" + error)
               }
             );
-            // databaseMegaselfie.joinEvent($scope.obj.eventID)
-            //  storage.upload($scope.obj.eventID + "/", $localStorage.uid, $scope.imgURI);
-
-            //$scope.imgURI = picture[0];
           });
           return;
         }
         $scope.timer--;
         mytimeout = $timeout($scope.onTimeout, 1000);
       };
-      // functions to control the timer
-      // starts the timer
+      // functions to control the timer starts the timer
       $scope.startTimer = function () {
         mytimeout = $timeout($scope.onTimeout, 1000);
         $scope.started = true;
       };
 
-      // stops and resets the current timer
-      $scope.stopTimer = function (closingModal) {
-        if (closingModal != true) {
-          $scope.$broadcast('timer-stopped', $scope.timer);
-        }
-        $scope.timer = $scope.timeForTimer;
-        $scope.started = false;
-        $scope.paused = false;
-        $timeout.cancel(mytimeout);
-      };
-      // pauses the timer
-      $scope.pauseTimer = function () {
-        $scope.$broadcast('timer-stopped', $scope.timer);
-        $scope.started = false;
-        $scope.paused = true;
-        $timeout.cancel(mytimeout);
-      };
 
       // triggered, when the timer stops, you can do something here, maybe show a visual indicator or vibrate the device
       $scope.$on('timer-stopped', function (event, remaining) {
@@ -445,7 +417,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
       $scope.uscita = function () {
         cordova.plugins.camerapreview.stopCamera()
-        $state.go('menu.createLiveEvent');
+        $state.go('menu.home');
       }
     }
 
@@ -490,7 +462,6 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
       });
 
       var lynk;
-      var count;
       $scope.prova = function () {
 //ottenere numero foto ed eventi
         /*
