@@ -4,9 +4,19 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
   .controller('homeCtrl', ['$scope', '$localStorage', '$firebaseStorage', 'shareData', 'GeoAlert', 'databaseMegaselfie', '$state',
     function ($scope, $localStorage, $firebaseStorage, shareData, GeoAlert, databaseMegaselfie, $state) {
 
-      GeoAlert.begin();
 
-      var liveEvent;
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(storePosition);
+      } else {
+        alert("GPS is off")
+      }
+
+      function storePosition(position) {
+        $localStorage.lat = position.coords.latitude;
+        $localStorage.long = position.coords.longitude;
+        GeoAlert.begin();
+      }
+
 
       $scope.goTo = function (info) {
         var object = JSON.parse(info);
@@ -21,7 +31,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
         snapshot.forEach(function (childSnapshot) {
           // recupero nome dell'evento
           var eventKey = childSnapshot.key;
-          console.log(eventKey)
+          //console.log(eventKey)
           //creazione obj da inserire nella lista
           var obj = {};
           //recupero ruolo da users
@@ -120,25 +130,38 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
             }
           };
           var coordinate = {latitude: lat, longitude: lng, range: liveEvent.range}
-          var img;
-          /*html2canvas(document.getElementById("map"), {
-           onrendered: function (canvas) {
 
-           img = canvas.toDataURL()
-           // Convert and download as image
+          var imgSrc = cordova.file.applicationDirectory + 'www/img/liveIcon.png';
 
-           console.log(img)
-           $scope.img = img;
-           }
-           });*/
+          window.resolveLocalFileSystemURL(imgSrc, function (fileEntry) {
+              // success callback; generates the FileEntry object needed to convert to Base64 string convert to Base64 string
+              function win(file) {
+                var reader = new FileReader();
+                reader.onloadend = function (evt) {
+                  var img = evt.target.result; // this is your Base64 string
 
-          var newEventKey = databaseMegaselfie.createEventMegaselfie(objToSend, coordinate, img)
+                  var newEventKey = databaseMegaselfie.createEventMegaselfie(objToSend, coordinate, img)
 
-          objToSend.eventID = newEventKey;
-          objToSend.range = liveEvent.range;
-          console.log(objToSend);
+                  objToSend.eventID = newEventKey;
+                  objToSend.range = liveEvent.range;
+                  console.log(objToSend);
 
-          shareData.setData(objToSend);
+                  shareData.setData(objToSend);
+                };
+                reader.readAsDataURL(file);
+              };
+              var fail = function (evt) {
+                console.log("Error file")
+              };
+              fileEntry.file(win, fail);
+            },
+            // error callback
+            function (error) {
+              console.log("Errore" + error)
+            }
+          );
+
+
         });
         $state.go("countdown");
       }
@@ -151,8 +174,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
   ])
 
   .controller('createSharedEventCtrl', ['$scope', 'dateFilter', '$http', '$cordovaCamera', '$localStorage', '$state',
-    'databaseMegaselfie', '$q',
-    function ($scope, dateFilter, $http, $cordovaCamera, $localStorage, $state, databaseMegaselfie, $q) {
+    'databaseMegaselfie',
+    function ($scope, dateFilter, $http, $cordovaCamera, $localStorage, $state, databaseMegaselfie) {
 
       $scope.date = dateFilter(new Date(), "dd/MM/yyyy");
 
@@ -164,11 +187,11 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           var startTime = dateFilter(event.startTime, "HH:mm");
           var endTime = dateFilter(event.endTime, "HH:mm");
           var description = event.description;
-          if(!description)
+          if (!description)
             description = "";
-          if(!startTime)
+          if (!startTime)
             startTime = "00:00";
-          if(!endTime)
+          if (!endTime)
             endTime = "00:00";
 
           var objToSend = {
@@ -186,7 +209,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
           databaseMegaselfie.createEventMegaselfie(objToSend, null, $scope.imgURI);
           console.log($localStorage);
-          setTimeout(function(){ $state.go("menu.home");
+          setTimeout(function () {
+            $state.go("menu.home");
           }, 2500);
         }
         else
@@ -293,13 +317,13 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
     }])
 
-  .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', '$http','$localStorage','$state','shareData','databaseMegaselfie',
-      function ($scope, $timeout, $cordovaFile, $stateParams, $http,$localStorage, $state,shareData,databaseMegaselfie ) {
+  .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', '$http', '$localStorage', '$state', 'shareData', 'databaseMegaselfie',
+    function ($scope, $timeout, $cordovaFile, $stateParams, $http, $localStorage, $state, shareData, databaseMegaselfie) {
 
-     // var rect = document.getElementById("contentCamera").getBoundingClientRect();
-     // console.log("rect= " + rect.height + " " + rect.width + " " + rect.bottom + " " + rect.left);
-      var rect = {x: 0, y: 0, width: window.screen.width, height: window.screen.height-44};
-     // cordova.plugins.camerapreview.startCamera(rect, "front", tapEnabled, dragEnabled, toBack)
+      // var rect = document.getElementById("contentCamera").getBoundingClientRect();
+      // console.log("rect= " + rect.height + " " + rect.width + " " + rect.bottom + " " + rect.left);
+      var rect = {x: 0, y: 0, width: window.screen.width, height: window.screen.height - 44};
+      // cordova.plugins.camerapreview.startCamera(rect, "front", tapEnabled, dragEnabled, toBack)
 
       cordova.plugins.camerapreview.startCamera(rect, 'front', true, true, true);
       $scope.onTimeout = function () {
@@ -308,15 +332,15 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           $timeout.cancel(mytimeout);
 
 
-          cordova.plugins.camerapreview.takePicture({maxWidth:window.screen.width, maxHeight:window.screen.height})
-          cordova.plugins.camerapreview.setOnPictureTakenHandler(function(picture) {
+          cordova.plugins.camerapreview.takePicture({maxWidth: window.screen.width, maxHeight: window.screen.height})
+          cordova.plugins.camerapreview.setOnPictureTakenHandler(function (picture) {
 
             document.getElementById('originalPicture').src = picture[0];
             cordova.plugins.camerapreview.stopCamera();
 
             var img = document.getElementById('originalPicture').src;
             window.resolveLocalFileSystemURL(img, function (fileEntry) {
-              // success callback; generates the FileEntry object needed to convert to Base64 string convert to Base64 string
+                // success callback; generates the FileEntry object needed to convert to Base64 string convert to Base64 string
                 function win(file) {
                   var reader = new FileReader();
                   reader.onloadend = function (evt) {
