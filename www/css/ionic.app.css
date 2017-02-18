@@ -9062,7 +9062,7 @@ a.button {
     padding: 0; }
 
 .row + .row {
-  margin-top: -5px;
+  margin-top: 15px;
   padding-top: 0; }
 
 .col {

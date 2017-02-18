@@ -126,7 +126,10 @@ html{
 .invisibile{
   background-color: transparent
 }
+.gallery-view  {
+margin-right: 10px;
 
+}
 .gallery-view  .image-container{
   background: url(file:///android_asset/www/img/Pin2.png) no-repeat;
   background-size:100%;
