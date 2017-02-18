@@ -159,16 +159,15 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
       $scope.submitData = function (event) {
 
-        if ($scope.createSharedEventForm.$valid && $scope.imgURI != undefined) {
+        if ($scope.createSharedEventForm.$valid && $scope.imgURI) {
           var startTime = dateFilter(event.startTime, "HH:mm");
           var endTime = dateFilter(event.endTime, "HH:mm");
           var description = event.description;
-          console.log(description);
-          if (description == undefined)
+          if(!description)
             description = "";
-          if (startTime == null)
+          if(!startTime)
             startTime = "00:00";
-          if (endTime == null)
+          if(!endTime)
             endTime = "00:00";
 
           var objToSend = {
@@ -180,16 +179,15 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
             TimeEnd: endTime,
             users: {
               admin: $localStorage.uid
-            },
+            }
           }
-          console.log(objToSend);
 
-          databaseMegaselfie.createEventMegaselfie(objToSend, null, $scope.imgURI)
-          $state.go("menu.home");
+          databaseMegaselfie.createEventMegaselfie(objToSend, null, $scope.imgURI);
+          setTimeout(function(){ $state.go("menu.home");
+          }, 2500);
         }
-        else {
-          alert("not valid input");
-        }
+        else
+          alert("Input not valid");
       }
 
       $scope.choosePhoto = function () {
@@ -221,11 +219,9 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           }).then(function (result) {
             $scope.profileData = result.data;
           }, function (error) {
-            alert("There was a problem getting your profile.  Check the logs for details.");
+            alert("There was a problem getting your profile");
             console.log(error);
           });
-        } else {
-          // alert("aasdasd");
         }
       };
     }])

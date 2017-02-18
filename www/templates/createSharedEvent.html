@@ -25,28 +25,24 @@
 
       <label class="item item-input form-transparent" id="createSharedEvent-input11" name="startDate">
         <span class="input-label">Start Date:</span>
-        <input ng-model="event.startDate" type="date" required placeholder="01.01.2017">
+        <input ng-model="event.startDate" type="date" required placeholder="">
       </label>
-      <p ng-show="(event.startDate | date:'dd/MM/yyyy') < date">
-        Start Date Error
-      </p>
+      <p ng-show="(event.startDate | date:'dd/MM/yyyy') < date">Start Date Error</p>
 
       <label class="item item-input form-transparent" id="createSharedEvent-input14" name="startTime">
         <span class="input-label">Start Time:</span>
-        <input ng-model="event.startTime" type="time" required placeholder="00:00">
+        <input ng-model="event.startTime" type="time" required placeholder="">
       </label>
 
       <label class="item item-input form-transparent" id="createSharedEvent-input13" name="endDate">
         <span class="input-label">End Date:</span>
-        <input ng-model="event.endDate" type="date" required placeholder="01.01.2017">
+        <input ng-model="event.endDate" type="date" required placeholder="">
       </label>
-      <p ng-show="event.startDate > event.endDate">
-        End Date < Start Date
-      </p>
+      <p ng-show="event.startDate > event.endDate">End Date < Start Date</p>
 
       <label class="item item-input form-transparent" id="createSharedEvent-input12" name="endTime">
         <span class="input-label">End Time:</span>
-        <input ng-model="event.endTime" type="time" required placeholder="23:50">
+        <input ng-model="event.endTime" type="time" required placeholder="">
       </label>
       <div ng-show="createSharedEventForm.startDate < createSharedEventForm.endDate">StartDate > endDate</div>
       <button type="submit" ng-click="submitted=true;"  id="createSharedEvent-button10" class="button button-calm  button-block icon ion-android-add"> Create</button>

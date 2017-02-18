@@ -1,7 +1,7 @@
 /* Empty. Add your own CSS if you like */
 .submitted .ng-invalid{
-  border: 3px solid;
-  border-color: red;
+  border: 1px solid;
+  border-color: lightcoral;
 }
 
 html{
@@ -40,13 +40,14 @@ html{
 
 .list{
   background: transparent;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 .item-complex .item-content, .item-radio .item-content{
-  background-color: rgba(255,255,255,0.4);
+  background-color: rgba(255,255,255,0.65);
   margin: 4px 6px;
   box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+  border-radius: 5px;
 }
 
 .labels{

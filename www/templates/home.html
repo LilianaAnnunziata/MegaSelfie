@@ -1,6 +1,5 @@
-<ion-view cache-view="false" title="Home" hide-back-button="true" id="page1" >
-  <ion-content style="background-image: -webkit-linear-gradient(bottom left, #fff  4%, #dfdee4 38%, #87dfff 76%)">
-    <div style="background: url(img/sfondoProva2.png) no-repeat center;  background-position: bottom;background-size:150%; height:100%">
+<ion-view cache-view="false" title="Selfie Events" hide-back-button="true" id="page1" style="background: url(img/sfondoProva2.png) no-repeat center bottom;background-size:150%; height:100%">
+  <ion-content style="background-image: -webkit-linear-gradient(bottom left, transparent  13%, #dfdee4 38%, #87dfff 76%)">
       <ion-list id="home-list4" class="list">
         <ion-item ng-repeat="event in eventList" class="item-thumbnail-left listItem" id="home-list-item9" ui-sref="menu.eventInfo" ng-click="goTo('{{event}}')">
           <img src="{{event.src}}">
@@ -12,6 +11,5 @@
 
         </ion-item>
       </ion-list>
-    </div>
 </ion-view>
 </ion-content>
