@@ -3,14 +3,7 @@
     <button class="button icon ion-arrow-left-c" ng-click="uscita()"></button>
   </ion-nav-buttons>
   <ion-content scroll="false">
-    <div ng-if="done" class="text-center">
-      <div class="row">
-        <button class="button customButton button-block icon-right ion-images" ui-sref="gallery">
-          View Gallery
-        </button>
-      </div>
-    </div>
-    <img ng-if="done" id="originalPicture" style="height: 100%; margin-top: -67px;"/>
+    <img ng-if="done" id="originalPicture" style="height: 0;"/>
     <div class="progress-wrapper" style="color:white; text-shadow: 0px 2px 10px black;" ng-init="selectTimer(10)"
          ng-hide="done">
       <div class="progress">

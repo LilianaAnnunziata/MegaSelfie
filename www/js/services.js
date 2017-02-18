@@ -54,16 +54,15 @@ angular.module('app.services', [])
       }
 
       /*Partecipa all'evento=> aggiungo in events/idEvento/pictures*/
-      this.joinEvent = function (eventID, img) {
+      this.joinEvent = function (eventID, img, type) {
 
         //inserisce la foto in pictures
         var updates = {};
         updates['/events/' + eventID + "/" + "pictures/" + $localStorage.uid] = $localStorage.uid;
-        //updates['/users/' + $localStorage.uid + '/' + newEventKey ] = userRole;
 
         database.update(updates);
         //Caricamento immagine
-        storage.upload(eventID + "/", $localStorage.uid, img);
+        storage.upload(eventID + "/", $localStorage.uid, img, type);
       }
 
       /*iscrizione all'evento=> aggiunta in events/idEvento/users*/
@@ -71,15 +70,12 @@ angular.module('app.services', [])
         var updates = {};
         updates['/events/' + eventID + "/" + "users"] = {user: $localStorage.uid};
         updates['/users/' + $localStorage.uid + '/' + eventID] = {role: 'user'};
-
-        console.log(updates)
-        database.update(updates);
       }
     }
   ])
 
-  .service('storage', [
-    function () {
+  .service('storage', ['$state',
+    function ($state) {
 
       var storage = firebase.storage();
 
@@ -102,7 +98,7 @@ angular.module('app.services', [])
          });
          return urlToReturn;*/
       }
-      this.upload = function (path, filename, imgURI) {
+      this.upload = function (path, filename, imgURI, type) {
         var refStore = storage.ref(path + filename);
 
 
@@ -130,6 +126,8 @@ angular.module('app.services', [])
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           var downloadURL = uploadTask.snapshot.downloadURL;
           navigator.notification.alert("Picture successfully uploaded!");
+          if(type == 'live')
+            $state.go("gallery")
         });
       }
     }])
