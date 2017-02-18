@@ -1,7 +1,7 @@
 <ion-view cache-view="false" title="Selfie Events" hide-back-button="true" id="page1" style="background: url(img/sfondoProva2.png) no-repeat center bottom;background-size:150%; height:100%">
   <ion-content class="backgroundGradient">
       <ion-list id="home-list4" class="list">
-        <ion-item ng-repeat="event in eventList" class="item-thumbnail-left listItem" id="home-list-item9" ui-sref="eventInfo" ng-click="goTo('{{event}}')">
+        <ion-item ng-repeat="event in eventList | orderBy:'timestamp'" class="item-thumbnail-left listItem" id="home-list-item9" ui-sref="eventInfo" ng-click="goTo('{{event}}')">
           <img src="{{event.src}}">
           <h2>{{event.title}}</h2>
           <div style="color:#565656; font-size:0.8em; margin-bottom: -10px; white-space:normal;">{{event.description}}
