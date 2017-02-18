@@ -4,7 +4,7 @@
         <ion-item ng-repeat="event in eventList" class="item-thumbnail-left listItem" id="home-list-item9" ui-sref="menu.eventInfo" ng-click="goTo('{{event}}')">
           <img src="{{event.src}}">
           <h2>{{event.title}}</h2>
-          <div style="color:#565656; font-size:0.8em; white-space:normal;">{{event.description}}
+          <div style="color:#565656; font-size:0.8em; margin-bottom: -10px; white-space:normal;">{{event.description}}
             <div>created by: <span style="font-weight: bold">{{event.createdBy}}</span></div>
             <div>start: <span style="font-weight: bold">{{event.start}} {{event.timeStart}}</span></div>
             <div>end: <span style="font-weight: bold">{{event.end}} {{event.timeEnd}}</span></div>

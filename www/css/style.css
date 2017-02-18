@@ -54,6 +54,13 @@ html{
   color: darkblue;
 }
 
+.customButton{
+  background: rgba(255,255,255,0.6);
+  border: 1px solid white;
+  box-shadow: 0px 0px 10px black;
+  font-weight: bold;
+}
+
 .animationchangeColor{
   -webkit-animation-name: example; /* Safari 4.0 - 8.0 */
   -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
