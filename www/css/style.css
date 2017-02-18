@@ -89,6 +89,10 @@ html{
   box-shadow: 0 0 20px 4px rgba(255,255,255,0.8);
 }
 
+.scroll{
+  height: 100%;
+}
+
 .animationchangeColor{
   -webkit-animation-name: example; /* Safari 4.0 - 8.0 */
   -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
