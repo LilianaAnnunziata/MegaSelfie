@@ -129,12 +129,9 @@ angular.module('app.services', [])
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           var downloadURL = uploadTask.snapshot.downloadURL;
-          alert("Upload Complete!")
+          navigator.notification.alert("Picture successfully uploaded!");
         });
-
       }
-
-
     }])
 
   .service('shareData', function () {

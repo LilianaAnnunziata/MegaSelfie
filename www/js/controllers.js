@@ -298,7 +298,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
      // var rect = document.getElementById("contentCamera").getBoundingClientRect();
      // console.log("rect= " + rect.height + " " + rect.width + " " + rect.bottom + " " + rect.left);
-      var rect = {x: 30, y: 80, width: window.screen.width, height: window.screen.height};
+      var rect = {x: 0, y: 0, width: window.screen.width, height: window.screen.height-44};
      // cordova.plugins.camerapreview.startCamera(rect, "front", tapEnabled, dragEnabled, toBack)
 
       cordova.plugins.camerapreview.startCamera(rect, 'front', true, true, true);
@@ -315,14 +315,12 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
             cordova.plugins.camerapreview.stopCamera();
 
             var img = document.getElementById('originalPicture').src;
-            window.resolveLocalFileSystemURL(img,
-              function (fileEntry) { // success callback; generates the FileEntry object needed to convert to Base64 string
-                // convert to Base64 string
+            window.resolveLocalFileSystemURL(img, function (fileEntry) {
+              // success callback; generates the FileEntry object needed to convert to Base64 string convert to Base64 string
                 function win(file) {
                   var reader = new FileReader();
                   reader.onloadend = function (evt) {
                     var obj = evt.target.result; // this is your Base64 string
-                    console.log(shareData.getData().eventID)
                     databaseMegaselfie.joinEvent(shareData.getData().eventID, obj);
                     // storage.upload(shareData.getData().eventID + "/", $localStorage.uid, obj);
                   };
@@ -331,7 +329,6 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
                 var fail = function (evt) {
                   console.log("Error file")
                 };
-
                 fileEntry.file(win, fail);
               },
               // error callback
@@ -383,8 +380,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
         }
       });
-      // UI
-      // When you press a timer button this function is called
+      // UI When you press a timer button this function is called
       $scope.selectTimer = function (val) {
         $scope.timeForTimer = val;
         $scope.timer = val
@@ -414,19 +410,10 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
         }
       };
 
-
-//camera
-
-
       $scope.uscita = function () {
         cordova.plugins.camerapreview.stopCamera()
         $state.go('menu.createLiveEvent');
       }
-
-
-      //   cordova.plugins.camerapreview.stopCamera
-
-
     }
 
   ])

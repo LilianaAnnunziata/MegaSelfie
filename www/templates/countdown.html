@@ -1,65 +1,32 @@
 <ion-view title="Countdown" id="page8" class="invisibile">
-
-  <ion-nav-buttons side='left' class="button-clear" >
+  <ion-nav-buttons side='left' class="button-clear">
     <button class="button icon ion-arrow-left-c" ng-click="uscita()"></button>
   </ion-nav-buttons>
-
-  <ion-nav-buttons side="right" class="has-header">
-    <button class="button icon ion-close" ng-click="uscita()"></button>
-  </ion-nav-buttons>
-
-  <ion-content  >
-
-    <!-- Here you have the timer itself with the progress and the time on the middle, notice the css addded to align it see style.css -->
-
-    <div class="bordo">
-      <p><img id="originalPicture"/></p>
-
+  <ion-content scroll="false">
+    <div ng-if="done" class="text-center">
+      <div class="row">
+        <button class="button customButton button-block icon-right ion-images" ui-sref="gallery">
+          View Gallery
+        </button>
+      </div>
     </div>
-    <div class="progress-wrapper" ng-init="selectTimer(10)" ng-hide="done">
+    <img ng-if="done" id="originalPicture" style="height: 100%; margin-top: -77px;"/>
+    <div class="progress-wrapper" style="color:white; text-shadow: 0px 2px 10px black;" ng-init="selectTimer(10)"
+         ng-hide="done">
       <div class="progress">
         {{humanizeDurationTimer(timer,'s')}}
       </div>
-      <div round-progress max="timeForTimer" current="timer" clockwise="false" color="#40A6FA" rounded="true" class="text-center" stroke="7" ></div>
+      <div round-progress max="timeForTimer" current="timer" clockwise="false" color="#40A6FA" rounded="true"
+           class="text-center" stroke="7"></div>
     </div>
-    <!-- Here you have the different states that the buttons take during the process -->
-    <!-- Before starting -->
-    <div ng-if="!started && !paused && !done">
+    <div ng-if="!started && !paused && !done" style="margin-top: 50%">
       <div class="row">
         <div class="col">
-          <button class="button button-outline button-balanced button-rounded button-block" ng-click='startTimer()'>
-            Start
+          <button class="button customButton button-rounded button-block icon-right ion-ios-play-outline" ng-click='startTimer()'>
+            Start Countdown
           </button>
         </div>
       </div>
     </div>
-
-    <!-- Once it is paused -->
-    <div ng-if="!started && paused && !done">
-      <div class="row">
-        <div class="col">
-          <button class="button button-outline button-balanced button-rounded button-block" ng-click='startTimer()'>
-            Continue
-          </button>
-        </div>
-        <div class="col">
-          <button class="button button-outline button-assertive button-rounded button-block" ng-click='stopTimer()'>
-            Reset
-          </button>
-        </div>
-      </div>
-    </div>
-    <!-- When it has completed -->
-    <div ng-if="done" class="text-center">
-      <div class="row">
-        <button class="button button-outline button-balanced button-rounded button-block" ui-sref="gallery">
-          Done
-        </button>
-      </div>
-
-    </div>
-  </ion-content>
-
-
   </ion-content>
 </ion-view>
