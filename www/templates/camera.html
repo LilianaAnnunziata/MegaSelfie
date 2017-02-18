@@ -2,36 +2,31 @@
 <html>
 <body>
 <script>
-  navigator.getUserMedia = navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia;
-
+  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
   if (navigator.getUserMedia) {
-    navigator.getUserMedia({ audio: true, video: { width: 1280, height: 720 } },
-      function(stream) {
+    navigator.getUserMedia({audio: true, video: {width: 1280, height: 720}},
+      function (stream) {
         var video = document.querySelector('video');
         video.srcObject = stream;
-        video.onloadedmetadata = function(e) {
+        video.onloadedmetadata = function (e) {
           video.play();
         };
       },
-      function(err) {
+      function (err) {
         console.log("The following error occurred: " + err.name);
       }
     );
-  } else {
+  } else
     console.log("getUserMedia not supported");
-  }
 </script>
-eccomi
-  <ng-camera
-    type="photo"
-    enabled="true"
-    width="640"
-    height="480"
-    countdown="3"
-    ng-model="media"
-    capture="callback(media)"
-    capture-message="Go!"></ng-camera>
+<ng-camera
+  type="photo"
+  enabled="true"
+  width="640"
+  height="480"
+  countdown="3"
+  ng-model="media"
+  capture="callback(media)"
+  capture-message="Go!"></ng-camera>
 </body>
 </html>

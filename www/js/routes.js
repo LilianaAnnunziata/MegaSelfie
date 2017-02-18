@@ -85,14 +85,10 @@ angular.module('app.routes', [])
     controller: 'eventEditCtrl'
   })
 
-  .state('menu.eventInfo', {
+  .state('eventInfo', {
     url: '/page11',
-    views: {
-      'side-menu21': {
-        templateUrl: 'templates/eventInfo.html',
-        controller: 'eventInfoCtrl'
-      }
-    }
+    templateUrl: 'templates/eventInfo.html',
+    controller: 'eventInfoCtrl'
   })
 
   .state('gallery', {

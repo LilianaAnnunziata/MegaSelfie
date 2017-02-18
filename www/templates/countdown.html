@@ -10,7 +10,7 @@
         </button>
       </div>
     </div>
-    <img ng-if="done" id="originalPicture" style="height: 100%; margin-top: -77px;"/>
+    <img ng-if="done" id="originalPicture" style="height: 100%; margin-top: -67px;"/>
     <div class="progress-wrapper" style="color:white; text-shadow: 0px 2px 10px black;" ng-init="selectTimer(10)"
          ng-hide="done">
       <div class="progress">
@@ -19,7 +19,7 @@
       <div round-progress max="timeForTimer" current="timer" clockwise="false" color="#40A6FA" rounded="true"
            class="text-center" stroke="7"></div>
     </div>
-    <div ng-if="!started && !paused && !done" style="margin-top: 50%">
+    <div ng-if="!started && !paused && !done" style="margin-top: 60%">
       <div class="row">
         <div class="col">
           <button class="button customButton button-rounded button-block icon-right ion-ios-play-outline" ng-click='startTimer()'>

@@ -8,11 +8,10 @@
     <ion-nav-view name="side-menu21"></ion-nav-view>
   </ion-side-menu-content>
   <ion-side-menu side="left" id="side-menu21">
-    <ion-content padding="false" scroll="false" style="background: url(img/sfondoMenu.jpg) no-repeat center; background-size: cover;" class="side-menu-left">
+    <ion-content padding="false" scroll="false" style="top: 0; background: url(img/sfondoMenu.jpg) no-repeat center; background-size: cover;" class="side-menu-left">
 
       <div align="middle" style="margin-bottom: 15%; margin-top: 20%">
-        <img ng-src="{{profileData.picture.data.url}}"
-             style="border-radius: 50%;" height="150" width="150">
+        <img class="loginImage" ng-src="{{profileData.picture.data.url}}" height="150" width="150">
         <h1 style="font-size: 200%; color: white; text-shadow: 0px 5px 5px #0d3e50">{{profileData.name}}</h1>
       </div>
 

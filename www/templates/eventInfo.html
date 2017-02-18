@@ -1,35 +1,31 @@
 <ion-view title="Event Info" id="page11">
-
- <ion-nav-back-button class="button-clear">
-    <i class="ion-arrow-left-c"></i> Back
-  </ion-nav-back-button>
-
-  <ion-nav-buttons side="left" class="has-header">
+  <ion-nav-buttons side="left">
+    <button class="button icon ion-android-arrow-back" ui-sref="menu.home"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
     <button ng-show="obj.role === 'admin'" class="button icon ion-edit" ng-click="edit()"></button>
   </ion-nav-buttons>
-
   <div class="spacer" style="width: 100%; height: 3%;"></div>
-
-  <ion-content  padding="true" class="has-header" style="background-image: -webkit-linear-gradient(bottom left, #fff  4%, #dfdee4 38%, #87dfff 76%)">
+  <ion-content padding="true" class="backgroundGradient" scroll="false">
     <div id="eventInfoId" style="text-align: center;">
       <h1 class="eventTitle animated bounceInDown">{{obj.title}}</h1>
       <h4>{{obj.description}}</h4>
-
       <img class="eventIcon" ng-show="obj.src !== undefined" src="{{obj.src}}">
-
-      <div class = "row">
-        <div class = "col text-center"><h3 class="textH3">Start date</h3><h4>{{obj.start}}</h4></div>
-        <div class = "col text-center"><h3 class="textH3">Start time</h3><h4>{{obj.timeStart}}</h4></div>
+      <div class="row">
+        <div class="col text-center"><h3 class="textH3">Start date</h3><h4>{{obj.start}}</h4></div>
+        <div class="col text-center"><h3 class="textH3">Start time</h3><h4>{{obj.timeStart}}</h4></div>
       </div>
-
-      <div class = "row">
-        <div class = "col text-center"><h3 class="textH3">End date</h3><h4>{{obj.end}}</h4></div>
-        <div class = "col text-center"><h3 class="textH3">End time</h3><h4>{{obj.timeEnd}}</h4></div>
+      <div class="row">
+        <div class="col text-center"><h3 class="textH3">End date</h3><h4>{{obj.end}}</h4></div>
+        <div class="col text-center"><h3 class="textH3">End time</h3><h4>{{obj.timeEnd}}</h4></div>
       </div>
     </div>
     <button class="button button-calm  button-block icon ion-camera" ng-click="takePhoto()"> Take Selfie</button>
-    <a ui-sref="gallery" id="eventInfo-button49" class="button button-calm  button-block icon ion-images"> Show Gallery</a>
-    <button ng-show="takeImage" class="button button-calm  button-block icon ion-share" ng-click="sharePhoto()"> Share Selfie</button>
+    <a ui-sref="gallery" id="eventInfo-button49" class="button button-calm  button-block icon ion-images"> Show
+      Gallery</a>
+    <button ng-show="takeImage" class="button button-calm  button-block icon ion-share" ng-click="sharePhoto()"> Share
+      Selfie
+    </button>
     <img ng-show="imgURI !== undefined" src="{{imgURI}}" width=100% style="text-align: center">
   </ion-content>
 </ion-view>
