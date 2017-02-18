@@ -126,3 +126,25 @@ html{
 .invisibile{
   background-color: transparent
 }
+
+.gallery-view  .image-container{
+  background: url(file:///android_asset/www/img/Pin2.png) no-repeat;
+  background-size:100%;
+  border:none;
+  margin: 0 0.6%;
+}
+
+
+.gallery-view  .image-container img{
+  position: relative;
+  overflow: hidden;
+
+  top: -9999px;
+  bottom: -9999px;
+  left: -9999px;
+  right: -9999px;
+
+  width:86%;
+  height:68%
+
+}
