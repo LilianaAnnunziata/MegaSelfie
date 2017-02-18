@@ -5,8 +5,9 @@
           <img src="{{event.src}}">
           <h2>{{event.title}}</h2>
           <div style="color:#565656; font-size:0.8em; white-space:normal;">{{event.description}}
-            <div>start: {{event.start}} {{event.timeStart}}</div>
-            <div>end: {{event.end}} {{event.timeEnd}}</div>
+            <div>created by: <span style="font-weight: bold">{{event.createdBy}}</span></div>
+            <div>start: <span style="font-weight: bold">{{event.start}} {{event.timeStart}}</span></div>
+            <div>end: <span style="font-weight: bold">{{event.end}} {{event.timeEnd}}</span></div>
           </div>
 
         </ion-item>

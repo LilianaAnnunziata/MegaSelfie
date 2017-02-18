@@ -32,10 +32,10 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
           eventRef.on("value", function (snapshot) {
             var eventObj = snapshot.val();
-            console.log(eventKey)
             obj.eventID = eventKey;
             obj.title = eventObj.title;
             obj.description = eventObj.description;
+            obj.createdBy = eventObj.createdBy;
             obj.start = eventObj.start;
             obj.timeStart = eventObj.TimeStart;
             obj.end = eventObj.end;
@@ -111,6 +111,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
             today = new Date();
 
           var objToSend = {
+            createdBy: $localStorage.profileData.name,
             title: liveEvent.name,
             start: dateFilter(today, "dd/MM/yyyy"),
             TimeStart: dateFilter(today, "HH:mm"),
@@ -171,6 +172,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
             endTime = "00:00";
 
           var objToSend = {
+            createdBy: $localStorage.profileData.name,
             title: event.nameSharedEvent,
             description: description,
             start: dateFilter(event.startDate, "dd/MM/yyyy"),
@@ -183,6 +185,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           }
 
           databaseMegaselfie.createEventMegaselfie(objToSend, null, $scope.imgURI);
+          console.log($localStorage);
           setTimeout(function(){ $state.go("menu.home");
           }, 2500);
         }
@@ -217,7 +220,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
               format: "json"
             }
           }).then(function (result) {
-            $scope.profileData = result.data;
+            $localStorage.profileData = $scope.profileData = result.data;
           }, function (error) {
             alert("There was a problem getting your profile");
             console.log(error);
