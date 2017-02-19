@@ -144,9 +144,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
                   objToSend.eventID = newEventKey;
                   objToSend.range = liveEvent.range;
-                  console.log(objToSend);
-
                   shareData.setData(objToSend);
+                  $state.go("countdown");
                 };
                 reader.readAsDataURL(file);
               };
@@ -160,10 +159,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
               console.log("Errore" + error)
             }
           );
-
-
         });
-        $state.go("countdown");
       }
 
       $scope.activateEventButton = function () {
