@@ -4,6 +4,11 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
   .controller('homeCtrl', ['$scope', '$localStorage', '$firebaseStorage', 'shareData', 'GeoAlert', 'databaseMegaselfie', '$state',
     function ($scope, $localStorage, $firebaseStorage, shareData, GeoAlert, databaseMegaselfie, $state) {
 
+      $scope.order = 'timestamp';
+
+      $scope.active = function(x) {
+        return x == $scope.order ? 'active' : '';
+      }
 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(storePosition);
@@ -50,6 +55,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
             obj.timeStart = eventObj.TimeStart;
             obj.end = eventObj.end;
             obj.timeEnd = eventObj.TimeEnd;
+            obj.timestamp = eventObj.timestamp;
             var eventStorageRef = window.storage.ref(eventKey + "/" + "icon.png");
             var storageFire = $firebaseStorage(eventStorageRef);
             storageFire.$getDownloadURL().then(function (imgSrc) {
@@ -183,6 +189,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           var startTime = dateFilter(event.startTime, "HH:mm");
           var endTime = dateFilter(event.endTime, "HH:mm");
           var description = event.description;
+          var statData = dateFilter(event.startDate, "dd/MM/yyyy");
+          var endData = dateFilter(event.endDate, "dd/MM/yyyy");
           if (!description)
             description = "";
           if (!startTime)
@@ -190,14 +198,20 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           if (!endTime)
             endTime = "00:00";
 
+          var d = new Date(dateFilter(event.endDate, "MM/dd/yyyy") +" "+endTime);
+          var n = d.getTime();
+
+          console.log(d +" "+n);
+
           var objToSend = {
             createdBy: $localStorage.profileData.name,
             title: event.nameSharedEvent,
             description: description,
-            start: dateFilter(event.startDate, "dd/MM/yyyy"),
+            start: statData,
             TimeStart: startTime,
-            end: dateFilter(event.endDate, "dd/MM/yyyy"),
+            end: endData,
             TimeEnd: endTime,
+            timestamp: n,
             users: {
               admin: $localStorage.uid
             }
@@ -250,9 +264,9 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
     }])
 
   .controller('loginCtrl', ['$scope', '$stateParams', '$firebaseObject',
-    '$cordovaOauth', '$firebaseAuth', '$state', '$localStorage',
+    '$cordovaOauth', '$firebaseAuth', '$state', '$localStorage','databaseMegaselfie',
     function ($scope, $stateParams, $firebaseObject, $cordovaOauth,
-              $firebaseAuth, $state, $localStorage) {
+              $firebaseAuth, $state, $localStorage,databaseMegaselfie) {
       if ($localStorage.uid)
         $state.go("menu.home");
       else {
@@ -270,16 +284,9 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
               //Se utente non esiste
               if (snapshot.val() === null) {
-                refDBUsers.set({
-                  event1: {
-                    role: "user"
-                  }
-                });
 
-                refDB.child("events/event1/users/")
-                var updates = {'events/event1/users/user': $localStorage.uid};
-                console.log(updates);
-                refDB.update(updates);
+                databaseMegaselfie.enrollEvent('event1')
+
 
                 $state.go("menu.home");
 

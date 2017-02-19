@@ -66,8 +66,10 @@ angular.module('app.services', [])
       /*iscrizione all'evento=> aggiunta in events/eventKey/users; events/eventKey */
       this.enrollEvent = function (eventID) {
         var updates = {};
-        updates['/events/' + eventID + "/" + "users"] = {user: $localStorage.uid};
+        updates['/events/' + eventID + "/" + "users/" + $localStorage.uid] = 'user' ;
         updates['/users/' + $localStorage.uid + '/' + eventID] = {role: 'user'};
+
+        database.update(updates);
       }
     }
   ])
@@ -164,8 +166,8 @@ angular.module('app.services', [])
   ])
 
 
-  .factory('GeoAlert', ["$localStorage", "$state", "databaseMegaselfie", '$ionicPopup', 'firebase',
-    function ($localStorage, $state, databaseMegaselfie, $ionicPopup, firebase) {
+  .factory('GeoAlert', ["$localStorage", "$state", "databaseMegaselfie", 'shareData', 'firebase',
+    function ($localStorage, $state, databaseMegaselfie, shareData, firebase) {
 
       var eventList = [];
 
@@ -206,7 +208,9 @@ angular.module('app.services', [])
               eventObj.eventID = event.eventKey;
 
               //Se l'utente non è iscritto all'evento
-              if (!eventObj.users || !eventObj.users.user || eventObj.users.user != $localStorage.uid) {
+
+              if (!eventObj.users  || (!eventObj.users[$localStorage.uid] &&
+                eventObj.users.admin != $localStorage.uid)) {
 
                 if (!cantConfirm)
                   conf = confirm('Do you want to partecipate to the Event?' + eventObj.title);
@@ -214,6 +218,7 @@ angular.module('app.services', [])
                 if (conf) {
                   cantConfirm = true;
                   //iscrivi utente all'evento
+                  shareData.setData(eventObj);
                   databaseMegaselfie.enrollEvent(eventObj.eventID);
                   $state.go("countdown");
                 }
