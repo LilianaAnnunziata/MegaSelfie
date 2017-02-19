@@ -60,8 +60,6 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
             var timestamp = new Date(endDateSplit[2],endDateSplit[1],endDateSplit[0],endTimeSplit[1],endTimeSplit[0]).getTime();
 
-            console.log(new Date(endDateSplit[2],endDateSplit[1],endDateSplit[0],endTimeSplit[1],endTimeSplit[0]))
-
             obj.eventID = eventKey;
             obj.title = eventObj.title;
             obj.description = eventObj.description;
@@ -331,6 +329,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
     var mytimeout;
     $scope.event = shareData.getData();
+    console.log($scope.event)
     $scope.uid = $localStorage.uid;
 
 
@@ -447,6 +446,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
   .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'shareData', '$localStorage', 'databaseMegaselfie',
     function ($scope, $cordovaCamera, shareData, $localStorage, databaseMegaselfie) {
+
+     // $scope.date = dateFilter(new Date(), "dd/MM/yyyy");
 
       $scope.obj = shareData.getData();
       console.log(shareData.getData());
