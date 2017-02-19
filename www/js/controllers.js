@@ -328,7 +328,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
     $scope.uid = $localStorage.uid;
 
 
-      var query = window.database.ref('events/' + eventID + "/" + "countdownStarted");
+      var query = window.database.ref('events/' + $scope.event.eventID + "/" + "countdownStarted");
       query.on("value", function (snapshot) {
         console.log(snapshot);
         if(snapshot){
