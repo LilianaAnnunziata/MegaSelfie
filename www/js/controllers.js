@@ -323,6 +323,20 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
   .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', '$http', '$localStorage', '$state', 'shareData', 'databaseMegaselfie',
     function ($scope, $timeout, $cordovaFile, $stateParams, $http, $localStorage, $state, shareData, databaseMegaselfie) {
 
+    var mytimeout;
+    $scope.event = shareData.getData();
+    $scope.uid = $localStorage.uid;
+
+
+      var query = window.database.ref('events/' + eventID + "/" + "countdownStarted");
+      query.on("value", function (snapshot) {
+        console.log(snapshot);
+        if(snapshot){
+          mytimeout = $timeout($scope.onTimeout, 1000);
+          $scope.started = true;
+        }
+      });
+
       var rect = {x: 0, y: 0, width: window.screen.width, height: window.screen.height};
       cordova.plugins.camerapreview.startCamera(rect, 'front', true, true, true);
       $scope.onTimeout = function () {
@@ -343,7 +357,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
                   var reader = new FileReader();
                   reader.onloadend = function (evt) {
                     var obj = evt.target.result; // this is your Base64 string
-                    databaseMegaselfie.joinEvent(shareData.getData().eventID, obj, 'live');
+                    databaseMegaselfie.joinEvent($scope.event.eventID, obj, 'live');
                   };
                   reader.readAsDataURL(file);
                 };
@@ -367,15 +381,14 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
       $scope.startTimer = function () {
         mytimeout = $timeout($scope.onTimeout, 1000);
         $scope.started = true;
-      };
 
+        databaseMegaselfie.startLiveEvent($scope.event.eventID);
+      };
 
       // triggered, when the timer stops, you can do something here, maybe show a visual indicator or vibrate the device
       $scope.$on('timer-stopped', function (event, remaining) {
         if (remaining === 0) {
           $scope.done = true;
-          //  cordova.plugins.camerapreview.stopCamera();
-          //  window.plugins.CameraPictureBackground.takePicture(success, error, options);
 
         }
       });
