@@ -24,14 +24,18 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
 
       $scope.goTo = function (info) {
-        var object = JSON.parse(info);
-        shareData.setData(object);
+        var objectEvent = JSON.parse(info);
+        shareData.setData(objectEvent);
+        //if(objectEvent.startDate)
+          $state.go("eventInfo");
+        //else
+          //$state.go("gallery");
       }
 
       var query = window.database.ref('users/' + $localStorage.uid);
       //var query = window.database.ref('users/K5fyK0CzdsOxDsSp5xDI3lM5YCB2/events');
       $scope.eventList = [];
-      query.on("value", function (snapshot) {
+      query.once("value", function (snapshot) {
         //iterazione su tutti gli eventi dell'utente
         snapshot.forEach(function (childSnapshot) {
           // recupero nome dell'evento
@@ -45,17 +49,30 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           var eventRef = window.database.ref('events/' + eventKey);
           //accedo a campi dell'evento
 
-          eventRef.on("value", function (snapshot) {
+          eventRef.once("value", function (snapshot) {
+
             var eventObj = snapshot.val();
+
+            var start = eventObj.start ? eventObj.start.split(" ") : undefined;
+            var end = eventObj.end.split(" ");
+            var endDateSplit = end[0].split("/");
+            var endTimeSplit = end[1].split(":")
+
+            var timestamp = new Date(endDateSplit[2],endDateSplit[1],endDateSplit[0],endTimeSplit[1],endTimeSplit[0]).getTime();
+
+            console.log(new Date(endDateSplit[2],endDateSplit[1],endDateSplit[0],endTimeSplit[1],endTimeSplit[0]))
+
             obj.eventID = eventKey;
             obj.title = eventObj.title;
             obj.description = eventObj.description;
             obj.createdBy = eventObj.createdBy;
-            obj.start = eventObj.start;
-            obj.timeStart = eventObj.TimeStart;
-            obj.end = eventObj.end;
-            obj.timeEnd = eventObj.TimeEnd;
-            obj.timestamp = eventObj.timestamp;
+            if(start) {
+              obj.startDate = start[0];
+              obj.startTime = start[1];
+            }
+            obj.endDate = end[0];
+            obj.endTime = end[1];
+            obj.timestamp = timestamp;
             var eventStorageRef = window.storage.ref(eventKey + "/" + "icon.png");
             var storageFire = $firebaseStorage(eventStorageRef);
             storageFire.$getDownloadURL().then(function (imgSrc) {
@@ -129,8 +146,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           var objToSend = {
             createdBy: $localStorage.profileData.name,
             title: liveEvent.name,
-            start: dateFilter(today, "dd/MM/yyyy"),
-            TimeStart: dateFilter(today, "HH:mm"),
+            end: dateFilter(today, "dd/MM/yyyy HH:mm"),
             users: {
               admin: $localStorage.uid
             }
@@ -186,32 +202,22 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
       $scope.submitData = function (event) {
 
         if ($scope.createSharedEventForm.$valid && $scope.imgURI) {
-          var startTime = dateFilter(event.startTime, "HH:mm");
-          var endTime = dateFilter(event.endTime, "HH:mm");
+          var startTime = event.startTime || "00:00";
+          var endTime = event.endTime || "00:00";
+
+          var start = dateFilter(event.startDate, "dd/MM/yyyy") + " " + dateFilter(startTime, "HH:mm");
+          var end =dateFilter(event.endDate, "dd/MM/yyyy") +" " + dateFilter(endTime, "HH:mm");
+
           var description = event.description;
-          var statData = dateFilter(event.startDate, "dd/MM/yyyy");
-          var endData = dateFilter(event.endDate, "dd/MM/yyyy");
           if (!description)
             description = "";
-          if (!startTime)
-            startTime = "00:00";
-          if (!endTime)
-            endTime = "00:00";
-
-          var d = new Date(dateFilter(event.endDate, "MM/dd/yyyy") +" "+endTime);
-          var n = d.getTime();
-
-          console.log(d +" "+n);
 
           var objToSend = {
             createdBy: $localStorage.profileData.name,
             title: event.nameSharedEvent,
             description: description,
-            start: statData,
-            TimeStart: startTime,
-            end: endData,
-            TimeEnd: endTime,
-            timestamp: n,
+            start: start,
+            end: end,
             users: {
               admin: $localStorage.uid
             }
@@ -330,8 +336,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
       var query = window.database.ref('events/' + $scope.event.eventID + "/" + "countdownStarted");
       query.on("value", function (snapshot) {
-        console.log(snapshot);
-        if(snapshot){
+        console.log(snapshot.val());
+        if(snapshot.val()){
           mytimeout = $timeout($scope.onTimeout, 1000);
           $scope.started = true;
         }
@@ -443,7 +449,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
     function ($scope, $cordovaCamera, shareData, $localStorage, databaseMegaselfie) {
 
       $scope.obj = shareData.getData();
-      console.log(shareData.getData())
+      console.log(shareData.getData());
 
       $scope.takeImage = false;
       $scope.takePhoto = function () {
