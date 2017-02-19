@@ -198,7 +198,7 @@ angular.module('app.services', [])
 
       function hb() {
         var conf, cantConfirm;
-
+console.log("hb")
         //itera su tutti gli eventi nella lista
         eventList.forEach(function (event) {
 
@@ -237,9 +237,10 @@ angular.module('app.services', [])
       return {
         begin: function () {
           eventList = [];
-          window.database.ref('coordinates/').once("value",
+          window.database.ref('coordinates/').on("value",
             function (snapshot) {
               snapshot.forEach(function (childSnapshot) {
+                console.log("foerec")
                 var obj = {}
                 obj.eventKey = childSnapshot.key;
                 obj.lat = childSnapshot.val().latitude;
@@ -249,9 +250,8 @@ angular.module('app.services', [])
                 eventList.push(obj);
 
               });
-            }).then(function () {
-            hb()
-          })
+              hb();
+            })
         }
       };
   }]);
