@@ -330,8 +330,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
       var query = window.database.ref('events/' + $scope.event.eventID + "/" + "countdownStarted");
       query.on("value", function (snapshot) {
-        console.log(snapshot);
-        if(snapshot){
+        console.log(snapshot.val());
+        if(snapshot.val()){
           mytimeout = $timeout($scope.onTimeout, 1000);
           $scope.started = true;
         }
