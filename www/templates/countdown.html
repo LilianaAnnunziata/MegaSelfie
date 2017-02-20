@@ -15,7 +15,7 @@
     <div ng-if="!started && !paused && !done" style="margin-top: 60%">
       <div class="row">
         <div class="col">
-          <button ng-show="event.users.admin == uid" class="button customButton button-rounded button-block icon-right ion-ios-play-outline" ng-click='startTimer()'>
+          <button ng-show="event.users.admin == uid || event.role =='admin'" class="button customButton button-rounded button-block icon-right ion-ios-play-outline" ng-click='startTimer()'>
             Start Countdown
           </button>
         </div>

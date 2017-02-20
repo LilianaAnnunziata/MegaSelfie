@@ -75,6 +75,8 @@ angular.module('app.services', [])
       this.startLiveEvent = function (eventID) {
         var updates = {};
         updates['/events/' + eventID +'/countdownStarted'] = true ;
+        updates['/events/' + eventID +'/closed'] = true ;
+
         database.update(updates);
       }
     }
@@ -237,7 +239,7 @@ console.log("hb")
       return {
         begin: function () {
           eventList = [];
-          window.database.ref('coordinates/').on("value",
+          window.database.ref('coordinates/').once("value",
             function (snapshot) {
               snapshot.forEach(function (childSnapshot) {
                 console.log("foerec")
@@ -249,9 +251,10 @@ console.log("hb")
                 console.log("1")
                 eventList.push(obj);
 
-              });
-              hb();
-            })
+              })
+            }).then(function () {
+            hb();
+          })
         }
       };
   }]);
