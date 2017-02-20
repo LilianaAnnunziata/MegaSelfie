@@ -23,7 +23,7 @@
     <button ng-show="obj.startDate!==undefined" class="button button-calm  button-block icon ion-camera" ng-click="takePhoto()"> Take Selfie</button>
 
     <a ui-sref="gallery" id="eventInfo-button49" class="button button-calm  button-block icon ion-images"> Show Gallery</a>
-    <a ng-show="obj.role == 'admin' && obj.startDate ===undefined" ui-sref="countdown" id="" class="button button-calm  button-block icon ion-play"> Start Countdown</a>
+    <a ng-show="obj.startDate === undefined && obj.closed === undefined" ui-sref="countdown" id="" class="button button-calm  button-block icon ion-play"> Go to Countdown</a>
     <button ng-show="takeImage" class="button button-calm  button-block icon ion-share" ng-click="sharePhoto()"> Share Selfie </button>
     <img ng-show="imgURI !== undefined" src="{{imgURI}}" width=100% style="text-align: center">
   </ion-content>

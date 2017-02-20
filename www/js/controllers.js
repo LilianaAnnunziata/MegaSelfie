@@ -71,6 +71,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
             obj.endDate = end[0];
             obj.endTime = end[1];
             obj.timestamp = timestamp;
+            obj.closed = eventObj.closed;
+            console.log(obj.closed)
             var eventStorageRef = window.storage.ref(eventKey + "/" + "icon.png");
             var storageFire = $firebaseStorage(eventStorageRef);
             storageFire.$getDownloadURL().then(function (imgSrc) {
@@ -333,15 +335,16 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
     $scope.uid = $localStorage.uid;
 
 
+    if(($scope.event.users && $scope.event.users.admin != $scope.uid) || ($scope.event.role  && $scope.event.role !='admin')) {
       var query = window.database.ref('events/' + $scope.event.eventID + "/" + "countdownStarted");
       query.on("value", function (snapshot) {
         console.log(snapshot.val());
-        if(snapshot.val()){
+        if (snapshot.val()) {
           mytimeout = $timeout($scope.onTimeout, 1000);
           $scope.started = true;
         }
       });
-
+    }
       var rect = {x: 0, y: 0, width: window.screen.width, height: window.screen.height};
       cordova.plugins.camerapreview.startCamera(rect, 'front', true, true, true);
       $scope.onTimeout = function () {

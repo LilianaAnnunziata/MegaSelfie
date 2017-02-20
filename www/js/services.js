@@ -75,6 +75,8 @@ angular.module('app.services', [])
       this.startLiveEvent = function (eventID) {
         var updates = {};
         updates['/events/' + eventID +'/countdownStarted'] = true ;
+        updates['/events/' + eventID +'/closed'] = true ;
+
         database.update(updates);
       }
     }
