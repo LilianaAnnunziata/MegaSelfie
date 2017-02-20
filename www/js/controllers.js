@@ -56,9 +56,9 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
             var start = eventObj.start ? eventObj.start.split(" ") : undefined;
             var end = eventObj.end.split(" ");
             var endDateSplit = end[0].split("/");
-            var endTimeSplit = end[1].split(":")
+            var endTimeSplit = end[1].split(":");
 
-            var timestamp = new Date(endDateSplit[2],endDateSplit[1],endDateSplit[0],endTimeSplit[0],endTimeSplit[1]).getTime();
+            var timestamp = new Date(endDateSplit[2],endDateSplit[1]-1,endDateSplit[0],endTimeSplit[0],endTimeSplit[1]).getTime();
 
             obj.eventID = eventKey;
             obj.title = eventObj.title;
@@ -443,17 +443,15 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
     // TIP: Access Route Parameters for your page via $stateParams.parameterName
     function ($scope, $stateParams) {
 
-
     }])
 
 
-  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'shareData', '$localStorage', 'databaseMegaselfie',
-    function ($scope, $cordovaCamera, shareData, $localStorage, databaseMegaselfie) {
+  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'shareData', '$localStorage', 'databaseMegaselfie', 'dateFilter',
+    function ($scope, $cordovaCamera, shareData, $localStorage, databaseMegaselfie, dateFilter) {
 
-     // $scope.date = dateFilter(new Date(), "dd/MM/yyyy");
+      $scope.timestamp = new Date().getTime();
 
       $scope.obj = shareData.getData();
-      console.log(shareData.getData());
 
       $scope.takeImage = false;
       $scope.takePhoto = function () {
@@ -467,7 +465,22 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
       $scope.sharePhoto = function () {
         databaseMegaselfie.joinEvent($scope.obj.eventID, $scope.imgURI)
-      }
+      };
+      $scope.shareLink = function () {
+        var options = {
+          message: 'share the link with you friends.', // not supported on some apps (Facebook, Instagram)
+          subject: 'MegaSelfie', // fi. for email
+          url: 'megaselfie.com/events?eventId='+$scope.obj.eventID
+        };
+        var onSuccess = function(result) {
+          console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
+          console.log("Shared to app: " + result.app); // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
+        }
+        var onError = function(msg) {
+          console.log("Sharing failed with message: " + msg);
+        }
+        window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+      };
     }])
 
 

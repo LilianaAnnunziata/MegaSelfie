@@ -31,6 +31,13 @@
   <allow-intent href="https://*/*"/>
   <access origin="*"/>
   <access origin="*"/>
+
+  <universal-links>
+    <host name="megaselfie.com" event="redirectToSharedEvent">
+      <path url="/events" />
+    </host>
+  </universal-links>
+
   <platform name="android">
     <icon src="resources/android/icon/drawable-ldpi-icon.png" density="ldpi"/>
     <icon src="resources/android/icon/drawable-mdpi-icon.png" density="mdpi"/>
