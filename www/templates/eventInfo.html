@@ -11,7 +11,7 @@
       <h1 class="eventTitle animated bounceInDown">{{obj.title}}</h1>
       <h4>{{obj.description}}</h4>
       <img class="eventIcon" ng-show="obj.src !== undefined" src="{{obj.src}}">
-      <div class="row">
+      <div ng-show="obj.startDate !== undefined" class="row">
         <div class="col text-center"><h3 class="textH3">Start date</h3><h4>{{obj.startDate}}</h4></div>
         <div class="col text-center"><h3 class="textH3">Start time</h3><h4>{{obj.startTime}}</h4></div>
       </div>
