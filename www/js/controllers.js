@@ -58,7 +58,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
             var endDateSplit = end[0].split("/");
             var endTimeSplit = end[1].split(":")
 
-            var timestamp = new Date(endDateSplit[2],endDateSplit[1],endDateSplit[0],endTimeSplit[1],endTimeSplit[0]).getTime();
+            var timestamp = new Date(endDateSplit[2],endDateSplit[1],endDateSplit[0],endTimeSplit[0],endTimeSplit[1]).getTime();
 
             obj.eventID = eventKey;
             obj.title = eventObj.title;
