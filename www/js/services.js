@@ -80,7 +80,6 @@ angular.module('app.services', [])
         database.update(updates);
       }
       this.getSharedEvent = function (eventID) {
-        console.log(eventID);
         var obj = {};
         var eventStorageRef = window.storage.ref(eventID + "/" + "icon.png");
         var storageFire = $firebaseStorage(eventStorageRef);
@@ -106,7 +105,7 @@ angular.module('app.services', [])
             obj.endTime = end[1];
             shareData.setData(obj);
           }).then(function () {
-            var confirmed = confirm('Do you want to partecipate to the event ' + obj.title + '?');
+            var confirmed = confirm('Do you want to participate to "'+ obj.title+'"?');
             if(confirmed) {
               var updates = {};
               updates['/events/' + eventID + "/" + "users/" + $localStorage.uid] = 'user' ;
@@ -272,7 +271,7 @@ angular.module('app.services', [])
                 eventObj.users.admin != $localStorage.uid)) {
 
                 if (!cantConfirm)
-                  conf = confirm('Do you want to partecipate to the Event?' + eventObj.title);
+                  conf = confirm('The Selfie event "' + eventObj.title+'" is in your area. Do you want to participate?');
 
                 if (conf) {
                   cantConfirm = true;
