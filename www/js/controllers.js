@@ -4,10 +4,14 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
   .controller('homeCtrl', ['$scope', '$localStorage', '$firebaseStorage', 'shareData', 'GeoAlert', 'databaseMegaselfie', '$state',
     function ($scope, $localStorage, $firebaseStorage, shareData, GeoAlert, databaseMegaselfie, $state) {
 
-      $scope.order = 'timestamp';
-
-      $scope.active = function(x) {
-        return x == $scope.order ? 'active' : '';
+      $scope.sortType = 'timestamp'; // set the default sort type
+      $scope.sortReverse = false;
+      // $scope.order = 'timestamp';
+      $scope.change = function (type, reverse) {
+        console.log(type)
+        console.log(reverse)
+        $scope.sortReverse = !reverse;
+        $scope.sortType = type;
       }
 
       if (navigator.geolocation) {
@@ -27,9 +31,9 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
         var objectEvent = JSON.parse(info);
         shareData.setData(objectEvent);
         //if(objectEvent.startDate)
-          $state.go("eventInfo");
+        $state.go("eventInfo");
         //else
-          //$state.go("gallery");
+        //$state.go("gallery");
       }
 
       var query = window.database.ref('users/' + $localStorage.uid);
@@ -58,13 +62,13 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
             var endDateSplit = end[0].split("/");
             var endTimeSplit = end[1].split(":")
 
-            var timestamp = new Date(endDateSplit[2],endDateSplit[1],endDateSplit[0],endTimeSplit[0],endTimeSplit[1]).getTime();
+            var timestamp = new Date(endDateSplit[2], endDateSplit[1], endDateSplit[0], endTimeSplit[0], endTimeSplit[1]).getTime();
 
             obj.eventID = eventKey;
             obj.title = eventObj.title;
             obj.description = eventObj.description;
             obj.createdBy = eventObj.createdBy;
-            if(start) {
+            if (start) {
               obj.startDate = start[0];
               obj.startTime = start[1];
             }
@@ -206,7 +210,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           var endTime = event.endTime || "00:00";
 
           var start = dateFilter(event.startDate, "dd/MM/yyyy") + " " + dateFilter(startTime, "HH:mm");
-          var end =dateFilter(event.endDate, "dd/MM/yyyy") +" " + dateFilter(endTime, "HH:mm");
+          var end = dateFilter(event.endDate, "dd/MM/yyyy") + " " + dateFilter(endTime, "HH:mm");
 
           var description = event.description;
           if (!description)
@@ -270,9 +274,9 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
     }])
 
   .controller('loginCtrl', ['$scope', '$stateParams', '$firebaseObject',
-    '$cordovaOauth', '$firebaseAuth', '$state', '$localStorage','databaseMegaselfie',
+    '$cordovaOauth', '$firebaseAuth', '$state', '$localStorage', 'databaseMegaselfie',
     function ($scope, $stateParams, $firebaseObject, $cordovaOauth,
-              $firebaseAuth, $state, $localStorage,databaseMegaselfie) {
+              $firebaseAuth, $state, $localStorage, databaseMegaselfie) {
       if ($localStorage.uid)
         $state.go("menu.home");
       else {
@@ -329,22 +333,22 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
   .controller('countdownCtrl', ['$scope', '$timeout', '$cordovaFile', '$stateParams', '$http', '$localStorage', '$state', 'shareData', 'databaseMegaselfie',
     function ($scope, $timeout, $cordovaFile, $stateParams, $http, $localStorage, $state, shareData, databaseMegaselfie) {
 
-    var mytimeout;
-    $scope.event = shareData.getData();
-    console.log($scope.event)
-    $scope.uid = $localStorage.uid;
+      var mytimeout;
+      $scope.event = shareData.getData();
+      console.log($scope.event)
+      $scope.uid = $localStorage.uid;
 
 
-    if(($scope.event.users && $scope.event.users.admin != $scope.uid) || ($scope.event.role  && $scope.event.role !='admin')) {
-      var query = window.database.ref('events/' + $scope.event.eventID + "/" + "countdownStarted");
-      query.on("value", function (snapshot) {
-        console.log(snapshot.val());
-        if (snapshot.val()) {
-          mytimeout = $timeout($scope.onTimeout, 1000);
-          $scope.started = true;
-        }
-      });
-    }
+      if (($scope.event.users && $scope.event.users.admin != $scope.uid) || ($scope.event.role && $scope.event.role != 'admin')) {
+        var query = window.database.ref('events/' + $scope.event.eventID + "/" + "countdownStarted");
+        query.on("value", function (snapshot) {
+          console.log(snapshot.val());
+          if (snapshot.val()) {
+            mytimeout = $timeout($scope.onTimeout, 1000);
+            $scope.started = true;
+          }
+        });
+      }
       var rect = {x: 0, y: 0, width: window.screen.width, height: window.screen.height};
       cordova.plugins.camerapreview.startCamera(rect, 'front', true, true, true);
       $scope.onTimeout = function () {
@@ -352,8 +356,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           $scope.$broadcast('timer-stopped', 0);
           $timeout.cancel(mytimeout);
 
-          cordova.plugins.camerapreview.takePicture({maxWidth:window.screen.width, maxHeight:window.screen.height})
-          cordova.plugins.camerapreview.setOnPictureTakenHandler(function(picture) {
+          cordova.plugins.camerapreview.takePicture({maxWidth: window.screen.width, maxHeight: window.screen.height})
+          cordova.plugins.camerapreview.setOnPictureTakenHandler(function (picture) {
 
             document.getElementById('originalPicture').src = picture[0];
             cordova.plugins.camerapreview.stopCamera();
@@ -450,8 +454,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
   .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'shareData', '$localStorage', 'databaseMegaselfie',
     function ($scope, $cordovaCamera, shareData, $localStorage, databaseMegaselfie) {
 
-     // $scope.date = dateFilter(new Date(), "dd/MM/yyyy");
-
+      // $scope.date = dateFilter(new Date(), "dd/MM/yyyy");
       $scope.obj = shareData.getData();
       console.log(shareData.getData());
 
@@ -477,17 +480,14 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
       $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
         viewData.enableBack = true;
       });
+      $scope.subtitle = {};
 
-      var lynk;
+
+      $scope.lynk = {};
       $scope.prova = function () {
-//ottenere numero foto ed eventi
-        /*
-         $scope.myGoBack = function() {
-         $ionicHistory.goBack();
-         };
-         */
+
         $scope.items = [];
-//ottenere nome dell'evento selezionato passato attraverso il service
+      //ottenere nome dell'evento selezionato passato attraverso il service
         $scope.data = shareData.getData();
 
 
@@ -498,30 +498,37 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           .then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
 
+
+              //  console.log(i)
               // childData will be the actual contents of the child
               var childData = childSnapshot.val();
-
-
+              //variabili per inserire l'autore
               var ref = firebase.storage().ref($scope.data.eventID + '/' + childData);
-              var storageFire = $firebaseStorage(ref);
+              ref.getMetadata().then(function (metadata) {
+                var storageFire = $firebaseStorage(ref);
 
-              storageFire.$getDownloadURL().then(function (imgSrc) {
+                storageFire.$getDownloadURL().then(function (imgSrc) {
 
-                //    console.log("data" + $scope.data)
-                lynk = imgSrc.toString();
-                //  console.log("pulled")
-                $scope.items.push({src: lynk});
+                  $scope.lynk = imgSrc.toString();
 
-              });
+                  //inserisco l'autore della foto
+                  // console.log($scope.subtitle)
+                  if (metadata.customMetadata != null) {
+
+                    $scope.subtitle = metadata.customMetadata.author;
+
+                  }
+                  else {
+                    $scope.subtitle = 'N.A.'
+                  }
+                  $scope.items.push({src: $scope.lynk, sub: "Author: " + $scope.subtitle});
+                })
+              })
             });
           });
 
       }
-
       //istanziare la gallery
-
       $scope.prova();
-
-
     }]);
 

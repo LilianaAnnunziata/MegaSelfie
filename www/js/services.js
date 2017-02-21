@@ -97,6 +97,12 @@ angular.module('app.services', [])
       this.upload = function (path, filename, imgURI, type) {
         var refStore = storage.ref(path + filename);
 
+        var metadata = {
+          customMetadata: {
+            'author': $localStorage.profileData.name
+          }
+        }
+
         //conversione img in Blob
         var uploadTask = refStore.put(dataURItoBlob(imgURI, 'image/jpeg'));
 
@@ -118,9 +124,16 @@ angular.module('app.services', [])
           // Caricamento immagine avvenuto con successo
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           var downloadURL = uploadTask.snapshot.downloadURL;
-          navigator.notification.alert("Picture successfully uploaded!");
+          navigator.notification.alert("Upload Complete!");
+
+          refStore.updateMetadata(metadata).then(function(metadata) {
+            console.log(metadata.customMetadata.author)
+          }).catch(function(error) {
+            console.log("Non è andato"+error)
+          });
+
           if(type == 'live')
-            $state.go("gallery")
+            $state.go("gallery");
         });
       }
     }])
