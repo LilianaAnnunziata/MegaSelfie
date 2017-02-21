@@ -21,11 +21,15 @@ angular.module('app', ['ionic', 'app.controllers','camera', 'app.routes', 'app.d
 
 
 //inizializzazione dopo che tutti i moduli sono stati caricati
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, databaseMegaselfie) {
   $ionicPlatform.ready(function() {
 
     //nascondo lo splashscreen
     navigator.splashscreen.hide();
+
+    universalLinks.subscribe('redirectToSharedEvent', function (eventData) {
+      databaseMegaselfie.getSharedEvent(eventData.params.eventId);
+    });
 
     //imposto l'autohide della barra dei pulsanti su android
     //window.navigationbar.setUp(true);

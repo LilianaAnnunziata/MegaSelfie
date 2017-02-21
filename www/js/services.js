@@ -18,8 +18,8 @@ angular.module('app.services', [])
     }
   ])
 
-  .service('databaseMegaselfie', ["$firebaseObject", "$localStorage", 'storage',
-    function ($firebaseObject, $localStorage, storage) {
+  .service('databaseMegaselfie', ["$firebaseObject", "$localStorage", 'storage', 'shareData', '$state', '$firebaseStorage',
+    function ($firebaseObject, $localStorage, storage, shareData, $state, $firebaseStorage) {
 
       var database = window.database.ref();
 
@@ -79,6 +79,37 @@ angular.module('app.services', [])
 
         database.update(updates);
       }
+      this.getSharedEvent = function (eventID) {
+        console.log(eventID);
+        var obj = {};
+        var eventStorageRef = window.storage.ref(eventID + "/" + "icon.png");
+        var storageFire = $firebaseStorage(eventStorageRef);
+
+        storageFire.$getDownloadURL().then(function (imgSrc) {
+          obj.src = imgSrc;
+
+          database.child('events/' + eventID).once('value', function (eventSnapshot) {
+
+            var eventObj = eventSnapshot.val();
+            var start = eventObj.start ? eventObj.start.split(" ") : undefined;
+            var end = eventObj.end.split(" ");
+            var endDateSplit = end[0].split("/");
+            var endTimeSplit = end[1].split(":");
+
+            obj.timestamp = new Date(endDateSplit[2],endDateSplit[1]-1,endDateSplit[0],endTimeSplit[0],endTimeSplit[1]).getTime();
+            obj.title = eventObj.title;
+            obj.description = eventObj.description;
+            obj.createdBy = eventObj.createdBy;
+            obj.startDate = start[0];
+            obj.startTime = start[1];
+            obj.endDate = end[0];
+            obj.endTime = end[1];
+            shareData.setData(obj);
+          }).then(function () {
+            $state.go("eventInfo");
+          });
+        })
+      }
     }
   ])
 
@@ -124,14 +155,13 @@ angular.module('app.services', [])
           // Caricamento immagine avvenuto con successo
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           var downloadURL = uploadTask.snapshot.downloadURL;
-          navigator.notification.alert("Upload Complete!");
+          //navigator.notification.alert("Upload Complete!");
 
           refStore.updateMetadata(metadata).then(function(metadata) {
             console.log(metadata.customMetadata.author)
           }).catch(function(error) {
             console.log("Non è andato"+error)
           });
-
           if(type == 'live')
             $state.go("gallery");
         });
@@ -213,7 +243,6 @@ angular.module('app.services', [])
 
       function hb() {
         var conf, cantConfirm;
-console.log("hb")
         //itera su tutti gli eventi nella lista
         eventList.forEach(function (event) {
 
@@ -255,13 +284,11 @@ console.log("hb")
           window.database.ref('coordinates/').once("value",
             function (snapshot) {
               snapshot.forEach(function (childSnapshot) {
-                console.log("foerec")
                 var obj = {}
                 obj.eventKey = childSnapshot.key;
                 obj.lat = childSnapshot.val().latitude;
                 obj.long = childSnapshot.val().longitude;
                 obj.minDistance = childSnapshot.val().range;
-                console.log("1")
                 eventList.push(obj);
 
               })

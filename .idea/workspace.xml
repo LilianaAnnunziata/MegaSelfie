@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="08e09a92-3def-48cd-b3b6-c30c7110b161" name="Default" comment="bottoni indietro fixati">
+    <list default="true" id="08e09a92-3def-48cd-b3b6-c30c7110b161" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config.xml" afterPath="$PROJECT_DIR$/config.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ul_web_hooks/ios/megaselfie.com#apple-app-site-association" afterPath="$PROJECT_DIR$/ul_web_hooks/ios/megaselfie.com#apple-app-site-association" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/js/controllers.js" afterPath="$PROJECT_DIR$/www/js/controllers.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/js/services.js" afterPath="$PROJECT_DIR$/www/js/services.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/eventInfo.html" afterPath="$PROJECT_DIR$/www/templates/eventInfo.html" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/platforms/" />
@@ -28,8 +32,8 @@
       <file leaf-file-name="controllers.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="333" column="25" lean-forward="false" selection-start-line="333" selection-start-column="25" selection-end-line="333" selection-end-column="25" />
+            <state relative-caret-position="322">
+              <caret line="74" column="0" lean-forward="false" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -39,15 +43,44 @@
         <entry file="file://$PROJECT_DIR$/www/templates/home.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="45">
-              <caret line="4" column="35" lean-forward="true" selection-start-line="3" selection-start-column="149" selection-end-line="3" selection-end-column="176" />
+              <caret line="3" column="172" lean-forward="false" selection-start-line="3" selection-start-column="157" selection-end-line="3" selection-end-column="172" />
               <folding>
-                <marker date="1487528282000" expanded="true" signature="457:983" ph="..." />
-                <marker date="1487528282000" expanded="false" signature="552:625" ph="..." />
-                <marker date="1487528282000" expanded="true" signature="626:962" ph="..." />
-                <marker date="1487528282000" expanded="false" signature="691:708" ph="..." />
-                <marker date="1487528282000" expanded="false" signature="780:797" ph="..." />
-                <marker date="1487528282000" expanded="false" signature="883:900" ph="..." />
+                <element signature="n#style#0;n#ion-view#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#2;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="routes.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/www/js/routes.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1485">
+              <caret line="99" column="0" lean-forward="false" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="35" column="35" lean-forward="false" selection-start-line="35" selection-start-column="35" selection-end-line="35" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/www/js/app.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="36" column="21" lean-forward="false" selection-start-line="36" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -55,8 +88,8 @@
       <file leaf-file-name="services.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/js/services.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="53" column="20" lean-forward="false" selection-start-line="53" selection-start-column="11" selection-end-line="53" selection-end-column="20" />
+            <state relative-caret-position="649">
+              <caret line="279" column="0" lean-forward="false" selection-start-line="279" selection-start-column="0" selection-end-line="279" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -65,8 +98,8 @@
       <file leaf-file-name="eventInfo.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/eventInfo.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="12" lean-forward="true" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="12" />
+            <state relative-caret-position="75">
+              <caret line="5" column="77" lean-forward="false" selection-start-line="5" selection-start-column="77" selection-end-line="5" selection-end-column="77" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#ion-view#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
@@ -79,8 +112,8 @@
       <file leaf-file-name="menu.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/menu.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="38" lean-forward="false" selection-start-line="26" selection-start-column="38" selection-end-line="26" selection-end-column="38" />
+            <state relative-caret-position="150">
+              <caret line="10" column="49" lean-forward="false" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
               <folding>
                 <element signature="n#style#0;n#ion-content#0;n#ion-side-menu#0;n#ion-side-menus#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#ion-content#0;n#ion-side-menu#0;n#ion-side-menus#0;n#!!top" expanded="true" />
@@ -90,45 +123,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="style.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="555">
+            <state relative-caret-position="870">
               <caret line="58" column="13" lean-forward="false" selection-start-line="58" selection-start-column="13" selection-end-line="58" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="countdown.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/templates/countdown.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="41" lean-forward="false" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="41" />
-              <folding>
-                <element signature="n#style#0;n#img#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="createLiveEvent.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/templates/createLiveEvent.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="71" lean-forward="false" selection-start-line="14" selection-start-column="62" selection-end-line="14" selection-end-column="71" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="gallery.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="gallery.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/gallery.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="165">
-              <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
               </folding>
@@ -147,15 +156,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>locals</find>
-      <find>ta</find>
-      <find>obj</find>
-      <find>run</find>
-      <find>pictu</find>
-      <find>nav-bar</find>
-      <find>scrol</find>
-      <find>scroll</find>
-      <find>spac</find>
       <find>has</find>
       <find>createSharedEventCtrl</find>
       <find>createEventMegaselfie</find>
@@ -177,6 +177,15 @@
       <find>joinEvent</find>
       <find>newevent</find>
       <find>$state.go(&quot;countdown&quot;);</find>
+      <find>alert</find>
+      <find>timestamp</find>
+      <find>goTo</find>
+      <find>endDateSplit[1]</find>
+      <find>share</find>
+      <find>eventInf</find>
+      <find>eventInfo</find>
+      <find>begin</find>
+      <find>obj.closed</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -190,14 +199,10 @@
       <list>
         <option value="$PROJECT_DIR$/scss/styleAnimation.css" />
         <option value="$PROJECT_DIR$/www/js/helpful.js" />
-        <option value="$PROJECT_DIR$/config.xml" />
-        <option value="$PROJECT_DIR$/www/js/app.js" />
         <option value="$PROJECT_DIR$/www/lib/ion-gallery/dist/ion-gallery.css" />
         <option value="$PROJECT_DIR$/platforms/android/assets/www/lib/ion-gallery/dist/ion-gallery.css" />
         <option value="$PROJECT_DIR$/www/css/ionic.app.css" />
         <option value="$PROJECT_DIR$/www/index.html" />
-        <option value="$PROJECT_DIR$/www/js/routes.js" />
-        <option value="$PROJECT_DIR$/www/js/routes.js" />
         <option value="$PROJECT_DIR$/www/templates/camera.html" />
         <option value="$PROJECT_DIR$/www/templates/createSharedEvent.html" />
         <option value="$PROJECT_DIR$/www/templates/createLiveEvent.html" />
@@ -205,14 +210,18 @@
         <option value="$PROJECT_DIR$/www/templates/signup.html" />
         <option value="$PROJECT_DIR$/www/templates/store.html" />
         <option value="$PROJECT_DIR$/www/templates/countdown.html" />
-        <option value="$PROJECT_DIR$/www/js/services.js" />
         <option value="$PROJECT_DIR$/www/templates/menu.html" />
         <option value="$PROJECT_DIR$/www/css/style.css" />
-        <option value="$PROJECT_DIR$/www/templates/home.html" />
         <option value="$PROJECT_DIR$/www/templates/gallery.html" />
+        <option value="$PROJECT_DIR$/www/templates/home.html" />
+        <option value="$PROJECT_DIR$/www/js/routes.js" />
+        <option value="$PROJECT_DIR$/www/js/routes.js" />
+        <option value="$PROJECT_DIR$/www/js/app.js" />
+        <option value="$PROJECT_DIR$/config.xml" />
+        <option value="$PROJECT_DIR$/www/js/controllers.js" />
+        <option value="$PROJECT_DIR$/www/js/services.js" />
+        <option value="$PROJECT_DIR$/www/js/controllers.js" />
         <option value="$PROJECT_DIR$/www/templates/eventInfo.html" />
-        <option value="$PROJECT_DIR$/www/js/controllers.js" />
-        <option value="$PROJECT_DIR$/www/js/controllers.js" />
       </list>
     </option>
   </component>
@@ -410,7 +419,7 @@
       <workItem from="1487406021206" duration="8545000" />
       <workItem from="1487429771021" duration="1076000" />
       <workItem from="1487431166675" duration="15520000" />
-      <workItem from="1487520703080" duration="8063000" />
+      <workItem from="1487520703080" duration="30521000" />
     </task>
     <task id="LOCAL-00001" summary="gallery fix">
       <created>1486475645470</created>
@@ -524,19 +533,55 @@
       <option name="project" value="LOCAL" />
       <updated>1487529580803</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="controller">
+      <created>1487541828693</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1487541828693</updated>
+    </task>
+    <task id="LOCAL-00018" summary="home">
+      <created>1487545417306</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1487545417306</updated>
+    </task>
+    <task id="LOCAL-00019" summary="eventInfo">
+      <created>1487581630200</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1487581630201</updated>
+    </task>
+    <task id="LOCAL-00020" summary="controller">
+      <created>1487587204848</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1487587204848</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Evento Shared - generazione link e apertura automatica app">
+      <created>1487607295081</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1487607295081</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="119362000" />
+    <option name="totallyTimeSpent" value="141820000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17797619" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17781796" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901296" sideWeight="0.50238097" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901296" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901296" sideWeight="0.49761903" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -550,9 +595,28 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901296" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901296" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901296" sideWeight="0.50238097" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901296" sideWeight="0.49761903" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901296" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17797619" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901296" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
@@ -579,7 +643,11 @@
     <MESSAGE value="pulsante logout" />
     <MESSAGE value="gallery" />
     <MESSAGE value="bottoni indietro fixati" />
-    <option name="LAST_COMMIT_MESSAGE" value="bottoni indietro fixati" />
+    <MESSAGE value="home" />
+    <MESSAGE value="eventInfo" />
+    <MESSAGE value="controller" />
+    <MESSAGE value="Evento Shared - generazione link e apertura automatica app" />
+    <option name="LAST_COMMIT_MESSAGE" value="Evento Shared - generazione link e apertura automatica app" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -591,12 +659,11 @@
         <state relative-caret-position="68">
           <caret line="4" column="137" lean-forward="false" selection-start-line="4" selection-start-column="137" selection-end-line="4" selection-end-column="137" />
           <folding>
-            <marker date="1487528282000" expanded="true" signature="457:983" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="552:625" ph="..." />
-            <marker date="1487528282000" expanded="true" signature="626:962" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="691:708" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="780:797" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="883:900" ph="..." />
+            <element signature="n#style#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#2;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -643,12 +710,11 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1487528282000" expanded="true" signature="457:983" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="552:625" ph="..." />
-            <marker date="1487528282000" expanded="true" signature="626:962" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="691:708" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="780:797" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="883:900" ph="..." />
+            <element signature="n#style#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#2;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -702,12 +768,11 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1487528282000" expanded="true" signature="457:983" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="552:625" ph="..." />
-            <marker date="1487528282000" expanded="true" signature="626:962" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="691:708" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="780:797" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="883:900" ph="..." />
+            <element signature="n#style#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#2;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -779,21 +844,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/platforms/android/assets/www/js/app.js" />
     <entry file="file://$PROJECT_DIR$/platforms/android/build.gradle" />
-    <entry file="file://$PROJECT_DIR$/config.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" column="44" lean-forward="false" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="30" column="6" lean-forward="false" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/platforms/android/assets/www/lib/ion-gallery/dist/ion-gallery.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -805,6 +855,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="65" lean-forward="false" selection-start-line="0" selection-start-column="65" selection-end-line="0" selection-end-column="65" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -812,6 +863,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="423">
           <caret line="9048" column="23" lean-forward="false" selection-start-line="9048" selection-start-column="23" selection-end-line="9048" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -826,6 +878,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="7" column="52" lean-forward="false" selection-start-line="7" selection-start-column="52" selection-end-line="7" selection-end-column="52" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -847,13 +900,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
           <caret line="31" column="48" lean-forward="false" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/routes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1350">
-          <caret line="92" column="0" lean-forward="false" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -888,26 +934,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/menu.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="38" lean-forward="false" selection-start-line="26" selection-start-column="38" selection-end-line="26" selection-end-column="38" />
-          <folding>
-            <element signature="n#style#0;n#ion-content#0;n#ion-side-menu#0;n#ion-side-menus#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#ion-content#0;n#ion-side-menu#0;n#ion-side-menus#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#h1#0;n#div#0;n#ion-content#0;n#ion-side-menu#0;n#ion-side-menus#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="58" column="13" lean-forward="false" selection-start-line="58" selection-start-column="13" selection-end-line="58" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/countdown.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -928,29 +954,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/services.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="53" column="20" lean-forward="false" selection-start-line="53" selection-start-column="11" selection-end-line="53" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="4" column="35" lean-forward="true" selection-start-line="3" selection-start-column="149" selection-end-line="3" selection-end-column="176" />
-          <folding>
-            <marker date="1487528282000" expanded="true" signature="457:983" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="552:625" ph="..." />
-            <marker date="1487528282000" expanded="true" signature="626:962" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="691:708" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="780:797" ph="..." />
-            <marker date="1487528282000" expanded="false" signature="883:900" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -959,10 +962,72 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/www/templates/gallery.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/templates/menu.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="49" lean-forward="false" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
+          <folding>
+            <element signature="n#style#0;n#ion-content#0;n#ion-side-menu#0;n#ion-side-menus#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#ion-content#0;n#ion-side-menu#0;n#ion-side-menus#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h1#0;n#div#0;n#ion-content#0;n#ion-side-menu#0;n#ion-side-menus#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/routes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1485">
+          <caret line="99" column="0" lean-forward="false" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="35" column="35" lean-forward="false" selection-start-line="35" selection-start-column="35" selection-end-line="35" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/services.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="649">
+          <caret line="279" column="0" lean-forward="false" selection-start-line="279" selection-start-column="0" selection-end-line="279" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="74" column="0" lean-forward="false" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="36" column="21" lean-forward="false" selection-start-line="36" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/eventInfo.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="12" lean-forward="true" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="12" />
+        <state relative-caret-position="75">
+          <caret line="5" column="77" lean-forward="false" selection-start-line="5" selection-start-column="77" selection-end-line="5" selection-end-column="77" />
           <folding>
             <element signature="n#style#0;n#div#0;n#ion-view#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
@@ -971,21 +1036,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
+    <entry file="file://$PROJECT_DIR$/www/templates/home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="333" column="25" lean-forward="false" selection-start-line="333" selection-start-column="25" selection-end-line="333" selection-end-column="25" />
-          <folding />
+        <state relative-caret-position="45">
+          <caret line="3" column="172" lean-forward="false" selection-start-line="3" selection-start-column="157" selection-end-line="3" selection-end-column="172" />
+          <folding>
+            <element signature="n#style#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#2;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/gallery.html">
+    <entry file="file://$PROJECT_DIR$/www/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="870">
+          <caret line="58" column="13" lean-forward="false" selection-start-line="58" selection-start-column="13" selection-end-line="58" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
