@@ -106,15 +106,24 @@ angular.module('app.services', [])
             obj.endTime = end[1];
             shareData.setData(obj);
           }).then(function () {
-            $state.go("eventInfo");
+            var confirmed = confirm('Do you want to partecipate to the event ' + obj.title + '?');
+            if(confirmed) {
+              var updates = {};
+              updates['/events/' + eventID + "/" + "users/" + $localStorage.uid] = 'user' ;
+              updates['/users/' + $localStorage.uid + '/' + eventID] = {role: 'user'};
+              database.update(updates);
+              $state.go("eventInfo");
+            }
+            else
+              $state.go("menu.home");
           });
         })
       }
     }
   ])
 
-  .service('storage', ['$state',
-    function ($state) {
+  .service('storage', ['$state', '$localStorage',
+    function ($state, $localStorage) {
 
       var storage = firebase.storage();
 
@@ -155,7 +164,7 @@ angular.module('app.services', [])
           // Caricamento immagine avvenuto con successo
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           var downloadURL = uploadTask.snapshot.downloadURL;
-          //navigator.notification.alert("Upload Complete!");
+          navigator.notification.alert("Upload Complete!");
 
           refStore.updateMetadata(metadata).then(function(metadata) {
             console.log(metadata.customMetadata.author)

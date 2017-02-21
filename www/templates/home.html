@@ -1,31 +1,22 @@
 <ion-view cache-view="false" title="Selfie Events" hide-back-button="true" id="page1" style="background: url(img/sfondoProva2.png) no-repeat center bottom;background-size:150%; height:100%">
-
  <ion-content class="backgroundGradient">
-   <div style="padding: 4px 4px 0px 4px;">
-            <button class="button-order button-calm" ng-click="change('title',sortReverse)">
-              Title
-              <i ng-show="sortType == 'title' && !sortReverse" class="icon ion-arrow-up-b"></i>
-              <i ng-show="sortType == 'title' && sortReverse" class="icon ion-arrow-down-b"></i>
-            </button>
-            <button class="button-order button-calm"  ng-click="change('timestamp',sortReverse)">
-              Event End
-              <i ng-show="sortType == 'timestamp' && !sortReverse" class="icon ion-arrow-up-b"></i>
-              <i ng-show="sortType == 'timestamp' && sortReverse" class="icon ion-arrow-down-b"></i>
-            </button>
-   </div>
-
-      <ion-list id="home-list4" class="list">
-        <ion-item ng-repeat="event in eventList | orderBy:sortType:sortReverse" class="item-thumbnail-left listItem" id="home-list-item9" ui-sref="eventInfo" ng-click="goTo('{{event}}')">
-
-        <img src="{{event.src}}">
-        <h2>{{event.title}}</h2>
-        <div style="color:#565656; font-size:0.8em; margin-bottom: -10px; white-space:normal;">{{event.description}}
-          <div>created by: <span style="font-weight: bold">{{event.createdBy}}</span></div>
-          <div ng-show="event.startDate !== undefined">start: <span style="font-weight: bold">{{event.start}} {{event.startDate}}</span>
-          </div>
-          <div>end: <span style="font-weight: bold">{{event.end}} {{event.endDate}}</span></div>
+   <ion-tabs>
+     <button class="button-order headerButton button-calm"  ng-click="change('title',sortReverse)">Title <i ng-show="sortType == 'title' && !sortReverse" class="icon ion-arrow-up-b"></i> <i ng-show="sortType == 'title' && sortReverse" class="icon ion-arrow-down-b"></i>
+     </button>
+     <button class="button-order headerButton button-calm" ng-click="change('timestamp',sortReverse)">Event End <i ng-show="sortType == 'timestamp' && !sortReverse" class="icon ion-arrow-up-b"></i> <i ng-show="sortType == 'timestamp' && sortReverse" class="icon ion-arrow-down-b"></i>
+     </button>
+   </ion-tabs>
+    <ion-list id="home-list4" class="list">
+      <ion-item ng-repeat="event in eventList | orderBy:sortType:sortReverse" class="item-thumbnail-left listItem" id="home-list-item9" ui-sref="eventInfo" ng-click="goTo('{{event}}')">
+      <img src="{{event.src}}">
+      <h2>{{event.title}}</h2>
+      <div style="color:#565656; font-size:0.8em; margin-bottom: -10px; white-space:normal;">{{event.description}}
+        <div>created by: <span style="font-weight: bold">{{event.createdBy}}</span></div>
+        <div ng-show="event.startDate !== undefined">start: <span style="font-weight: bold">{{event.start}} {{event.startDate}}</span>
         </div>
-      </ion-item>
-    </ion-list>
-  </ion-content>
+        <div>end: <span style="font-weight: bold">{{event.end}} {{event.endDate}}</span></div>
+      </div>
+    </ion-item>
+  </ion-list>
+ </ion-content>
 </ion-view>

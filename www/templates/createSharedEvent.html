@@ -4,8 +4,7 @@
       <i ng-show="imgURI == undefined" class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
       <img class="sharedEventIcon" ng-show="imgURI !== undefined" src="{{imgURI}}" width="100%" height="100%" style="vertical-align: middle;"/>
     </div>
-    <form style="margin-top: 5%" id="createSharedEvent-form3" name="createSharedEventForm"
-          class="list" ng-class="{'submitted':submitted}"
+    <form style="margin-top: 5%" id="createSharedEvent-form3" name="createSharedEventForm" ng-class="{'submitted':submitted}"
           ng-submit="submitData(event)" novalidate>
       <label style="border-radius: 5px 5px 0 0;" class="item item-input form-transparent" id="createSharedEvent-input7" name="eventNameShared">
         <span class="input-label">Event Name:</span>

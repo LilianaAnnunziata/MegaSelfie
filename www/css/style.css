@@ -39,6 +39,7 @@ html{
 }
 
 .list{
+  padding-top: 40px;
   background: transparent;
   margin-top: 6px;
   margin-bottom: 15px;
@@ -81,6 +82,20 @@ html{
   height: 150px;
 }
 
+.headerButton{
+  background-color: rgb(94, 202, 247);
+  border: 1px solid lightblue;
+  font-weight: 500;
+  font-style: italic;
+  height: 35px;
+  color: black;
+}
+
+.tabs-striped .tabs{
+  background: transparent;
+  border: 0;
+}
+
 .backgroundGradient{
   background-image: -webkit-linear-gradient(bottom left, transparent  13%, #dfdee4 38%, #87dfff 76%);
 }
@@ -90,6 +105,7 @@ html{
   height: 63%;
   border-radius: 5px;
   border: solid 2px #e0e0e0;
+  margin-top: 3%;
 }
 
 .loginImage{
