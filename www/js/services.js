@@ -272,13 +272,11 @@ angular.module('app.services', [])
           window.database.ref('coordinates/').once("value",
             function (snapshot) {
               snapshot.forEach(function (childSnapshot) {
-                console.log("foerec")
                 var obj = {}
                 obj.eventKey = childSnapshot.key;
                 obj.lat = childSnapshot.val().latitude;
                 obj.long = childSnapshot.val().longitude;
                 obj.minDistance = childSnapshot.val().range;
-                console.log("1")
                 eventList.push(obj);
 
               })

@@ -72,7 +72,6 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
             obj.endTime = end[1];
             obj.timestamp = timestamp;
             obj.closed = eventObj.closed;
-            console.log(obj.closed)
             var eventStorageRef = window.storage.ref(eventKey + "/" + "icon.png");
             var storageFire = $firebaseStorage(eventStorageRef);
             storageFire.$getDownloadURL().then(function (imgSrc) {
@@ -467,19 +466,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
         databaseMegaselfie.joinEvent($scope.obj.eventID, $scope.imgURI)
       };
       $scope.shareLink = function () {
-        var options = {
-          message: 'share the link with you friends.', // not supported on some apps (Facebook, Instagram)
-          subject: 'MegaSelfie', // fi. for email
-          url: 'megaselfie.com/events?eventId='+$scope.obj.eventID
-        };
-        var onSuccess = function(result) {
-          console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
-          console.log("Shared to app: " + result.app); // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
-        }
-        var onError = function(msg) {
-          console.log("Sharing failed with message: " + msg);
-        }
-        window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+        window.plugins.socialsharing.shareWithOptions({message: 'megaselfie.com/events?eventId='+$scope.obj.eventID});
       };
     }])
 

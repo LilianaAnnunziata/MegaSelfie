@@ -33,6 +33,7 @@
   <access origin="*"/>
 
   <universal-links>
+    <ios-team-id value="<7JHM9G8H7U>" />
     <host name="megaselfie.com" event="redirectToSharedEvent">
       <path url="/events" />
     </host>

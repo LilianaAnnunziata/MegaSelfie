@@ -3,7 +3,7 @@
     <button class="button icon ion-android-arrow-back" ui-sref="menu.home"></button>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <button class="button icon ion-share" ng-click="shareLink()"></button>
+    <button ng-show="obj.startDate !== undefined" class="button icon ion-link" ng-click="shareLink()"></button>
   </ion-nav-buttons>
   <div class="spacer" style="width: 100%; height: 3%;"></div>
   <ion-content padding="true" class="backgroundGradient">
