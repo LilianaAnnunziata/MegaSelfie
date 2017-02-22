@@ -105,8 +105,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
     }])
 
 
-  .controller('createLiveEventCtrl', ['$scope', '$stateParams', 'dateFilter', '$localStorage', '$state', 'databaseMegaselfie', '$cordovaGeolocation', 'shareData',
-    function ($scope, $stateParams, dateFilter, $localStorage, $state, databaseMegaselfie, $cordovaGeolocation, shareData) {
+  .controller('createLiveEventCtrl', ['$scope', '$stateParams', 'dateFilter', '$localStorage', '$state', 'databaseMegaselfie', '$cordovaGeolocation', 'shareData', '$ionicPopup',
+    function ($scope, $stateParams, dateFilter, $localStorage, $state, databaseMegaselfie, $cordovaGeolocation, shareData, $ionicPopup) {
 
       var options = {timeout: 10000, enableHighAccuracy: true};
       $scope.liveEvent = {};
@@ -214,9 +214,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
     }
   ])
 
-  .controller('createSharedEventCtrl', ['$scope', 'dateFilter', '$http', '$cordovaCamera', '$localStorage', '$state',
-    'databaseMegaselfie',
-    function ($scope, dateFilter, $http, $cordovaCamera, $localStorage, $state, databaseMegaselfie) {
+  .controller('createSharedEventCtrl', ['$scope', 'dateFilter', '$http', '$cordovaCamera', '$localStorage', '$state', 'databaseMegaselfie', '$ionicPopup',
+    function ($scope, dateFilter, $http, $cordovaCamera, $localStorage, $state, databaseMegaselfie, $ionicPopup) {
 
       $scope.date = dateFilter(new Date(), "dd/MM/yyyy");
 
@@ -274,8 +273,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
       };
     }])
 
-  .controller('menuCtrl', ['$scope', '$http', '$location', '$localStorage',
-    function ($scope, $http, $location, $localStorage) {
+  .controller('menuCtrl', ['$scope', '$http', '$location', '$localStorage', '$ionicPopup',
+    function ($scope, $http, $location, $localStorage, $ionicPopup) {
 
       $scope.init = function () {
         if ($localStorage.hasOwnProperty("accessToken") === true) {
@@ -298,10 +297,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
       };
     }])
 
-  .controller('loginCtrl', ['$scope', '$stateParams', '$firebaseObject',
-    '$cordovaOauth', '$firebaseAuth', '$state', '$localStorage', 'databaseMegaselfie',
-    function ($scope, $stateParams, $firebaseObject, $cordovaOauth,
-              $firebaseAuth, $state, $localStorage, databaseMegaselfie) {
+  .controller('loginCtrl', ['$scope', '$stateParams', '$firebaseObject', '$cordovaOauth', '$firebaseAuth', '$state', '$localStorage', 'databaseMegaselfie', '$ionicPopup',
+    function ($scope, $stateParams, $firebaseObject, $cordovaOauth, $firebaseAuth, $state, $localStorage, databaseMegaselfie, $ionicPopup) {
       if ($localStorage.uid)
         $state.go("menu.home");
       else {
