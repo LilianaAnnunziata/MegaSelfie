@@ -475,8 +475,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
     }])
 
 
-  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'shareData', '$localStorage', 'databaseMegaselfie', 'dateFilter',
-    function ($scope, $cordovaCamera, shareData, $localStorage, databaseMegaselfie, dateFilter) {
+  .controller('eventInfoCtrl', ['$scope', '$cordovaCamera', 'shareData', '$localStorage', 'databaseMegaselfie', '$ionicScrollDelegate',
+    function ($scope, $cordovaCamera, shareData, $localStorage, databaseMegaselfie, $ionicScrollDelegate) {
 
       $scope.timestamp = new Date().getTime();
 
@@ -487,6 +487,9 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
         $cordovaCamera.getPicture(setOptionsCamera(Camera.PictureSourceType.CAMERA)).then(function (imageData) {
           $scope.imgURI = "data:image/jpeg;base64," + imageData;
           $scope.takeImage = true;
+          setTimeout(function() {
+            $ionicScrollDelegate.$getByHandle('myview').scrollBottom(true);
+          }, 1500);
         }, function (err) {
           console.log("error eventInfoCtrl " + err)
         });
