@@ -96,6 +96,10 @@ angular.module('app.services', [])
       this.deleteEvent = function (eventID, role) {
         var updates = {};
 
+        if(role == 'admin'){
+          updates['/coordinates/' + eventID] = null;
+        }
+
         updates['/events/' + eventID + "/users/" + $localStorage.uid] = null;
         updates['/events/' + eventID + "/pictures/" + $localStorage.uid] = null;
         updates['/users/' + $localStorage.uid + "/" + eventID] = null;
