@@ -27,6 +27,8 @@ angular.module('app', ['ionic', 'app.controllers','camera', 'app.routes', 'app.d
     //nascondo lo splashscreen
     navigator.splashscreen.hide();
 
+    databaseMegaselfie.getConnection();
+
     universalLinks.subscribe('redirectToSharedEvent', function (eventData) {
       databaseMegaselfie.getSharedEvent(eventData.params.eventId);
     });

@@ -1,18 +1,43 @@
 //Funzioni con un particolare scopo
 angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-gallery', 'angular-svg-round-progressbar'])
 
-  .controller('homeCtrl', ['$scope', '$localStorage', '$firebaseStorage', 'shareData', 'GeoAlert', 'databaseMegaselfie', '$state',
-    function ($scope, $localStorage, $firebaseStorage, shareData, GeoAlert, databaseMegaselfie, $state) {
+  .controller('homeCtrl', ['$scope', '$localStorage', '$firebaseStorage', 'shareData', 'GeoAlert', 'databaseMegaselfie', '$state','$ionicListDelegate','$ionicPopup',
+    function ($scope, $localStorage, $firebaseStorage, shareData, GeoAlert, databaseMegaselfie, $state,$ionicListDelegate,$ionicPopup) {
 
       $scope.sortType = 'timestamp'; // set the default sort type
       $scope.sortReverse = false;
-      // $scope.order = 'timestamp';
+      // Ordinamento
       $scope.change = function (type, reverse) {
-        console.log(type)
-        console.log(reverse)
         $scope.sortReverse = !reverse;
         $scope.sortType = type;
       }
+
+      //cancellazione
+      $scope.delItem = function(event) {
+        console.log(event)
+
+
+        var confirmPopup
+
+        if(event.role == 'admin') {
+          confirmPopup = $ionicPopup.confirm({
+            title: 'Do you want Delete Your  ' + event.title + " Event?",
+          });
+        }else {
+          confirmPopup  = $ionicPopup.confirm({
+            title: 'Do you want unsubscribe from the Event ' + event.title + "?",
+          });
+        }
+
+        confirmPopup.then(function(res) {
+          if(res) {
+            $scope.eventList.splice($scope.eventList.indexOf(event), 1);
+            $ionicListDelegate.closeOptionButtons();
+            databaseMegaselfie.deleteEvent(event.eventID,event.role);
+          }
+        });
+      };
+
 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(storePosition);
@@ -49,10 +74,10 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           var obj = {};
           //recupero ruolo da users
           obj.role = childSnapshot.val().role;
+
           //accedo al nodo events, nel database
           var eventRef = window.database.ref('events/' + eventKey);
           //accedo a campi dell'evento
-
           eventRef.once("value", function (snapshot) {
 
             var eventObj = snapshot.val();

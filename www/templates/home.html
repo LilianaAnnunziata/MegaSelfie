@@ -8,14 +8,16 @@
    </ion-tabs>
     <ion-list id="home-list4" class="list">
       <ion-item ng-repeat="event in eventList | orderBy:sortType:sortReverse" class="item-thumbnail-left listItem" id="home-list-item9" ui-sref="eventInfo" ng-click="goTo('{{event}}')">
-      <img src="{{event.src}}">
+        <img src="{{event.src}}">
       <h2>{{event.title}}</h2>
       <div style="color:#565656; font-size:0.8em; margin-bottom: -10px; white-space:normal;">{{event.description}}
         <div>created by: <span style="font-weight: bold">{{event.createdBy}}</span></div>
-        <div ng-show="event.startDate !== undefined">start: <span style="font-weight: bold">{{event.start}} {{event.startDate}}</span>
+        <div ng-show="event.startDate !== undefined">start: <span style="font-weight: bold">{{event.startTime}} {{event.startDate}}</span>
         </div>
-        <div>end: <span style="font-weight: bold">{{event.end}} {{event.endDate}}</span></div>
+        <div>end: <span style="font-weight: bold">{{event.endTime}} {{event.endDate}}</span></div>
       </div>
+        <ion-option-button ng-hide="event.eventID == 'event1'" style="border-radius:50px" class="button-assertive ion-minus-circled" ng-click="delItem(event)" >
+        </ion-option-button>
     </ion-item>
   </ion-list>
  </ion-content>

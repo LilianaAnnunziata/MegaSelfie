@@ -18,10 +18,28 @@ angular.module('app.services', [])
     }
   ])
 
-  .service('databaseMegaselfie', ["$firebaseObject", "$localStorage", 'storage', 'shareData', '$state', '$firebaseStorage',
-    function ($firebaseObject, $localStorage, storage, shareData, $state, $firebaseStorage) {
+  .service('databaseMegaselfie', ["$firebaseObject", "$localStorage", 'storage', 'shareData', '$state', '$firebaseStorage', '$ionicPopup',
+    function ($firebaseObject, $localStorage, storage, shareData, $state, $firebaseStorage, $ionicPopup) {
 
       var database = window.database.ref();
+
+      //Recupero connessione
+      this.getConnection = function () {
+        var connectedRef = window.database.ref(".info/connected");
+        connectedRef.on("value", function (snap) {
+          if (snap.val() === true) {
+            console.log("connessione OK")
+
+          } else {
+            var alertPopup = $ionicPopup.alert({
+              title: 'Connection off',
+              cssClass: 'title',
+              template: '<div style="bar bar-header bar-assertive"> not connected</div>',
+              okType: 'button-assertive'
+            });
+          }
+        });
+      }
 
       //creazione Evento: se Live ho parametro coordinates, altrimenti no
       this.createEventMegaselfie = function (objToSend, coordinates, img) {
@@ -66,7 +84,7 @@ angular.module('app.services', [])
       /*iscrizione all'evento=> aggiunta in events/eventKey/users; events/eventKey */
       this.enrollEvent = function (eventID) {
         var updates = {};
-        updates['/events/' + eventID + "/" + "users/" + $localStorage.uid] = 'user' ;
+        updates['/events/' + eventID + "/" + "users/" + $localStorage.uid] = 'user';
         updates['/users/' + $localStorage.uid + '/' + eventID] = {role: 'user'};
 
         database.update(updates);
@@ -74,11 +92,28 @@ angular.module('app.services', [])
 
       this.startLiveEvent = function (eventID) {
         var updates = {};
-        updates['/events/' + eventID +'/countdownStarted'] = true ;
-        updates['/events/' + eventID +'/closed'] = true ;
+        updates['/events/' + eventID + '/countdownStarted'] = true;
+        updates['/events/' + eventID + '/closed'] = true;
 
         database.update(updates);
       }
+
+      this.deleteEvent = function (eventID, role) {
+        var updates = {};
+        if(role == 'admin'){
+
+
+        }else {
+          updates['/events/' + eventID + "/users/" + $localStorage.uid] = null;
+          updates['/events/' + eventID + "/pictures/" + $localStorage.uid] = null;
+          updates['/users/' + $localStorage.uid + "/" + eventID] = null;
+        }
+
+        database.update(updates);
+
+        storage.deleteSelfie(eventID);
+      }
+
       this.getSharedEvent = function (eventID) {
         var obj = {};
         var eventStorageRef = window.storage.ref(eventID + "/" + "icon.png");
@@ -95,7 +130,7 @@ angular.module('app.services', [])
             var endDateSplit = end[0].split("/");
             var endTimeSplit = end[1].split(":");
 
-            obj.timestamp = new Date(endDateSplit[2],endDateSplit[1]-1,endDateSplit[0],endTimeSplit[0],endTimeSplit[1]).getTime();
+            obj.timestamp = new Date(endDateSplit[2], endDateSplit[1] - 1, endDateSplit[0], endTimeSplit[0], endTimeSplit[1]).getTime();
             obj.title = eventObj.title;
             obj.description = eventObj.description;
             obj.createdBy = eventObj.createdBy;
@@ -105,10 +140,10 @@ angular.module('app.services', [])
             obj.endTime = end[1];
             shareData.setData(obj);
           }).then(function () {
-            var confirmed = confirm('Do you want to participate to "'+ obj.title+'"?');
-            if(confirmed) {
+            var confirmed = confirm('Do you want to participate to "' + obj.title + '"?');
+            if (confirmed) {
               var updates = {};
-              updates['/events/' + eventID + "/" + "users/" + $localStorage.uid] = 'user' ;
+              updates['/events/' + eventID + "/" + "users/" + $localStorage.uid] = 'user';
               updates['/users/' + $localStorage.uid + '/' + eventID] = {role: 'user'};
               database.update(updates);
               $state.go("eventInfo");
@@ -121,8 +156,8 @@ angular.module('app.services', [])
     }
   ])
 
-  .service('storage', ['$state', '$localStorage',
-    function ($state, $localStorage) {
+  .service('storage', ['$state', '$localStorage', '$ionicPopup',
+    function ($state, $localStorage, $ionicPopup) {
 
       var storage = firebase.storage();
 
@@ -163,16 +198,54 @@ angular.module('app.services', [])
           // Caricamento immagine avvenuto con successo
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           var downloadURL = uploadTask.snapshot.downloadURL;
-          navigator.notification.alert("Upload Complete!");
-
-          refStore.updateMetadata(metadata).then(function(metadata) {
-            console.log(metadata.customMetadata.author)
-          }).catch(function(error) {
-            console.log("Non è andato"+error)
+          var alertPopup = $ionicPopup.alert({
+            title: "Upload Complete!",
+            template: 'Your selfie is in Gallery',
+            okText: ':)', // String (default: 'OK'). The text of the OK button.
+            okType: 'button-calm'
           });
-          if(type == 'live')
+
+          refStore.updateMetadata(metadata).then(function (metadata) {
+            console.log(metadata.customMetadata.author)
+          }).catch(function (error) {
+            console.log("Non è andato" + error)
+          });
+          if (type == 'live')
             $state.go("gallery");
         });
+      }
+
+      this.deleteSelfie = function (eventID) {
+        // riferimento a file che deve essere cancellato
+        var desertRef = storage.ref(eventID + "/" + $localStorage.uid);
+        // Cancellazione File
+        desertRef.delete().then(function () {
+          var alertPopup = $ionicPopup.alert({
+            title: 'Selfie Delete!',
+          });
+        }).catch(function (error) {
+          switch (error.code) {
+            case 'storage/object_not_found':
+              // File doesn't exist
+              break;
+
+            case 'storage/unauthorized':
+              // User doesn't have permission to access the object
+              var alertPopup = $ionicPopup.alert({
+                title: 'Selfie Not Delete!',
+              });
+              break;
+
+            case 'storage/canceled':
+              // User canceled the upload
+              break;
+            case 'storage/unknown':
+              // Unknown error occurred, inspect the server response
+              break;
+          }
+        });
+
+
       }
     }])
 
@@ -267,11 +340,11 @@ angular.module('app.services', [])
 
               //Se l'utente non è iscritto all'evento
 
-              if (!eventObj.users  || (!eventObj.users[$localStorage.uid] &&
+              if (!eventObj.users || (!eventObj.users[$localStorage.uid] &&
                 eventObj.users.admin != $localStorage.uid)) {
 
                 if (!cantConfirm)
-                  conf = confirm('The Selfie event "' + eventObj.title+'" is in your area. Do you want to participate?');
+                  conf = confirm('The Selfie event "' + eventObj.title + '" is in your area. Do you want to participate?');
 
                 if (conf) {
                   cantConfirm = true;
@@ -305,5 +378,5 @@ angular.module('app.services', [])
           })
         }
       };
-  }]);
+    }]);
 
