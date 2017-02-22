@@ -27,7 +27,9 @@ angular.module('app', ['ionic', 'app.controllers','camera', 'app.routes', 'app.d
     //nascondo lo splashscreen
     navigator.splashscreen.hide();
 
-    databaseMegaselfie.getConnection();
+    setTimeout(function() {
+      databaseMegaselfie.getConnection();
+    }, 2500);
 
     universalLinks.subscribe('redirectToSharedEvent', function (eventData) {
       databaseMegaselfie.getSharedEvent(eventData.params.eventId);
@@ -115,7 +117,7 @@ angular.module('app', ['ionic', 'app.controllers','camera', 'app.routes', 'app.d
       element.on('click', function() {
         firebase.auth().signOut().then(function() {
 
-          $localStorage.$reset()
+          $localStorage.$reset();
           $state.go("login");
 
         }, function(error) {

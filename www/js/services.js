@@ -27,19 +27,14 @@ angular.module('app.services', [])
       this.getConnection = function () {
         var connectedRef = window.database.ref(".info/connected");
         connectedRef.on("value", function (snap) {
-          if (snap.val() === true) {
-            console.log("connessione OK")
-
-          } else {
-            var alertPopup = $ionicPopup.alert({
+          if (!snap.val()) {
+            $ionicPopup.alert({
               title: 'Connection off',
-              cssClass: 'title',
-              template: '<div style="bar bar-header bar-assertive"> not connected</div>',
-              okType: 'button-assertive'
+              template: 'Verify your network'
             });
           }
         });
-      }
+      };
 
       //creazione Evento: se Live ho parametro coordinates, altrimenti no
       this.createEventMegaselfie = function (objToSend, coordinates, img) {
@@ -66,7 +61,7 @@ angular.module('app.services', [])
 
         //return della nuova chiave
         return newEventKey;
-      }
+      };
 
       /*Partecipa all'evento=> aggiungo in events/eventKey/pictures*/
       this.joinEvent = function (eventID, img, type) {
@@ -79,7 +74,7 @@ angular.module('app.services', [])
 
         //Caricamento immagine
         storage.upload(eventID + "/", $localStorage.uid, img, type);
-      }
+      };
 
       /*iscrizione all'evento=> aggiunta in events/eventKey/users; events/eventKey */
       this.enrollEvent = function (eventID) {
@@ -88,7 +83,7 @@ angular.module('app.services', [])
         updates['/users/' + $localStorage.uid + '/' + eventID] = {role: 'user'};
 
         database.update(updates);
-      }
+      };
 
       this.startLiveEvent = function (eventID) {
         var updates = {};
@@ -96,23 +91,19 @@ angular.module('app.services', [])
         updates['/events/' + eventID + '/closed'] = true;
 
         database.update(updates);
-      }
+      };
 
       this.deleteEvent = function (eventID, role) {
         var updates = {};
-        if(role == 'admin'){
 
-
-        }else {
-          updates['/events/' + eventID + "/users/" + $localStorage.uid] = null;
-          updates['/events/' + eventID + "/pictures/" + $localStorage.uid] = null;
-          updates['/users/' + $localStorage.uid + "/" + eventID] = null;
-        }
+        updates['/events/' + eventID + "/users/" + $localStorage.uid] = null;
+        updates['/events/' + eventID + "/pictures/" + $localStorage.uid] = null;
+        updates['/users/' + $localStorage.uid + "/" + eventID] = null;
 
         database.update(updates);
 
         storage.deleteSelfie(eventID);
-      }
+      };
 
       this.getSharedEvent = function (eventID) {
         var obj = {};
@@ -165,7 +156,7 @@ angular.module('app.services', [])
       this.download = function (path) {
         var refStorage = storage.ref(path);
         return refStorage.getDownloadURL() + ".json";
-      }
+      };
 
       //caricamento delle immagini su DB
       this.upload = function (path, filename, imgURI, type) {
@@ -175,7 +166,7 @@ angular.module('app.services', [])
           customMetadata: {
             'author': $localStorage.profileData.name
           }
-        }
+        };
 
         //conversione img in Blob
         var uploadTask = refStore.put(dataURItoBlob(imgURI, 'image/jpeg'));
@@ -196,12 +187,11 @@ angular.module('app.services', [])
           console.log("Errore " + error)
         }, function () {
           // Caricamento immagine avvenuto con successo
-          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-          var downloadURL = uploadTask.snapshot.downloadURL;
-          var alertPopup = $ionicPopup.alert({
-            title: "Upload Complete!",
-            template: 'Your selfie is in Gallery',
-            okText: ':)', // String (default: 'OK'). The text of the OK button.
+          uploadTask.snapshot.downloadURL;
+          $ionicPopup.alert({
+            title: "Info",
+            template: 'Upload successful.',
+            okText: 'OK :)',
             okType: 'button-calm'
           });
 
@@ -213,16 +203,14 @@ angular.module('app.services', [])
           if (type == 'live')
             $state.go("gallery");
         });
-      }
+      };
 
       this.deleteSelfie = function (eventID) {
         // riferimento a file che deve essere cancellato
         var desertRef = storage.ref(eventID + "/" + $localStorage.uid);
         // Cancellazione File
         desertRef.delete().then(function () {
-          var alertPopup = $ionicPopup.alert({
-            title: 'Selfie Delete!',
-          });
+          console.log();
         }).catch(function (error) {
           switch (error.code) {
             case 'storage/object_not_found':
@@ -231,8 +219,8 @@ angular.module('app.services', [])
 
             case 'storage/unauthorized':
               // User doesn't have permission to access the object
-              var alertPopup = $ionicPopup.alert({
-                title: 'Selfie Not Delete!',
+              $ionicPopup.alert({
+                title: 'Selfie not deleted!'
               });
               break;
 
@@ -254,7 +242,7 @@ angular.module('app.services', [])
       setData: setData,
       getData: getData,
       shared_data: {}
-    }
+    };
 
     function setData(data) {
       this.shared_data = data
@@ -267,7 +255,7 @@ angular.module('app.services', [])
 
 
   .factory('saveData', function () {
-    var savedData = {}
+    var savedData = {};
 
     function set(data) {
       savedData = data;
@@ -344,7 +332,7 @@ angular.module('app.services', [])
                 eventObj.users.admin != $localStorage.uid)) {
 
                 if (!cantConfirm)
-                  conf = confirm('The Selfie event "' + eventObj.title + '" is in your area. Do you want to participate?');
+                  conf = confirm('The Selfie event "' + eventObj.title + '" is close. Do you want to participate?');
 
                 if (conf) {
                   cantConfirm = true;
@@ -365,7 +353,7 @@ angular.module('app.services', [])
           window.database.ref('coordinates/').once("value",
             function (snapshot) {
               snapshot.forEach(function (childSnapshot) {
-                var obj = {}
+                var obj = {};
                 obj.eventKey = childSnapshot.key;
                 obj.lat = childSnapshot.val().latitude;
                 obj.long = childSnapshot.val().longitude;

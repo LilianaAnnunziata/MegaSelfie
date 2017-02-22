@@ -10,24 +10,13 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
       $scope.change = function (type, reverse) {
         $scope.sortReverse = !reverse;
         $scope.sortType = type;
-      }
+      };
 
       //cancellazione
       $scope.delItem = function(event) {
-        console.log(event)
-
-
-        var confirmPopup
-
-        if(event.role == 'admin') {
-          confirmPopup = $ionicPopup.confirm({
-            title: 'Do you want Delete Your  ' + event.title + " Event?",
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Do you want to unsubscribe from the event "' + event.title + '"?',
           });
-        }else {
-          confirmPopup  = $ionicPopup.confirm({
-            title: 'Do you want unsubscribe from the Event ' + event.title + "?",
-          });
-        }
 
         confirmPopup.then(function(res) {
           if(res) {
@@ -42,7 +31,10 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(storePosition);
       } else {
-        alert("GPS is off")
+        $ionicPopup.alert({
+          title: 'Error',
+          template: 'Activate the GPS sensor.'
+        });
       }
 
       function storePosition(position) {
@@ -59,7 +51,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
         $state.go("eventInfo");
         //else
         //$state.go("gallery");
-      }
+      };
 
       var query = window.database.ref('users/' + $localStorage.uid);
       //var query = window.database.ref('users/K5fyK0CzdsOxDsSp5xDI3lM5YCB2/events');
@@ -144,7 +136,10 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
         });
 
       }, function (error) {
-        navigator.notification.alert('Please activate the GPS sensor');
+        $ionicPopup.alert({
+          title: 'Error',
+          template: 'Activate the GPS sensor.'
+        });
 
       });
 
@@ -179,7 +174,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
               admin: $localStorage.uid
             }
           };
-          var coordinate = {latitude: lat, longitude: lng, range: liveEvent.range}
+          var coordinate = {latitude: lat, longitude: lng, range: liveEvent.range};
 
           var imgSrc = cordova.file.applicationDirectory + 'www/img/liveIcon.png';
 
@@ -190,7 +185,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
                 reader.onloadend = function (evt) {
                   var img = evt.target.result; // this is your Base64 string
 
-                  var newEventKey = databaseMegaselfie.createEventMegaselfie(objToSend, coordinate, img)
+                  var newEventKey = databaseMegaselfie.createEventMegaselfie(objToSend, coordinate, img);
 
                   objToSend.eventID = newEventKey;
                   objToSend.range = liveEvent.range;
@@ -199,8 +194,8 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
                 };
                 reader.readAsDataURL(file);
               };
-              var fail = function (evt) {
-                console.log("Error file")
+              var fail = function () {
+                console.log("Error file");
               };
               fileEntry.file(win, fail);
             },
@@ -210,7 +205,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
             }
           );
         });
-      }
+      };
 
       $scope.activateEventButton = function () {
         $scope.isDisabled = false;
@@ -249,7 +244,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
             users: {
               admin: $localStorage.uid
             }
-          }
+          };
 
           databaseMegaselfie.createEventMegaselfie(objToSend, null, $scope.imgURI);
           console.log($localStorage);
@@ -258,8 +253,11 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           }, 2500);
         }
         else
-          alert("Input not valid");
-      }
+          $ionicPopup.alert({
+            title: 'Error',
+            template: 'Input not valid'
+          });
+      };
 
       $scope.choosePhoto = function () {
         var imgRect = document.getElementById("createSharedEventContentId").getBoundingClientRect();
@@ -290,7 +288,10 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
           }).then(function (result) {
             $localStorage.profileData = $scope.profileData = result.data;
           }, function (error) {
-            alert("There was a problem getting your profile");
+            $ionicPopup.alert({
+              title: 'Error',
+              template: 'Your profile info cannot be retrieved.'
+            });
             console.log(error);
           });
         }
@@ -319,7 +320,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
               //Se utente non esiste
               if (snapshot.val() === null) {
 
-                databaseMegaselfie.enrollEvent('event1')
+                databaseMegaselfie.enrollEvent('event1');
 
 
                 $state.go("menu.home");
@@ -329,7 +330,10 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
               }
             })
           }).catch(function (error) {
-            alert("Authentication failed");
+            $ionicPopup.alert({
+              title: 'Error',
+              template: 'Authentication failed'
+            });
             console.error("Authentication failed:", error);
           });
         }
@@ -359,7 +363,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
 
       var mytimeout;
       $scope.event = shareData.getData();
-      console.log($scope.event)
+      console.log($scope.event);
       $scope.uid = $localStorage.uid;
 
 
@@ -397,7 +401,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
                   };
                   reader.readAsDataURL(file);
                 };
-                var fail = function (evt) {
+                var fail = function () {
                   console.log("Error file")
                 };
                 fileEntry.file(win, fail);
@@ -431,7 +435,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
       // UI When you press a timer button this function is called
       $scope.selectTimer = function (val) {
         $scope.timeForTimer = val;
-        $scope.timer = val
+        $scope.timer = val;
         $scope.started = false;
         $scope.paused = false;
         $scope.done = false;
@@ -459,7 +463,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
       };
 
       $scope.uscita = function () {
-        cordova.plugins.camerapreview.stopCamera()
+        cordova.plugins.camerapreview.stopCamera();
         $state.go('menu.home');
       }
     }
@@ -553,7 +557,7 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
             });
           });
 
-      }
+      };
       //istanziare la gallery
       $scope.prova();
     }]);
