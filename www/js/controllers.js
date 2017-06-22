@@ -54,7 +54,6 @@ angular.module('app.controllers', ['ngCordova', 'omr.directives', 'ionic', 'ion-
       };
 
       var query = window.database.ref('users/' + $localStorage.uid);
-      //var query = window.database.ref('users/K5fyK0CzdsOxDsSp5xDI3lM5YCB2/events');
       $scope.eventList = [];
       query.once("value", function (snapshot) {
         //iterazione su tutti gli eventi dell'utente
