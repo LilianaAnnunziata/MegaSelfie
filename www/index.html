@@ -91,13 +91,18 @@
 
     <script>
       // Initialize Firebase
+      console.log("-------------");
+      console.log("Aggiungere configurazione per firebase");
+      console.log("-------------");
+
       var config = {
-        apiKey: "AIzaSyAyWCNTvDeT78E9M1Bw8r-dA2DrEmkzSZk",
-        authDomain: "megaselfie-f2e6f.firebaseapp.com",
-        databaseURL: "https://megaselfie-f2e6f.firebaseio.com",
-        storageBucket: "megaselfie-f2e6f.appspot.com",
-        messagingSenderId: "298075163763"
+        apiKey: "<API_KEY>",
+        authDomain: "<PROJECT_ID>.firebaseapp.com",
+        databaseURL: "https://<DATABASE_NAME>.firebaseio.com",
+        storageBucket: "<BUCKET>.appspot.com",
+        messagingSenderId: "<SENDER_ID>",
       };
+
       firebase.initializeApp(config);
       window.database = firebase.database();
       window.storage = firebase.storage();
